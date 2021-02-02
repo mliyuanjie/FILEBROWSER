@@ -22,6 +22,9 @@
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
+    <Filter Include="bin">
+      <UniqueIdentifier>{f4ac63ca-ef2d-4b1a-9515-cd3d8f9565f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="UI\mainWindow.ui">
@@ -63,5 +66,10 @@
     <QtMoc Include="Include\achartview.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\ABFFIO.dll">
+      <Filter>bin</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -191,6 +191,9 @@
     <QtMoc Include="Include\achartview.h" />
     <ClInclude Include="Include\mainWindow.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\ABFFIO.dll" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />

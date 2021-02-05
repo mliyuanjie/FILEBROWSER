@@ -29,7 +29,13 @@ public slots:
     void setchannel(QString s);
     void setsweep(QString s);
     void plot();
+    void save();
+    void setmode(bool);
+    void clear();
     
+signals:
+    void startchanged(QString s);
+    void endchanged(QString s);
 
 protected:
     void mousePressEvent(QMouseEvent* event);
@@ -53,7 +59,10 @@ private:
     ABF* abf = NULL;
     std::vector<QPair<float, float>> stx;
     std::vector<QPair<float, float>> sty;
+    bool mode = false;
+    
     void update();
+    
 };
 
 #endif //ACHARTVIEW_H 

@@ -2,13 +2,8 @@
 <ui version="4.0">
  <class>ABFDockWidget</class>
  <widget class="QDockWidget" name="ABFDockWidget">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>986</width>
-    <height>579</height>
-   </rect>
+  <property name="cursor">
+   <cursorShape>ArrowCursor</cursorShape>
   </property>
   <property name="windowTitle">
    <string>ABF</string>
@@ -49,10 +44,88 @@
         </item>
        </widget>
       </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton">
+        <property name="text">
+         <string>Select Data Mode</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item>
-     <widget class="AChartView" name="graphicsView"/>
+     <widget class="AChartView" name="graphicsView">
+      <property name="cursor" stdset="0">
+       <cursorShape>CrossCursor</cursorShape>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QComboBox" name="comboBox_3"/>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_4"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>start time:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>end time:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>voltage:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_5">
+        <property name="text">
+         <string>Clear</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_4">
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableView" name="tableView">
+        <property name="minimumSize">
+         <size>
+          <width>644</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -64,11 +137,16 @@
    <header>achartview.h</header>
    <slots>
     <signal>sweep(QStringList)</signal>
+    <signal>startchange(QString)</signal>
+    <signal>endchange(QString)</signal>
     <slot>open(QString)</slot>
     <slot>back()</slot>
     <slot>plot()</slot>
     <slot>setsweep(QString)</slot>
     <slot>setchannel(QString)</slot>
+    <slot>clear()</slot>
+    <slot>save()</slot>
+    <slot>setmode(bool)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -81,8 +159,8 @@
    <slot>back()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>147</x>
-     <y>74</y>
+     <x>148</x>
+     <y>54</y>
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
@@ -97,8 +175,8 @@
    <slot>plot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>384</x>
-     <y>68</y>
+     <x>368</x>
+     <y>54</y>
     </hint>
     <hint type="destinationlabel">
      <x>379</x>
@@ -113,8 +191,8 @@
    <slot>setchannel(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>611</x>
-     <y>70</y>
+     <x>489</x>
+     <y>52</y>
     </hint>
     <hint type="destinationlabel">
      <x>611</x>
@@ -130,11 +208,59 @@
    <hints>
     <hint type="sourcelabel">
      <x>835</x>
-     <y>68</y>
+     <y>52</y>
     </hint>
     <hint type="destinationlabel">
      <x>831</x>
      <y>128</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_5</sender>
+   <signal>clicked()</signal>
+   <receiver>graphicsView</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>894</x>
+     <y>568</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>770</x>
+     <y>122</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_4</sender>
+   <signal>clicked()</signal>
+   <receiver>graphicsView</receiver>
+   <slot>save()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1043</x>
+     <y>568</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>927</x>
+     <y>92</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>graphicsView</receiver>
+   <slot>setmode(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1043</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>686</x>
+     <y>123</y>
     </hint>
    </hints>
   </connection>

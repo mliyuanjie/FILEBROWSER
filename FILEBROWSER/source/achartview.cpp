@@ -43,8 +43,14 @@ void AChartView::mousePressEvent(QMouseEvent* event)
     QPointF pf = mapToScene(p);
     pf = charts->mapFromScene(pf);
     pf = charts->mapToValue(pf);
-    xrange.first = pf.x();
-    yrange.second = pf.y();
+    if (mode) {
+        
+    }
+    else {
+        xrange.first = pf.x();
+        yrange.second = pf.y();
+    }
+    
     QChartView::mousePressEvent(event);
 }
 
@@ -157,7 +163,7 @@ void AChartView::open(QString fn) {
     if (abf != NULL) {
         delete abf;
     }
-    abf = new ABF(fn.toStdString().c_str());
+    abf = new ABF(fn.toStdString());
     for (int i = 1; i < abf->Channel; i++) {
         this->parent()->findChild<QComboBox*>("comboBox")->addItem(QString::number(i));
     }

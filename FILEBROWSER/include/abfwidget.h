@@ -17,7 +17,9 @@
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include "achartview.h"
@@ -34,13 +36,21 @@ public:
     QPushButton *pushButton_2;
     QComboBox *comboBox;
     QComboBox *comboBox_2;
+    QRadioButton *radioButton;
+    QPushButton *pushButton_5;
+    QPushButton *pushButton_4;
     AChartView *graphicsView;
+    QHBoxLayout *horizontalLayout_2;
+    QLabel *label;
+    QLabel *label_2;
+    QLabel *label_3;
 
     void setupUi(QDockWidget *ABFDockWidget)
     {
         if (ABFDockWidget->objectName().isEmpty())
             ABFDockWidget->setObjectName(QStringLiteral("ABFDockWidget"));
         ABFDockWidget->resize(986, 579);
+        ABFDockWidget->setCursor(QCursor(Qt::ArrowCursor));
         dockWidgetContents = new QWidget();
         dockWidgetContents->setObjectName(QStringLiteral("dockWidgetContents"));
         verticalLayout = new QVBoxLayout(dockWidgetContents);
@@ -67,13 +77,51 @@ public:
 
         horizontalLayout->addWidget(comboBox_2);
 
+        radioButton = new QRadioButton(dockWidgetContents);
+        radioButton->setObjectName(QStringLiteral("radioButton"));
+
+        horizontalLayout->addWidget(radioButton);
+
+        pushButton_5 = new QPushButton(dockWidgetContents);
+        pushButton_5->setObjectName(QStringLiteral("pushButton_5"));
+
+        horizontalLayout->addWidget(pushButton_5);
+
+        pushButton_4 = new QPushButton(dockWidgetContents);
+        pushButton_4->setObjectName(QStringLiteral("pushButton_4"));
+
+        horizontalLayout->addWidget(pushButton_4);
+
 
         verticalLayout->addLayout(horizontalLayout);
 
         graphicsView = new AChartView(dockWidgetContents);
         graphicsView->setObjectName(QStringLiteral("graphicsView"));
+        graphicsView->viewport()->setProperty("cursor", QVariant(QCursor(Qt::CrossCursor)));
 
         verticalLayout->addWidget(graphicsView);
+
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setSpacing(6);
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        horizontalLayout_2->setContentsMargins(-1, 0, 0, 0);
+        label = new QLabel(dockWidgetContents);
+        label->setObjectName(QStringLiteral("label"));
+
+        horizontalLayout_2->addWidget(label);
+
+        label_2 = new QLabel(dockWidgetContents);
+        label_2->setObjectName(QStringLiteral("label_2"));
+
+        horizontalLayout_2->addWidget(label_2);
+
+        label_3 = new QLabel(dockWidgetContents);
+        label_3->setObjectName(QStringLiteral("label_3"));
+
+        horizontalLayout_2->addWidget(label_3);
+
+
+        verticalLayout->addLayout(horizontalLayout_2);
 
         ABFDockWidget->setWidget(dockWidgetContents);
 
@@ -82,6 +130,9 @@ public:
         QObject::connect(pushButton_2, SIGNAL(clicked()), graphicsView, SLOT(plot()));
         QObject::connect(comboBox, SIGNAL(currentTextChanged(QString)), graphicsView, SLOT(setchannel(QString)));
         QObject::connect(comboBox_2, SIGNAL(currentTextChanged(QString)), graphicsView, SLOT(setsweep(QString)));
+        QObject::connect(pushButton_5, SIGNAL(clicked()), graphicsView, SLOT(clear()));
+        QObject::connect(pushButton_4, SIGNAL(clicked()), graphicsView, SLOT(save()));
+        QObject::connect(radioButton, SIGNAL(toggled(bool)), graphicsView, SLOT(setmode(bool)));
 
         QMetaObject::connectSlotsByName(ABFDockWidget);
     } // setupUi
@@ -99,6 +150,12 @@ public:
         comboBox_2->insertItems(0, QStringList()
          << QApplication::translate("ABFDockWidget", "1", Q_NULLPTR)
         );
+        radioButton->setText(QApplication::translate("ABFDockWidget", "Select Data Mode", Q_NULLPTR));
+        pushButton_5->setText(QApplication::translate("ABFDockWidget", "Clear", Q_NULLPTR));
+        pushButton_4->setText(QApplication::translate("ABFDockWidget", "Save", Q_NULLPTR));
+        label->setText(QApplication::translate("ABFDockWidget", "Current(nA): 0", Q_NULLPTR));
+        label_2->setText(QApplication::translate("ABFDockWidget", "Voltage(mV): 0", Q_NULLPTR));
+        label_3->setText(QApplication::translate("ABFDockWidget", "Time(ms): 0", Q_NULLPTR));
     } // retranslateUi
 
 };

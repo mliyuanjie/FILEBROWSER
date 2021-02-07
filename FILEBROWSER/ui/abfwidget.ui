@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>ABFDockWidget</class>
  <widget class="QDockWidget" name="ABFDockWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>959</width>
+    <height>574</height>
+   </rect>
+  </property>
   <property name="cursor">
    <cursorShape>ArrowCursor</cursorShape>
   </property>
@@ -9,8 +17,15 @@
    <string>ABF</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="1" column="0">
+     <widget class="AChartView" name="graphicsView">
+      <property name="cursor" stdset="0">
+       <cursorShape>CrossCursor</cursorShape>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QPushButton" name="pushButton">
@@ -53,17 +68,16 @@
       </item>
      </layout>
     </item>
-    <item>
-     <widget class="AChartView" name="graphicsView">
-      <property name="cursor" stdset="0">
-       <cursorShape>CrossCursor</cursorShape>
-      </property>
-     </widget>
-    </item>
-    <item>
+    <item row="2" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">
        <number>6</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinAndMaxSize</enum>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
       </property>
       <property name="topMargin">
        <number>0</number>
@@ -74,12 +88,6 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item>
-       <widget class="QComboBox" name="comboBox_3"/>
-      </item>
-      <item>
-       <widget class="QComboBox" name="comboBox_4"/>
-      </item>
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
@@ -101,31 +109,139 @@
         </property>
        </widget>
       </item>
+     </layout>
+    </item>
+    <item row="1" column="1">
+     <widget class="QTableWidget" name="tableWidget">
+      <property name="minimumSize">
+       <size>
+        <width>150</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>150</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="lineWidth">
+       <number>1</number>
+      </property>
+      <property name="midLineWidth">
+       <number>0</number>
+      </property>
+      <property name="gridStyle">
+       <enum>Qt::SolidLine</enum>
+      </property>
+      <property name="rowCount">
+       <number>20</number>
+      </property>
+      <property name="columnCount">
+       <number>2</number>
+      </property>
+      <attribute name="horizontalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>60</number>
+      </attribute>
+      <attribute name="horizontalHeaderHighlightSections">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>10</number>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderDefaultSectionSize">
+       <number>30</number>
+      </attribute>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <column/>
+      <column/>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QPushButton" name="pushButton_5">
-        <property name="text">
-         <string>Clear</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_4">
-        <property name="text">
-         <string>Save</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QTableView" name="tableView">
+       <widget class="QPushButton" name="pushButton_3">
         <property name="minimumSize">
          <size>
-          <width>644</width>
+          <width>60</width>
           <height>0</height>
          </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>add</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_5">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>del</string>
         </property>
        </widget>
       </item>
      </layout>
+    </item>
+    <item row="2" column="1">
+     <widget class="QPushButton" name="pushButton_4">
+      <property name="minimumSize">
+       <size>
+        <width>150</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>150</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Save</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -159,8 +275,8 @@
    <slot>back()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>148</x>
-     <y>54</y>
+     <x>125</x>
+     <y>77</y>
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
@@ -175,8 +291,8 @@
    <slot>plot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>368</x>
-     <y>54</y>
+     <x>246</x>
+     <y>77</y>
     </hint>
     <hint type="destinationlabel">
      <x>379</x>
@@ -191,11 +307,11 @@
    <slot>setchannel(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>489</x>
-     <y>52</y>
+     <x>374</x>
+     <y>72</y>
     </hint>
     <hint type="destinationlabel">
-     <x>611</x>
+     <x>538</x>
      <y>120</y>
     </hint>
    </hints>
@@ -207,44 +323,12 @@
    <slot>setsweep(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>835</x>
-     <y>52</y>
+     <x>554</x>
+     <y>72</y>
     </hint>
     <hint type="destinationlabel">
-     <x>831</x>
+     <x>538</x>
      <y>128</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_5</sender>
-   <signal>clicked()</signal>
-   <receiver>graphicsView</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>894</x>
-     <y>568</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>770</x>
-     <y>122</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_4</sender>
-   <signal>clicked()</signal>
-   <receiver>graphicsView</receiver>
-   <slot>save()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1043</x>
-     <y>568</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>927</x>
-     <y>92</y>
     </hint>
    </hints>
   </connection>
@@ -255,11 +339,11 @@
    <slot>setmode(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1043</x>
-     <y>51</y>
+     <x>734</x>
+     <y>71</y>
     </hint>
     <hint type="destinationlabel">
-     <x>686</x>
+     <x>538</x>
      <y>123</y>
     </hint>
    </hints>

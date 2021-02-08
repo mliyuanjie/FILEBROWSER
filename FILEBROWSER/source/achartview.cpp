@@ -3,6 +3,7 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/qmessagebox.h>
 #include <QtWidgets/QComboBox>
+#include <QtWidgets/QTableWidget>
 #include <QtCore/QtMath>
 
 
@@ -12,7 +13,7 @@ AChartView::AChartView(QWidget* parent) :
     axisx = new QtCharts::QValueAxis();
     axisy = new QtCharts::QValueAxis();
     series = new QtCharts::QLineSeries();
-
+    series->setPen(QPen(Qt::darkBlue, 1));
     charts = new QtCharts::QChart();
     charts->addSeries(series);
     charts->setAxisX(axisx, series);
@@ -37,14 +38,14 @@ void AChartView::setsweep(QString s) {
     sweep = s.toInt();
 }
 
-void AChartView::mousePressEvent(QMouseEvent* event)
-{
+void AChartView::mousePressEvent(QMouseEvent* event) {
     QPoint p = event->pos();
     QPointF pf = mapToScene(p);
     pf = charts->mapFromScene(pf);
     pf = charts->mapToValue(pf);
     if (mode) {
-        
+        start = pf.x();
+        emit setstart(start);
     }
     else {
         xrange.first = pf.x();
@@ -54,30 +55,36 @@ void AChartView::mousePressEvent(QMouseEvent* event)
     QChartView::mousePressEvent(event);
 }
 
-void AChartView::mouseMoveEvent(QMouseEvent* event)
-{
+void AChartView::mouseMoveEvent(QMouseEvent* event) {
     QChartView::mouseMoveEvent(event);
 }
 
-void AChartView::mouseReleaseEvent(QMouseEvent* event)
-{
+void AChartView::mouseReleaseEvent(QMouseEvent* event) {
     QPoint p = event->pos();
     QPointF pf = mapToScene(p);
     pf = charts->mapFromScene(pf);
     pf = charts->mapToValue(pf);
-    xrange.second = pf.x();
-    yrange.first = pf.y();
+    if (mode) {
+        end = pf.x();
+        emit setend(end);
+    }
+    else {
+        xrange.second = pf.x();
+        yrange.first = pf.y();
+        stx.push_back(xrange);
+        sty.push_back(yrange);
+        update();
+    }
     QChartView::mouseReleaseEvent(event);
-    stx.push_back(xrange);
-    sty.push_back(yrange);
-    update();
 }
 
 void AChartView::back() {
-    if (stx.size() == 1)
+    if (stx.size() <= 1)
         return;
     stx.pop_back();
     sty.pop_back();
+    axisy->setRange(sty.back().first, sty.back().second);
+    axisx->setRange(stx.back().first, stx.back().second);
     update();
 }
 
@@ -115,20 +122,50 @@ void AChartView::changey2() {
     update();
 }
 
-void AChartView::update() {
-    axisy->setRange(sty.back().first, sty.back().second);
-    axisx->setRange(stx.back().first, stx.back().second);
-    int n = (stx.back().second - stx.back().first) * 1000 / interval;
-    int skip = (n / 2048 == 0) ? 1 : n / 1024;
-    QVector<QPointF> interVariables;
-    clock_t t1 = clock();
-    for (int i = 0; i < n; i += skip) {
-        QPointF p(i * interval / 1000 + stx.back().first, data[i + stx.back().first * 1000 / interval]);
-        interVariables.append(p);
-    }
+void AChartView::additem() {
+    QTableWidget* pt = this->parent()->findChild<QTableWidget*>("tableWidget");
+    pt->insertRow(index);
+    pt->setItem(index, 0, new QTableWidgetItem(QString::number(start)));
+    pt->setItem(index, 1, new QTableWidgetItem(QString::number(end)));
+    index++;  
+}
 
+void AChartView::delitem() {
+    if (index <= 0) {
+        return;
+    }
+    QTableWidget* pt = this->parent()->findChild<QTableWidget*>("tableWidget");
+    pt->removeRow(index);
+    index--;
+}
+
+void AChartView::setmode(bool i) {
+    mode = i;
+}
+
+void AChartView::update() {
+    int n = (stx.back().second - stx.back().first) * 1000 / interval;
+    if (stx.back().first < 0 || stx.back().second < 0 ) {
+        return;
+    }
+    int skip = (n / 2048 == 0) ? 1 : n / 2048;
+    QVector<QPointF> interVariables;
+    int valmax;
+    int i = stx.back().first * 1000 / interval;
+    int e = i + n;
+    for (; i < e-skip; i += skip) {
+        int j = i;
+        int max = j;
+        int min = j;
+        for (; j < i + skip; j++) {
+            max = (data[max] > data[j]) ? max : j;
+            min = (data[min] < data[j]) ? min : j;
+        }
+        interVariables.append(QPointF(min * interval / 1000, data[min]));
+        interVariables.append(QPointF(max * interval / 1000, data[max]));
+        
+    }
     series->replace(interVariables);
-    clock_t t2 = clock() - t1;
 }
 
 void AChartView::plot() {
@@ -156,6 +193,8 @@ void AChartView::plot() {
     sty.clear();
     stx.push_back(xrange);
     sty.push_back(yrange);
+    axisy->setRange(sty.back().first, sty.back().second);
+    axisx->setRange(stx.back().first, stx.back().second);
     update();
 }
 
@@ -188,6 +227,8 @@ void AChartView::open(QString fn) {
     yrange.second = max + 10;
     stx.push_back(xrange);
     sty.push_back(yrange);
+    axisy->setRange(sty.back().first, sty.back().second);
+    axisx->setRange(stx.back().first, stx.back().second);
     update();
 
 

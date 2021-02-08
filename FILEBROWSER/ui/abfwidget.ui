@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>959</width>
+    <width>825</width>
     <height>574</height>
    </rect>
   </property>
@@ -68,49 +68,6 @@
       </item>
      </layout>
     </item>
-    <item row="2" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <property name="spacing">
-       <number>6</number>
-      </property>
-      <property name="sizeConstraint">
-       <enum>QLayout::SetMinAndMaxSize</enum>
-      </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>start time:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>end time:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>voltage:</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
     <item row="1" column="1">
      <widget class="QTableWidget" name="tableWidget">
       <property name="minimumSize">
@@ -135,7 +92,7 @@
        <enum>Qt::SolidLine</enum>
       </property>
       <property name="rowCount">
-       <number>20</number>
+       <number>0</number>
       </property>
       <property name="columnCount">
        <number>2</number>
@@ -144,7 +101,7 @@
        <bool>false</bool>
       </attribute>
       <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>60</number>
+       <number>75</number>
       </attribute>
       <attribute name="horizontalHeaderHighlightSections">
        <bool>true</bool>
@@ -158,28 +115,27 @@
       <attribute name="verticalHeaderDefaultSectionSize">
        <number>30</number>
       </attribute>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
       <column/>
       <column/>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QPushButton" name="pushButton_4">
+      <property name="minimumSize">
+       <size>
+        <width>150</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>150</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Save</string>
+      </property>
      </widget>
     </item>
     <item row="0" column="1">
@@ -224,24 +180,141 @@
       </item>
      </layout>
     </item>
-    <item row="2" column="1">
-     <widget class="QPushButton" name="pushButton_4">
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>0</height>
-       </size>
+    <item row="2" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="spacing">
+       <number>6</number>
       </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>16777215</height>
-       </size>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
       </property>
-      <property name="text">
-       <string>Save</string>
+      <property name="leftMargin">
+       <number>0</number>
       </property>
-     </widget>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>start time:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>end time:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_5">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>voltage:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_6">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -255,6 +328,8 @@
     <signal>sweep(QStringList)</signal>
     <signal>startchange(QString)</signal>
     <signal>endchange(QString)</signal>
+    <signal>setstart(double)</signal>
+    <signal>setend(double)</signal>
     <slot>open(QString)</slot>
     <slot>back()</slot>
     <slot>plot()</slot>
@@ -263,6 +338,8 @@
     <slot>clear()</slot>
     <slot>save()</slot>
     <slot>setmode(bool)</slot>
+    <slot>additem()</slot>
+    <slot>delitem()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -275,8 +352,8 @@
    <slot>back()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>125</x>
-     <y>77</y>
+     <x>126</x>
+     <y>54</y>
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
@@ -291,8 +368,8 @@
    <slot>plot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>246</x>
-     <y>77</y>
+     <x>265</x>
+     <y>54</y>
     </hint>
     <hint type="destinationlabel">
      <x>379</x>
@@ -307,8 +384,8 @@
    <slot>setchannel(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>374</x>
-     <y>72</y>
+     <x>396</x>
+     <y>52</y>
     </hint>
     <hint type="destinationlabel">
      <x>538</x>
@@ -323,8 +400,8 @@
    <slot>setsweep(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>554</x>
-     <y>72</y>
+     <x>527</x>
+     <y>52</y>
     </hint>
     <hint type="destinationlabel">
      <x>538</x>
@@ -339,12 +416,76 @@
    <slot>setmode(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>734</x>
-     <y>71</y>
+     <x>658</x>
+     <y>51</y>
     </hint>
     <hint type="destinationlabel">
      <x>538</x>
      <y>123</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>graphicsView</sender>
+   <signal>setstart(double)</signal>
+   <receiver>label_4</receiver>
+   <slot>setNum(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>177</x>
+     <y>448</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>181</x>
+     <y>552</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>graphicsView</sender>
+   <signal>setend(double)</signal>
+   <receiver>label_5</receiver>
+   <slot>setNum(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>388</x>
+     <y>479</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>383</x>
+     <y>557</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>graphicsView</receiver>
+   <slot>additem()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>705</x>
+     <y>41</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>595</x>
+     <y>232</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_5</sender>
+   <signal>clicked()</signal>
+   <receiver>graphicsView</receiver>
+   <slot>delitem()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>782</x>
+     <y>44</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>649</x>
+     <y>261</y>
     </hint>
    </hints>
   </connection>

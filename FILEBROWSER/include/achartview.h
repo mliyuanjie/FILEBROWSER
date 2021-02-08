@@ -29,13 +29,13 @@ public slots:
     void setchannel(QString s);
     void setsweep(QString s);
     void plot();
-    void save();
     void setmode(bool);
-    void clear();
-    
+    void additem();
+    void delitem();
+
 signals:
-    void startchanged(QString s);
-    void endchanged(QString s);
+    void setstart(double num);
+    void setend(double num);
 
 protected:
     void mousePressEvent(QMouseEvent* event);
@@ -60,7 +60,9 @@ private:
     std::vector<QPair<float, float>> stx;
     std::vector<QPair<float, float>> sty;
     bool mode = false;
-    
+    float start = 0;
+    float end = 0;
+    int index = 0;
     void update();
     
 };

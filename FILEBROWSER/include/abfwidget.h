@@ -15,12 +15,13 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDockWidget>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
-#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QWidget>
 #include "achartview.h"
 
@@ -30,31 +31,43 @@ class Ui_ABFDockWidget
 {
 public:
     QWidget *dockWidgetContents;
-    QVBoxLayout *verticalLayout;
+    QGridLayout *gridLayout;
+    AChartView *graphicsView;
     QHBoxLayout *horizontalLayout;
     QPushButton *pushButton;
     QPushButton *pushButton_2;
     QComboBox *comboBox;
     QComboBox *comboBox_2;
     QRadioButton *radioButton;
-    QPushButton *pushButton_5;
+    QTableWidget *tableWidget;
     QPushButton *pushButton_4;
-    AChartView *graphicsView;
+    QHBoxLayout *horizontalLayout_3;
+    QPushButton *pushButton_3;
+    QPushButton *pushButton_5;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label;
+    QLabel *label_4;
     QLabel *label_2;
+    QLabel *label_5;
     QLabel *label_3;
+    QLabel *label_6;
 
     void setupUi(QDockWidget *ABFDockWidget)
     {
         if (ABFDockWidget->objectName().isEmpty())
             ABFDockWidget->setObjectName(QStringLiteral("ABFDockWidget"));
-        ABFDockWidget->resize(986, 579);
+        ABFDockWidget->resize(825, 574);
         ABFDockWidget->setCursor(QCursor(Qt::ArrowCursor));
         dockWidgetContents = new QWidget();
         dockWidgetContents->setObjectName(QStringLiteral("dockWidgetContents"));
-        verticalLayout = new QVBoxLayout(dockWidgetContents);
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        gridLayout = new QGridLayout(dockWidgetContents);
+        gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        graphicsView = new AChartView(dockWidgetContents);
+        graphicsView->setObjectName(QStringLiteral("graphicsView"));
+        graphicsView->viewport()->setProperty("cursor", QVariant(QCursor(Qt::CrossCursor)));
+
+        gridLayout->addWidget(graphicsView, 1, 0, 1, 1);
+
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         pushButton = new QPushButton(dockWidgetContents);
@@ -82,46 +95,104 @@ public:
 
         horizontalLayout->addWidget(radioButton);
 
-        pushButton_5 = new QPushButton(dockWidgetContents);
-        pushButton_5->setObjectName(QStringLiteral("pushButton_5"));
 
-        horizontalLayout->addWidget(pushButton_5);
+        gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
+
+        tableWidget = new QTableWidget(dockWidgetContents);
+        if (tableWidget->columnCount() < 2)
+            tableWidget->setColumnCount(2);
+        tableWidget->setObjectName(QStringLiteral("tableWidget"));
+        tableWidget->setMinimumSize(QSize(150, 0));
+        tableWidget->setMaximumSize(QSize(150, 16777215));
+        tableWidget->setLineWidth(1);
+        tableWidget->setMidLineWidth(0);
+        tableWidget->setGridStyle(Qt::SolidLine);
+        tableWidget->setRowCount(0);
+        tableWidget->setColumnCount(2);
+        tableWidget->horizontalHeader()->setVisible(false);
+        tableWidget->horizontalHeader()->setDefaultSectionSize(75);
+        tableWidget->horizontalHeader()->setHighlightSections(true);
+        tableWidget->horizontalHeader()->setMinimumSectionSize(10);
+        tableWidget->verticalHeader()->setVisible(false);
+        tableWidget->verticalHeader()->setDefaultSectionSize(30);
+
+        gridLayout->addWidget(tableWidget, 1, 1, 1, 1);
 
         pushButton_4 = new QPushButton(dockWidgetContents);
         pushButton_4->setObjectName(QStringLiteral("pushButton_4"));
+        pushButton_4->setMinimumSize(QSize(150, 0));
+        pushButton_4->setMaximumSize(QSize(150, 16777215));
 
-        horizontalLayout->addWidget(pushButton_4);
+        gridLayout->addWidget(pushButton_4, 2, 1, 1, 1);
+
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        pushButton_3 = new QPushButton(dockWidgetContents);
+        pushButton_3->setObjectName(QStringLiteral("pushButton_3"));
+        pushButton_3->setMinimumSize(QSize(60, 0));
+        pushButton_3->setMaximumSize(QSize(60, 16777215));
+
+        horizontalLayout_3->addWidget(pushButton_3);
+
+        pushButton_5 = new QPushButton(dockWidgetContents);
+        pushButton_5->setObjectName(QStringLiteral("pushButton_5"));
+        pushButton_5->setMinimumSize(QSize(60, 0));
+        pushButton_5->setMaximumSize(QSize(60, 16777215));
+
+        horizontalLayout_3->addWidget(pushButton_5);
 
 
-        verticalLayout->addLayout(horizontalLayout);
-
-        graphicsView = new AChartView(dockWidgetContents);
-        graphicsView->setObjectName(QStringLiteral("graphicsView"));
-        graphicsView->viewport()->setProperty("cursor", QVariant(QCursor(Qt::CrossCursor)));
-
-        verticalLayout->addWidget(graphicsView);
+        gridLayout->addLayout(horizontalLayout_3, 0, 1, 1, 1);
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        horizontalLayout_2->setContentsMargins(-1, 0, 0, 0);
+        horizontalLayout_2->setSizeConstraint(QLayout::SetFixedSize);
+        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
         label = new QLabel(dockWidgetContents);
         label->setObjectName(QStringLiteral("label"));
+        label->setMinimumSize(QSize(50, 0));
+        label->setMaximumSize(QSize(50, 16777215));
 
         horizontalLayout_2->addWidget(label);
 
+        label_4 = new QLabel(dockWidgetContents);
+        label_4->setObjectName(QStringLiteral("label_4"));
+        label_4->setMinimumSize(QSize(50, 0));
+        label_4->setMaximumSize(QSize(50, 16777215));
+
+        horizontalLayout_2->addWidget(label_4);
+
         label_2 = new QLabel(dockWidgetContents);
         label_2->setObjectName(QStringLiteral("label_2"));
+        label_2->setMinimumSize(QSize(50, 0));
+        label_2->setMaximumSize(QSize(50, 16777215));
 
         horizontalLayout_2->addWidget(label_2);
 
+        label_5 = new QLabel(dockWidgetContents);
+        label_5->setObjectName(QStringLiteral("label_5"));
+        label_5->setMinimumSize(QSize(50, 0));
+        label_5->setMaximumSize(QSize(50, 16777215));
+
+        horizontalLayout_2->addWidget(label_5);
+
         label_3 = new QLabel(dockWidgetContents);
         label_3->setObjectName(QStringLiteral("label_3"));
+        label_3->setMinimumSize(QSize(50, 0));
+        label_3->setMaximumSize(QSize(50, 16777215));
 
         horizontalLayout_2->addWidget(label_3);
 
+        label_6 = new QLabel(dockWidgetContents);
+        label_6->setObjectName(QStringLiteral("label_6"));
+        label_6->setMinimumSize(QSize(50, 0));
+        label_6->setMaximumSize(QSize(50, 16777215));
 
-        verticalLayout->addLayout(horizontalLayout_2);
+        horizontalLayout_2->addWidget(label_6);
+
+
+        gridLayout->addLayout(horizontalLayout_2, 2, 0, 1, 1);
 
         ABFDockWidget->setWidget(dockWidgetContents);
 
@@ -130,9 +201,11 @@ public:
         QObject::connect(pushButton_2, SIGNAL(clicked()), graphicsView, SLOT(plot()));
         QObject::connect(comboBox, SIGNAL(currentTextChanged(QString)), graphicsView, SLOT(setchannel(QString)));
         QObject::connect(comboBox_2, SIGNAL(currentTextChanged(QString)), graphicsView, SLOT(setsweep(QString)));
-        QObject::connect(pushButton_5, SIGNAL(clicked()), graphicsView, SLOT(clear()));
-        QObject::connect(pushButton_4, SIGNAL(clicked()), graphicsView, SLOT(save()));
         QObject::connect(radioButton, SIGNAL(toggled(bool)), graphicsView, SLOT(setmode(bool)));
+        QObject::connect(graphicsView, SIGNAL(setstart(double)), label_4, SLOT(setNum(double)));
+        QObject::connect(graphicsView, SIGNAL(setend(double)), label_5, SLOT(setNum(double)));
+        QObject::connect(pushButton_3, SIGNAL(clicked()), graphicsView, SLOT(additem()));
+        QObject::connect(pushButton_5, SIGNAL(clicked()), graphicsView, SLOT(delitem()));
 
         QMetaObject::connectSlotsByName(ABFDockWidget);
     } // setupUi
@@ -151,11 +224,15 @@ public:
          << QApplication::translate("ABFDockWidget", "1", Q_NULLPTR)
         );
         radioButton->setText(QApplication::translate("ABFDockWidget", "Select Data Mode", Q_NULLPTR));
-        pushButton_5->setText(QApplication::translate("ABFDockWidget", "Clear", Q_NULLPTR));
         pushButton_4->setText(QApplication::translate("ABFDockWidget", "Save", Q_NULLPTR));
-        label->setText(QApplication::translate("ABFDockWidget", "Current(nA): 0", Q_NULLPTR));
-        label_2->setText(QApplication::translate("ABFDockWidget", "Voltage(mV): 0", Q_NULLPTR));
-        label_3->setText(QApplication::translate("ABFDockWidget", "Time(ms): 0", Q_NULLPTR));
+        pushButton_3->setText(QApplication::translate("ABFDockWidget", "add", Q_NULLPTR));
+        pushButton_5->setText(QApplication::translate("ABFDockWidget", "del", Q_NULLPTR));
+        label->setText(QApplication::translate("ABFDockWidget", "start time:", Q_NULLPTR));
+        label_4->setText(QString());
+        label_2->setText(QApplication::translate("ABFDockWidget", "end time:", Q_NULLPTR));
+        label_5->setText(QString());
+        label_3->setText(QApplication::translate("ABFDockWidget", "voltage:", Q_NULLPTR));
+        label_6->setText(QString());
     } // retranslateUi
 
 };

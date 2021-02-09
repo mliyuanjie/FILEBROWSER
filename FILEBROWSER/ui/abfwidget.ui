@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>825</width>
-    <height>574</height>
+    <width>1118</width>
+    <height>573</height>
    </rect>
   </property>
   <property name="cursor">
@@ -18,14 +18,77 @@
   </property>
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
+    <item row="1" column="0" colspan="2">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="pushButton_8">
+        <property name="minimumSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>+</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_7">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="5">
      <widget class="AChartView" name="graphicsView">
       <property name="cursor" stdset="0">
        <cursorShape>CrossCursor</cursorShape>
       </property>
      </widget>
     </item>
-    <item row="0" column="0">
+    <item row="0" column="5">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QPushButton" name="pushButton">
@@ -68,7 +131,7 @@
       </item>
      </layout>
     </item>
-    <item row="1" column="1">
+    <item row="1" column="6">
      <widget class="QTableWidget" name="tableWidget">
       <property name="minimumSize">
        <size>
@@ -119,38 +182,19 @@
       <column/>
      </widget>
     </item>
-    <item row="2" column="1">
-     <widget class="QPushButton" name="pushButton_4">
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Save</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
+    <item row="0" column="6">
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
        <widget class="QPushButton" name="pushButton_3">
         <property name="minimumSize">
          <size>
-          <width>60</width>
+          <width>70</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>60</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -163,13 +207,13 @@
        <widget class="QPushButton" name="pushButton_5">
         <property name="minimumSize">
          <size>
-          <width>60</width>
+          <width>70</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>60</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -180,7 +224,7 @@
       </item>
      </layout>
     </item>
-    <item row="2" column="0">
+    <item row="2" column="5">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">
        <number>6</number>
@@ -239,6 +283,25 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="pushButton_9">
+        <property name="minimumSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>+</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="label_2">
         <property name="minimumSize">
          <size>
@@ -273,6 +336,25 @@
         </property>
         <property name="text">
          <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_10">
+        <property name="minimumSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>-</string>
         </property>
        </widget>
       </item>
@@ -316,6 +398,48 @@
       </item>
      </layout>
     </item>
+    <item row="2" column="6">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QPushButton" name="pushButton_4">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>70</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>show</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_6">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>70</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>save</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
    </layout>
   </widget>
  </widget>
@@ -340,6 +464,10 @@
     <slot>setmode(bool)</slot>
     <slot>additem()</slot>
     <slot>delitem()</slot>
+    <slot>changex1()</slot>
+    <slot>changex2()</slot>
+    <slot>changey1()</slot>
+    <slot>changey2()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -384,7 +512,7 @@
    <slot>setchannel(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>396</x>
+     <x>583</x>
      <y>52</y>
     </hint>
     <hint type="destinationlabel">
@@ -400,7 +528,7 @@
    <slot>setsweep(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>527</x>
+     <x>767</x>
      <y>52</y>
     </hint>
     <hint type="destinationlabel">
@@ -416,7 +544,7 @@
    <slot>setmode(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>658</x>
+     <x>951</x>
      <y>51</y>
     </hint>
     <hint type="destinationlabel">
@@ -436,8 +564,8 @@
      <y>448</y>
     </hint>
     <hint type="destinationlabel">
-     <x>181</x>
-     <y>552</y>
+     <x>261</x>
+     <y>562</y>
     </hint>
    </hints>
   </connection>
@@ -452,8 +580,8 @@
      <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>383</x>
-     <y>557</y>
+     <x>576</x>
+     <y>562</y>
     </hint>
    </hints>
   </connection>
@@ -464,8 +592,8 @@
    <slot>additem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>705</x>
-     <y>41</y>
+     <x>1029</x>
+     <y>54</y>
     </hint>
     <hint type="destinationlabel">
      <x>595</x>
@@ -480,12 +608,76 @@
    <slot>delitem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>782</x>
-     <y>44</y>
+     <x>1105</x>
+     <y>54</y>
     </hint>
     <hint type="destinationlabel">
      <x>649</x>
      <y>261</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_9</sender>
+   <signal>clicked()</signal>
+   <receiver>graphicsView</receiver>
+   <slot>changex1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>335</x>
+     <y>544</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>336</x>
+     <y>480</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_10</sender>
+   <signal>clicked()</signal>
+   <receiver>graphicsView</receiver>
+   <slot>changex2()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>654</x>
+     <y>549</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>652</x>
+     <y>517</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_8</sender>
+   <signal>clicked()</signal>
+   <receiver>graphicsView</receiver>
+   <slot>changey1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>25</x>
+     <y>213</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>69</x>
+     <y>220</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_7</sender>
+   <signal>clicked()</signal>
+   <receiver>graphicsView</receiver>
+   <slot>changey2()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>23</x>
+     <y>379</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>57</x>
+     <y>379</y>
     </hint>
    </hints>
   </connection>

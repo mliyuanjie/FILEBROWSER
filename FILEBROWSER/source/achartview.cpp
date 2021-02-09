@@ -14,15 +14,14 @@ AChartView::AChartView(QWidget* parent) :
     axisy = new QtCharts::QValueAxis();
     series = new QtCharts::QLineSeries();
     series->setPen(QPen(Qt::darkBlue, 1));
+    //series->setUseOpenGL(true);
     charts = new QtCharts::QChart();
     charts->addSeries(series);
     charts->setAxisX(axisx, series);
     charts->setAxisY(axisy, series);
-    charts->setAnimationOptions(QChart::SeriesAnimations);
+    charts->legend()->hide();
     setChart(charts);
-
-    setRenderHint(QPainter::Antialiasing);
-    setRubberBand(QChartView::RectangleRubberBand);
+    //setRubberBand(QChartView::RectangleRubberBand);
 
 }
 
@@ -48,15 +47,19 @@ void AChartView::mousePressEvent(QMouseEvent* event) {
         emit setstart(start);
     }
     else {
-        xrange.first = pf.x();
-        yrange.second = pf.y();
+        if (pf.x() * 1000 / interval < stx.back().first || pf.y() > sty.back().second)
+            return;
     }
-    
-    QChartView::mousePressEvent(event);
+    if (!rubberBand)
+        rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
+    rubberBand->setGeometry(QRect(p, QSize()).normalized());
+    rubberBand->show();
 }
 
 void AChartView::mouseMoveEvent(QMouseEvent* event) {
-    QChartView::mouseMoveEvent(event);
+    if (rubberBand == NULL)
+        return;
+    rubberBand->setGeometry(QRect(rubberBand->pos(), event->pos()).normalized());
 }
 
 void AChartView::mouseReleaseEvent(QMouseEvent* event) {
@@ -69,13 +72,23 @@ void AChartView::mouseReleaseEvent(QMouseEvent* event) {
         emit setend(end);
     }
     else {
-        xrange.second = pf.x();
-        yrange.first = pf.y();
-        stx.push_back(xrange);
-        sty.push_back(yrange);
-        update();
+        if (pf.x() * 1000 / interval < stx.back().second && pf.y() > sty.back().first) {
+            QPair<int, int> x;
+            QPair<float, float> y;
+            x.second = pf.x() * 1000 / interval;
+            y.first = pf.y();
+            pf = mapToScene(rubberBand->pos());
+            pf = charts->mapFromScene(pf);
+            pf = charts->mapToValue(pf);
+            x.first = pf.x() * 1000 / interval;
+            y.second = pf.y();
+            stx.push_back(x);
+            sty.push_back(y);
+            update();
+        }
     }
-    QChartView::mouseReleaseEvent(event);
+    delete rubberBand;
+    rubberBand = NULL;
 }
 
 void AChartView::back() {
@@ -83,42 +96,34 @@ void AChartView::back() {
         return;
     stx.pop_back();
     sty.pop_back();
-    axisy->setRange(sty.back().first, sty.back().second);
-    axisx->setRange(stx.back().first, stx.back().second);
     update();
 }
 
 void AChartView::changex1() {
-    if (xrange.first == 0 || xrange.second == data.size() * interval / 1000)
-        return;
-    xrange.first = xrange.first - 0.1 * (xrange.second - xrange.first);
-    xrange.second = xrange.first + 0.1 * (xrange.second - xrange.first);
-    stx.push_back(xrange);
-    sty.push_back(yrange);
+    float range = stx.back().second - stx.back().first;
+    stx.back().first = (stx.back().first - 0.2 * range <= 0) ? 0 : stx.back().first - 0.2 * range;
+    stx.back().second = (stx.back().second + 0.2 * range >= data.size()) ? data.size() : stx.back().second + 0.2 * range;
     update();
 }
 
 void AChartView::changex2() {
-    xrange.first = xrange.first + 0.1 * (xrange.second - xrange.first);
-    xrange.second = xrange.first - 0.1 * (xrange.second - xrange.first);
-    stx.push_back(xrange);
-    sty.push_back(yrange);
+    float range = stx.back().second - stx.back().first;
+    stx.back().first = stx.back().first + 0.2 * range;
+    stx.back().second = stx.back().second - 0.2 * range;
     update();
 }
 
 void AChartView::changey1() {
-    yrange.first = yrange.first - 0.1 * (yrange.second - yrange.first);
-    yrange.second = yrange.second + 0.1 * (yrange.second - yrange.first);
-    stx.push_back(xrange);
-    sty.push_back(yrange);
+    float range = sty.back().second - sty.back().first;
+    sty.back().first = sty.back().first - 0.2 * range;
+    sty.back().second = sty.back().second + 0.2 * range;
     update();
 }
 
 void AChartView::changey2() {
-    yrange.first = yrange.first + 0.1 * (yrange.second - yrange.first);
-    xrange.second = xrange.second - 0.1 * (yrange.second - yrange.first);
-    stx.push_back(xrange);
-    sty.push_back(yrange);
+    float range = sty.back().second - sty.back().first;
+    sty.back().first = sty.back().first + 0.2 * range;
+    sty.back().second = sty.back().second - 0.2 * range;
     update();
 }
 
@@ -144,39 +149,35 @@ void AChartView::setmode(bool i) {
 }
 
 void AChartView::update() {
-    int n = (stx.back().second - stx.back().first) * 1000 / interval;
-    if (stx.back().first < 0 || stx.back().second < 0 ) {
-        return;
-    }
-    int skip = (n / 2048 == 0) ? 1 : n / 2048;
+    axisy->setRange(sty.back().first, sty.back().second);
+    axisx->setRange(stx.back().first * interval / 1000, stx.back().second * interval / 1000);
+    int n = (stx.back().second - stx.back().first);
+    int skip = (n / 3000 == 0) ? 1 : n / 3000;
     QVector<QPointF> interVariables;
     int valmax;
-    int i = stx.back().first * 1000 / interval;
+    int i = stx.back().first;
     int e = i + n;
     for (; i < e-skip; i += skip) {
         int j = i;
         int max = j;
         int min = j;
-        for (; j < i + skip; j++) {
+        for (; j < i + skip && j < e; j++) {
             max = (data[max] > data[j]) ? max : j;
             min = (data[min] < data[j]) ? min : j;
         }
         interVariables.append(QPointF(min * interval / 1000, data[min]));
-        interVariables.append(QPointF(max * interval / 1000, data[max]));
-        
+        interVariables.append(QPointF(max * interval / 1000, data[max])); 
     }
     series->replace(interVariables);
 }
 
 void AChartView::plot() {
-    //axisx->setTitleText(QString("ms"));
-    //axisy->setTitleText(unit);
+    axisx->setTitleText(QString("ms"));
+    axisy->setTitleText(unit);
     if (abf == NULL) {
         return;
     }
     data = abf->data(channel, sweep, true);
-    xrange.first = 0;
-    xrange.second = data.size() * interval / 1000;
     float min = 0;
     float max = data[0];
     for (int i = 1; i < data.size(); i++) {
@@ -187,14 +188,10 @@ void AChartView::plot() {
             max = data[i];
         }
     }
-    yrange.first = min - 10;
-    yrange.second = max + 10;
     stx.clear();
     sty.clear();
-    stx.push_back(xrange);
-    sty.push_back(yrange);
-    axisy->setRange(sty.back().first, sty.back().second);
-    axisx->setRange(stx.back().first, stx.back().second);
+    stx.push_back(QPair<int, int>(0, data.size()));
+    sty.push_back(QPair<float, float>(min - 10, max + 10));
     update();
 }
 
@@ -210,26 +207,5 @@ void AChartView::open(QString fn) {
         this->parent()->findChild<QComboBox*>("comboBox_2")->addItem(QString::number(i));
     }
     interval = abf->Interval;
-    data = abf->data(channel, sweep, true);
-    xrange.first = 0;
-    xrange.second = data.size() * interval / 1000;
-    float min = 0;
-    float max = data[0];
-    for (int i = 1; i < data.size(); i++) {
-        if (data[i] < min) {
-            min = data[i];
-        }
-        else if (data[i] > max) {
-            max = data[i];
-        }
-    }
-    yrange.first = min - 10;
-    yrange.second = max + 10;
-    stx.push_back(xrange);
-    sty.push_back(yrange);
-    axisy->setRange(sty.back().first, sty.back().second);
-    axisx->setRange(stx.back().first, stx.back().second);
-    update();
-
-
+    plot(); 
 }

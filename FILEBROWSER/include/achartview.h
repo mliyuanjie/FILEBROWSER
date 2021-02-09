@@ -48,8 +48,7 @@ private:
     QtCharts::QChart* charts;
     QtCharts::QValueAxis* axisx;
     QtCharts::QValueAxis* axisy;
-    QPair<float, float> xrange;
-    QPair<float, float> yrange;
+    QRubberBand* rubberBand = NULL;
     int channel = 0;
     int sweep = 1;
     QString unit;
@@ -57,7 +56,7 @@ private:
     std::vector<float> data;
     float interval;
     ABF* abf = NULL;
-    std::vector<QPair<float, float>> stx;
+    std::vector<QPair<int, int>> stx;
     std::vector<QPair<float, float>> sty;
     bool mode = false;
     float start = 0;

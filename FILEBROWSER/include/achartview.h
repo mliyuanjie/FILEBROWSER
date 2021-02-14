@@ -42,7 +42,6 @@ protected:
     void mouseMoveEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
 
-
 private:
     QtCharts::QLineSeries* series;
     QtCharts::QChart* charts;
@@ -53,7 +52,6 @@ private:
     int sweep = 1;
     QString unit;
     QString filename;
-    std::vector<float> data;
     float interval;
     ABF* abf = NULL;
     std::vector<QPair<int, int>> stx;
@@ -63,7 +61,5 @@ private:
     float end = 0;
     int index = 0;
     void update();
-    
 };
-
 #endif //ACHARTVIEW_H 

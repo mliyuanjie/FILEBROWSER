@@ -13,7 +13,7 @@ AChartView::AChartView(QWidget* parent) :
     axisx = new QtCharts::QValueAxis();
     axisy = new QtCharts::QValueAxis();
     series = new QtCharts::QLineSeries();
-    series->setPen(QPen(Qt::darkBlue, 1));
+    series->setPen(QPen(Qt::darkBlue, 1)); 
     //series->setUseOpenGL(true);
     charts = new QtCharts::QChart();
     charts->addSeries(series);
@@ -102,7 +102,7 @@ void AChartView::back() {
 void AChartView::changex1() {
     float range = stx.back().second - stx.back().first;
     stx.back().first = (stx.back().first - 0.2 * range <= 0) ? 0 : stx.back().first - 0.2 * range;
-    stx.back().second = (stx.back().second + 0.2 * range >= data.size()) ? data.size() : stx.back().second + 0.2 * range;
+    stx.back().second = (stx.back().second + 0.2 * range >= abf->data.size()) ? abf->data.size() : stx.back().second + 0.2 * range;
     update();
 }
 
@@ -151,24 +151,7 @@ void AChartView::setmode(bool i) {
 void AChartView::update() {
     axisy->setRange(sty.back().first, sty.back().second);
     axisx->setRange(stx.back().first * interval / 1000, stx.back().second * interval / 1000);
-    int n = (stx.back().second - stx.back().first);
-    int skip = (n / 3000 == 0) ? 1 : n / 3000;
-    QVector<QPointF> interVariables;
-    int valmax;
-    int i = stx.back().first;
-    int e = i + n;
-    for (; i < e-skip; i += skip) {
-        int j = i;
-        int max = j;
-        int min = j;
-        for (; j < i + skip && j < e; j++) {
-            max = (data[max] > data[j]) ? max : j;
-            min = (data[min] < data[j]) ? min : j;
-        }
-        interVariables.append(QPointF(min * interval / 1000, data[min]));
-        interVariables.append(QPointF(max * interval / 1000, data[max])); 
-    }
-    series->replace(interVariables);
+    abf->draw(stx.back().first, stx.back().second);
 }
 
 void AChartView::plot() {
@@ -177,21 +160,12 @@ void AChartView::plot() {
     if (abf == NULL) {
         return;
     }
-    data = abf->data(channel, sweep, true);
-    float min = 0;
-    float max = data[0];
-    for (int i = 1; i < data.size(); i++) {
-        if (data[i] < min) {
-            min = data[i];
-        }
-        else if (data[i] > max) {
-            max = data[i];
-        }
-    }
+    abf->readData(channel, sweep, true);
+    std::pair<float, float> t = abf->getLimit();
     stx.clear();
     sty.clear();
-    stx.push_back(QPair<int, int>(0, data.size()));
-    sty.push_back(QPair<float, float>(min - 10, max + 10));
+    stx.push_back(QPair<int, int>(0, abf->data.size()));
+    sty.push_back(QPair<float, float>(t.first - 10, t.second + 10));
     update();
 }
 
@@ -207,5 +181,6 @@ void AChartView::open(QString fn) {
         this->parent()->findChild<QComboBox*>("comboBox_2")->addItem(QString::number(i));
     }
     interval = abf->Interval;
+    abf->setSeries(series);
     plot(); 
 }

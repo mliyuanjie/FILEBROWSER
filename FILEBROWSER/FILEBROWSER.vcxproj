@@ -70,10 +70,10 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories);$(ProjectDir)/Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories);$(ProjectDir)/include</AdditionalIncludeDirectories>
     </ClCompile>
     <QtUic>
-      <QtUicDir>$(ProjectDir)/Include</QtUicDir>
+      <QtUicDir>$(ProjectDir)/include</QtUicDir>
     </QtUic>
     <QtUic>
       <QtUicFileName>%(Filename).h</QtUicFileName>
@@ -186,7 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Include\ftreeview.h" />
-    <ClInclude Include="Include\abf.h" />
+    <QtMoc Include="Include\abf.h" />
     <ClInclude Include="Include\abfwidget.h" />
     <QtMoc Include="Include\achartview.h" />
     <ClInclude Include="Include\mainWindow.h" />

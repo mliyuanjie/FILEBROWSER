@@ -4,18 +4,27 @@
 #include "abffiles.h"
 #include <iostream>
 #include <vector>
+#include <QtCore/qobject.h>
+#include <QtCharts/qlineseries.h>
 
+QT_CHARTS_USE_NAMESPACE
 
-
-class ABF {
+class ABF:public QObject {
+	Q_OBJECT 
 public:
-	ABF(std::string f, unsigned int n=1024*16);
-	~ABF();
-	std::vector<float> data(int channel = 0, int sweep = 1, bool m = true);
-	void save(std::vector<unsigned int>& start, std::vector<unsigned int>& end);
+	ABF(std::string f, QObject* parent = 0, unsigned int n = 1024 * 16);
 	int Channel = 0;
 	int Sweep = 1;
 	float Interval;
+	std::vector<float> data;
+
+	void setSeries(QLineSeries* s);
+	std::pair<float, float> getLimit();
+	~ABF();
+public slots:
+	void readData(int channel = 0, int sweep = 1, bool m = true);
+	void save(std::vector<unsigned int>& start, std::vector<unsigned int>& end);
+	void draw(int s, int e);
 
 private:
 	typedef int(_stdcall* pABF_ReadOpen)(const char* szFileName, int* phFile, UINT uFlags, ABFFileHeader* pFH, UINT* puMaxSamples, DWORD* pdwMaxEpi, int* pnError);
@@ -40,6 +49,7 @@ private:
 	unsigned long maxepi;
 	float* buffer=NULL;
 	HINSTANCE module;
+	QLineSeries* series;
 
 	pABF_ReadOpen ABF_ReadOpen;
 	pABF_ReadChannel ABF_ReadChannel;

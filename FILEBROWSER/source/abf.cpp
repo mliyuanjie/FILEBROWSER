@@ -1,6 +1,6 @@
 #include "abf.h"
 
-ABF::ABF(std::string f, unsigned int n) {
+ABF::ABF(std::string f, QObject* parent, unsigned int n) : QObject(parent) {
 	fn = f;
 	error = 0;
 	hfile = 1;
@@ -37,18 +37,15 @@ ABF::~ABF(){
 	if (buffer == NULL) {
 		return;
 	}
-	ABF_Close(hfile, &error);
 	FreeLibrary(module);
 	delete[] buffer;
 	buffer = NULL;
 }
 
-std::vector<float> ABF::data(int c, int s, bool m) {
+void ABF::readData(int c, int s, bool m) {
 	ABF_ReadOpen(fn.c_str(), &hfile, ABF_DATAFILE, &fh, &maxsamples, &maxepi, &error);
-	std::vector<float> t;
-	if (buffer == NULL) {
-		return t;
-	}
+	if (buffer == NULL) 
+		return;
 	//ABF_SynchCountFromEpisode(hfile, &fh, s, &synstart, &error);
 	if (fh.nOperationMode == 3 && m) {
 		float* res = buffer;
@@ -57,11 +54,11 @@ std::vector<float> ABF::data(int c, int s, bool m) {
 			ABF_ReadChannel(hfile, &fh, c, i, res, &numsamples, &error);
 			res += numsamples;
 		}
-		t = std::vector<float>(buffer, res);
+		data = std::vector<float>(buffer, res);
 	}
 	else if (fh.nOperationMode == 5 && m) {
 		ABF_ReadChannel(hfile, &fh, c, s, buffer, &maxsamples, &error);
-		t = std::vector<float>(buffer, buffer + maxsamples);
+		data = std::vector<float>(buffer, buffer + maxsamples);
 	}
 	else if (fh.nOperationMode == 3 && !m) {
 		float* res = buffer;
@@ -69,14 +66,15 @@ std::vector<float> ABF::data(int c, int s, bool m) {
 			ABF_GetWaveform(hfile, &fh, c, i, res, &error);
 			res += maxsamples;
 		};
-		t = std::vector<float>(buffer, buffer + fh.lActualAcqLength/fh.nADCNumChannels);
+		data = std::vector<float>(buffer, buffer + fh.lActualAcqLength / fh.nADCNumChannels);
+
 	}
 	else if (fh.nOperationMode == 5 && !m) {
 		ABF_GetWaveform(hfile, &fh, c, s, buffer, &error);
-		t = std::vector<float>(buffer, buffer + maxsamples);
+		data = std::vector<float>(buffer, buffer + maxsamples);
 	}
 	ABF_Close(hfile, &error);
-	return t;
+	return;
 }
 
 void ABF::save(std::vector<unsigned int>& start, std::vector<unsigned int>& end) {
@@ -150,3 +148,44 @@ void ABF::save(std::vector<unsigned int>& start, std::vector<unsigned int>& end)
 	ABF_Close(phfile, &error);
 	return;
 }
+
+void ABF::setSeries(QLineSeries* s) {
+	series = s;
+}
+
+void ABF::draw(int s, int e) {
+	if (series == NULL) 
+		return;
+	int n = e-s;
+	int skip = (n / 3000 == 0) ? 1 : n / 3000;
+	QVector<QPointF> interVariables;
+	int valmax;
+	int i = s;
+	for (; i < e; i += skip) {
+		int j = i;
+		int max = j;
+		int min = j;
+		for (; j < i + skip && j < e; j++) {
+			max = (data[max] > data[j]) ? max : j;
+			min = (data[min] < data[j]) ? min : j;
+		}
+		interVariables.append(QPointF(min * Interval / 1000, data[min]));
+		interVariables.append(QPointF(max * Interval / 1000, data[max]));
+	}
+	series->replace(interVariables);
+}
+
+std::pair<float, float> ABF::getLimit() {
+	float min = 0;
+	float max = data[0];
+	for (int i = 1; i < data.size(); i++) {
+		if (data[i] < min) {
+			min = data[i];
+		}
+		else if (data[i] > max) {
+			max = data[i];
+		}
+	}
+	return std::pair<float, float>(min, max);
+}
+	

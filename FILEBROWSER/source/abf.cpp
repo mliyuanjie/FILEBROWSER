@@ -19,12 +19,6 @@ ABF::ABF(std::string f, QObject* parent, unsigned int n) : QObject(parent) {
 	ABF_MultiplexRead = (pABF_MultiplexRead)GetProcAddress(module, "ABF_MultiplexRead");
 	ABF_ReadDACFileEpi = (pABF_ReadDACFileEpi)GetProcAddress(module, "ABF_ReadDACFileEpi");
 	ABF_ReadOpen(fn.c_str(), &hfile, ABF_DATAFILE, &fh, &maxsamples, &maxepi, &error);
-	if (fh.nOperationMode == 3) {
-		buffer = new float[maxsamples * maxepi];
-	}
-	else if (fh.nOperationMode == 5) {
-		buffer = new float[maxsamples];
-	}
 	Channel = fh.nADCNumChannels;
 	if (fh.nOperationMode == 5) {
 		Sweep = fh.lActualEpisodes;
@@ -34,46 +28,44 @@ ABF::ABF(std::string f, QObject* parent, unsigned int n) : QObject(parent) {
 }
 
 ABF::~ABF(){
-	if (buffer == NULL) {
-		return;
-	}
 	FreeLibrary(module);
-	delete[] buffer;
-	buffer = NULL;
 }
 
 void ABF::readData(int c, int s, bool m) {
 	ABF_ReadOpen(fn.c_str(), &hfile, ABF_DATAFILE, &fh, &maxsamples, &maxepi, &error);
-	if (buffer == NULL) 
-		return;
-	//ABF_SynchCountFromEpisode(hfile, &fh, s, &synstart, &error);
+	float* buffer;
 	if (fh.nOperationMode == 3 && m) {
+		buffer = new float[maxsamples * maxepi];
 		float* res = buffer;
 		unsigned int numsamples = maxsamples;
 		for (unsigned int i = 1; i <= maxepi; i++) {
 			ABF_ReadChannel(hfile, &fh, c, i, res, &numsamples, &error);
 			res += numsamples;
 		}
+		data.clear();
 		data = std::vector<float>(buffer, res);
 	}
 	else if (fh.nOperationMode == 5 && m) {
+		buffer = new float[maxsamples];
 		ABF_ReadChannel(hfile, &fh, c, s, buffer, &maxsamples, &error);
 		data = std::vector<float>(buffer, buffer + maxsamples);
 	}
 	else if (fh.nOperationMode == 3 && !m) {
+		buffer = new float[maxsamples * maxepi];
 		float* res = buffer;
 		for (unsigned int i = 1; i <= maxepi; i++) {
 			ABF_GetWaveform(hfile, &fh, c, i, res, &error);
 			res += maxsamples;
 		};
 		data = std::vector<float>(buffer, buffer + fh.lActualAcqLength / fh.nADCNumChannels);
-
 	}
 	else if (fh.nOperationMode == 5 && !m) {
+		buffer = new float[maxsamples];
 		ABF_GetWaveform(hfile, &fh, c, s, buffer, &error);
 		data = std::vector<float>(buffer, buffer + maxsamples);
 	}
 	ABF_Close(hfile, &error);
+	delete[] buffer;
 	return;
 }
 
@@ -117,6 +109,7 @@ void ABF::save(std::vector<unsigned int>& start, std::vector<unsigned int>& end)
 		delete[] pnBuffer;
 	}
 	else if (fh.nDataFormat == 1) {
+		float* buffer = new float[maxsamples * maxepi];
 		float* res = buffer;
 		for (unsigned int i = 1; i <= maxepi; i++) {
 			ABF_MultiplexRead(hfile, &fh, i, buffer, &numsamples, &error);
@@ -142,6 +135,7 @@ void ABF::save(std::vector<unsigned int>& start, std::vector<unsigned int>& end)
 			i+=Channel;
 		}
 		ABF_MultiplexWrite(phfile, &fh, ABF_DATAFILE, buffer, 0, i, &error);
+		delete[] buffer;
 	}
 	ABF_UpdateHeader(phfile, &fh, &error);
 	ABF_Close(hfile, &error);

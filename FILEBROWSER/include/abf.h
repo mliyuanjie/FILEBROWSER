@@ -47,9 +47,9 @@ private:
 	DWORD synstart;
 	unsigned int maxsamples;
 	unsigned long maxepi;
-	float* buffer=NULL;
 	HINSTANCE module;
 	QLineSeries* series;
+	std::vector<std::vector<unsigned int>> thumb;
 
 	pABF_ReadOpen ABF_ReadOpen;
 	pABF_ReadChannel ABF_ReadChannel;

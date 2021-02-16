@@ -32,6 +32,7 @@ public slots:
     void setmode(bool);
     void additem();
     void delitem();
+    void save();
 
 signals:
     void setstart(double num);
@@ -57,9 +58,8 @@ private:
     std::vector<QPair<int, int>> stx;
     std::vector<QPair<float, float>> sty;
     bool mode = false;
-    float start = 0;
-    float end = 0;
-    int index = 0;
+    double start = 0;
+    double end = 0;
     void update();
 };
 #endif //ACHARTVIEW_H 

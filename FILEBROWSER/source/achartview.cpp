@@ -129,6 +129,7 @@ void AChartView::changey2() {
 
 void AChartView::additem() {
     QTableWidget* pt = this->parent()->findChild<QTableWidget*>("tableWidget");
+    int index = pt->rowCount();
     pt->insertRow(index);
     pt->setItem(index, 0, new QTableWidgetItem(QString::number(start)));
     pt->setItem(index, 1, new QTableWidgetItem(QString::number(end)));
@@ -136,12 +137,9 @@ void AChartView::additem() {
 }
 
 void AChartView::delitem() {
-    if (index <= 0) {
-        return;
-    }
     QTableWidget* pt = this->parent()->findChild<QTableWidget*>("tableWidget");
-    pt->removeRow(index);
-    index--;
+    int index = pt->rowCount();
+    pt->removeRow(index-1);
 }
 
 void AChartView::setmode(bool i) {
@@ -183,4 +181,16 @@ void AChartView::open(QString fn) {
     interval = abf->Interval;
     abf->setSeries(series);
     plot(); 
+}
+
+void AChartView::save() {
+    QTableWidget* pt = this->parent()->findChild<QTableWidget*>("tableWidget");
+    std::vector<unsigned int> start;
+    std::vector<unsigned int> end;
+    for (int i = 0; i < pt->rowCount(); i++) {
+        start.push_back(pt->item(i, 0)->text().toFloat() * 1000 / interval);
+        end.push_back(pt->item(i, 1)->text().toFloat() * 1000 / interval);
+    }
+    abf->save(start, end);
+    pt->clear();
 }

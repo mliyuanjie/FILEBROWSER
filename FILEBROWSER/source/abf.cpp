@@ -74,45 +74,46 @@ void ABF::save(std::vector<unsigned int>& start, std::vector<unsigned int>& end)
 		return;
 	}
 	int phfile = 0;
-	std::string fnout = "_new.abf";
+	std::string fnout = "_cut.abf";
 	fnout.insert(0, fn, 0, fn.size() - 4);
 	unsigned int numsamples = maxsamples;
 	ABF_ReadOpen(fn.c_str(), &hfile, ABF_DATAFILE, &fh, &numsamples, &maxepi, &error);
 	ABF_WriteOpen(fnout.c_str(), &phfile, ABF_DATAFILE, &fh, &error);
 	if (fh.nDataFormat == 0) {
-		short* pnBuffer = new short[maxsamples * maxepi];
-		short* res = pnBuffer;
+		short* buffer = new short[maxsamples * maxepi * Channel];
+		short* res = buffer;
 		for (unsigned int i = 1; i <= maxepi; i++) {
-			ABF_MultiplexRead(hfile, &fh, i, pnBuffer, &numsamples, &error);
+			ABF_MultiplexRead(hfile, &fh, i, res, &numsamples, &error);
 			res += numsamples;
 		}
+		int a = res - buffer;
 		int i = 0;
 		int j = 0;
-		int flag = Channel*start[j];
-		while(i < res - pnBuffer) {
-			if (flag >= Channel*end[j]) {
+		int flag = Channel * start[j];
+		while(i < res - buffer) {
+			if (flag >= Channel * end[j]) {
 				j++;
-				if (i >= start.size()) {
+				if (j >= start.size()) {
 					break;
 				}
-				flag = Channel*start[j];
+				flag = Channel * start[j];
 			}
 			if (flag > i) {
 				for (int n = 0; n < Channel; n++) {
-					pnBuffer[i+n] = pnBuffer[flag+n];
+					buffer[i + n] = buffer[flag + n];
 				}
 			}
-			flag+=Channel;
-			i+=Channel;
+			flag += Channel;
+			i += Channel;
 		}
-		ABF_MultiplexWrite(phfile, &fh, ABF_DATAFILE, pnBuffer, 0, i, &error);
-		delete[] pnBuffer;
+		ABF_MultiplexWrite(phfile, &fh, ABF_DATAFILE, buffer, 0, i, &error);
+		delete[] buffer;
 	}
 	else if (fh.nDataFormat == 1) {
-		float* buffer = new float[maxsamples * maxepi];
+		float* buffer = new float[maxsamples * maxepi * Channel];
 		float* res = buffer;
 		for (unsigned int i = 1; i <= maxepi; i++) {
-			ABF_MultiplexRead(hfile, &fh, i, buffer, &numsamples, &error);
+			ABF_MultiplexRead(hfile, &fh, i, res, &numsamples, &error);
 			res += numsamples;
 		}
 		int i = 0;
@@ -128,7 +129,7 @@ void ABF::save(std::vector<unsigned int>& start, std::vector<unsigned int>& end)
 			}
 			if (flag > i) {
 				for (int n = 0; n < Channel; n++) {
-					buffer[i+n] = buffer[flag+n];
+					buffer[i + n] = buffer[flag + n]; 
 				}
 			}
 			flag+=Channel;

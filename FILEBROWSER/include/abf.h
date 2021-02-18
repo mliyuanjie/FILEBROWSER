@@ -3,6 +3,7 @@
 
 #include "abffiles.h"
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <QtCore/qobject.h>
 #include <QtCharts/qlineseries.h>
@@ -15,7 +16,7 @@ public:
 	ABF(std::string f, QObject* parent = 0, unsigned int n = 1024 * 16);
 	int Channel = 0;
 	int Sweep = 1;
-	float Interval;
+	float Interval = 10;
 	std::vector<float> data;
 
 	void setSeries(QLineSeries* s);

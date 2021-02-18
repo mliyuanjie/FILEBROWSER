@@ -2,6 +2,8 @@
 
 ABF::ABF(std::string f, QObject* parent, unsigned int n) : QObject(parent) {
 	fn = f;
+	if (fn.substr(fn.length() - 3, 3) == "dat")
+		return;
 	error = 0;
 	hfile = 1;
 	maxsamples = n;
@@ -28,10 +30,23 @@ ABF::ABF(std::string f, QObject* parent, unsigned int n) : QObject(parent) {
 }
 
 ABF::~ABF(){
+	if (fn.substr(fn.length() - 3, 3) == "dat")
+		return;
 	FreeLibrary(module);
 }
 
 void ABF::readData(int c, int s, bool m) {
+	if (fn.substr(fn.length() - 3, 3) == "dat") {
+		std::ifstream file;
+		file.open(fn);
+		float d;
+		while (!file.eof()) {
+			file >> d;
+			data.push_back(d);
+		}
+		file.close();
+		return;
+	}
 	ABF_ReadOpen(fn.c_str(), &hfile, ABF_DATAFILE, &fh, &maxsamples, &maxepi, &error);
 	float* buffer;
 	if (fh.nOperationMode == 3 && m) {

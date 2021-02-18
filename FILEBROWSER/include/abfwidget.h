@@ -270,6 +270,7 @@ public:
         QObject::connect(pushButton_10, SIGNAL(clicked()), graphicsView, SLOT(changex2()));
         QObject::connect(pushButton_8, SIGNAL(clicked()), graphicsView, SLOT(changey1()));
         QObject::connect(pushButton_7, SIGNAL(clicked()), graphicsView, SLOT(changey2()));
+        QObject::connect(pushButton_6, SIGNAL(clicked()), graphicsView, SLOT(save()));
 
         QMetaObject::connectSlotsByName(ABFDockWidget);
     } // setupUi

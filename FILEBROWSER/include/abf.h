@@ -50,7 +50,7 @@ private:
 	unsigned long maxepi;
 	HINSTANCE module;
 	QLineSeries* series;
-	std::vector<std::vector<unsigned int>> thumb;
+	std::vector<std::vector<float>> thumb;
 
 	pABF_ReadOpen ABF_ReadOpen;
 	pABF_ReadChannel ABF_ReadChannel;

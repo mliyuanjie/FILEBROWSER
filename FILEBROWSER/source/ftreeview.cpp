@@ -19,7 +19,7 @@ void FTreeView::open() {
 void FTreeView::mouseDoubleClickEvent(QMouseEvent* event) {
 	QModelIndex index = currentIndex();
 	QFileInfo fileinfo = QFileInfo(model->filePath(index));
-	qDebug()<<fileinfo.fileName();
+	//qDebug()<<fileinfo.fileName();
 	if (fileinfo.suffix() == QString("abf")) {
 		QDockWidget* dockWidget = this->parent()->parent()->parent()->findChild<QDockWidget*>("fileWidget");
 		if (dockWidget->windowTitle() != "ABF") {
@@ -27,7 +27,14 @@ void FTreeView::mouseDoubleClickEvent(QMouseEvent* event) {
 			ui.setupUi(dockWidget);
 		}
 		dockWidget->findChild<QWidget*>("dockWidgetContents")->findChild<AChartView*>("graphicsView")->open(fileinfo.filePath());
-		
+	}
+	else if (fileinfo.suffix() == QString("dat")) {
+		QDockWidget* dockWidget = this->parent()->parent()->parent()->findChild<QDockWidget*>("fileWidget");
+		if (dockWidget->windowTitle() != "ABF") {
+			Ui::ABFDockWidget ui;
+			ui.setupUi(dockWidget);
+		}
+		dockWidget->findChild<QWidget*>("dockWidgetContents")->findChild<AChartView*>("graphicsView")->open(fileinfo.filePath());
 	}
 	return;
 }

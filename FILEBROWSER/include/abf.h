@@ -14,9 +14,9 @@ class ABF:public QObject {
 	Q_OBJECT 
 public:
 	ABF(std::string f, QObject* parent = 0, unsigned int n = 1024 * 16);
-	int Channel = 0;
-	int Sweep = 1;
-	float Interval = 10;
+	int Channel;
+	int Sweep;
+	float Interval;
 	std::vector<float> data;
 
 	void setSeries(QLineSeries* s);

@@ -2,8 +2,12 @@
 
 ABF::ABF(std::string f, QObject* parent, unsigned int n) : QObject(parent) {
 	fn = f;
-	if (fn.substr(fn.length() - 3, 3) == "dat")
+	if (fn.substr(fn.length() - 3, 3) == "dat") {
+		Channel = 0;
+		Sweep = 1;
+		Interval = 10;
 		return;
+	}
 	error = 0;
 	hfile = 1;
 	maxsamples = n;
@@ -30,19 +34,18 @@ ABF::ABF(std::string f, QObject* parent, unsigned int n) : QObject(parent) {
 }
 
 ABF::~ABF(){
-	if (fn.substr(fn.length() - 3, 3) == "dat")
-		return;
-	FreeLibrary(module);
+	if (fn.substr(fn.length() - 3, 3) == "abf")
+		FreeLibrary(module);
 }
 
 void ABF::readData(int c, int s, bool m) {
 	if (fn.substr(fn.length() - 3, 3) == "dat") {
 		std::ifstream file;
-		file.open(fn);
-		float d;
-		while (!file.eof()) {
-			file >> d;
-			data.push_back(d);
+		file.open(fn, std::ios::binary);
+		float buffer;
+		data.clear();
+		while (file.read(reinterpret_cast<char*>(&buffer), sizeof(float))) {
+			data.push_back(buffer);
 		}
 		file.close();
 		return;
@@ -57,7 +60,6 @@ void ABF::readData(int c, int s, bool m) {
 			ABF_ReadChannel(hfile, &fh, c, i, res, &numsamples, &error);
 			res += numsamples;
 		}
-		data.clear();
 		data = std::vector<float>(buffer, res);
 	}
 	else if (fh.nOperationMode == 5 && m) {

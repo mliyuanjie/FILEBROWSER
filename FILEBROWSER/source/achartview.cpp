@@ -5,6 +5,7 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QTableWidget>
 #include <QtCore/QtMath>
+#include <QtCore/qdebug.h>
 
 
 AChartView::AChartView(QWidget* parent) :
@@ -149,6 +150,7 @@ void AChartView::setmode(bool i) {
 void AChartView::update() {
     axisy->setRange(sty.back().first, sty.back().second);
     axisx->setRange(stx.back().first * interval / 1000, stx.back().second * interval / 1000);
+    qDebug() << sty.back().first;
     abf->draw(stx.back().first, stx.back().second);
 }
 
@@ -160,10 +162,11 @@ void AChartView::plot() {
     }
     abf->readData(channel, sweep, true);
     std::pair<float, float> t = abf->getLimit();
+    
     stx.clear();
     sty.clear();
     stx.push_back(QPair<int, int>(0, abf->data.size()));
-    sty.push_back(QPair<float, float>(t.first - 10, t.second + 10));
+    sty.push_back(QPair<float, float>(t.first - 100, t.second + 100));
     update();
 }
 
@@ -172,15 +175,14 @@ void AChartView::open(QString fn) {
         delete abf;
     }
     abf = new ABF(fn.toStdString());
-    for (int i = 1; i < abf->Channel; i++) {
+    for (int i = 1; i < abf->Channel; i++) 
         this->parent()->findChild<QComboBox*>("comboBox")->addItem(QString::number(i));
-    }
-    for (int i = 2; i <= abf->Sweep; i++) {
+    for (int i = 2; i <= abf->Sweep; i++) 
         this->parent()->findChild<QComboBox*>("comboBox_2")->addItem(QString::number(i));
-    }
     interval = abf->Interval;
     abf->setSeries(series);
     plot(); 
+    
 }
 
 void AChartView::save() {

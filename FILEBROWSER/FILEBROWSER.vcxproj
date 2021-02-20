@@ -181,6 +181,7 @@
   <ItemGroup>
     <ClCompile Include="Source\abf.cpp" />
     <ClCompile Include="Source\achartview.cpp" />
+    <ClCompile Include="source\algorithm.cpp" />
     <ClCompile Include="Source\ftreeview.cpp" />
     <ClCompile Include="Source\main.cpp" />
   </ItemGroup>
@@ -189,6 +190,7 @@
     <QtMoc Include="Include\abf.h" />
     <ClInclude Include="Include\abfwidget.h" />
     <QtMoc Include="Include\achartview.h" />
+    <ClInclude Include="include\algorithm.h" />
     <ClInclude Include="Include\mainWindow.h" />
   </ItemGroup>
   <ItemGroup>

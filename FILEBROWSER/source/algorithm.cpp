@@ -62,7 +62,7 @@ std::vector<float> gaussSmooth(std::vector<float>& values, float sigma, int samp
                 sampleCtr++;
             }
         }
-        float smoothed = sample / (float)sampleCtr;
+        float smoothed = std::abs(sample / (float)sampleCtr);
         std::cout << " S: " << sample << " C: " << sampleCtr << " V: " << values[i] << " SM: " << smoothed << std::endl;
         out.push_back(smoothed);
     }
@@ -95,3 +95,43 @@ std::vector<float> meanSmooth(std::vector<float>& data, int window) {
     return out;
 }
 
+
+std::vector<std::pair<int, int>> findPeak(std::vector<float>& data, int window, float threshold) {
+    std::vector<float> baseline(data.size());
+    std::vector<std::pair<int, int>> out;
+    int s = 0;
+    int e = window / 2;
+    bool flag = false;
+    for (int i = 0; i < e; i++) {
+        baseline[0] += data[i];
+    }
+    baseline[0] = baseline[0] / e;
+    int begin;
+    int finish;
+    for (int i = 1; i < data.size(); i++) {
+        if (e < window) {
+            baseline[i] = baseline[i - 1] * e + data[++e];
+            baseline[i] = baseline[i] / e;
+        }
+        else if (e < data.size()) {
+            baseline[i] = baseline[i - 1] * window + data[++e] - data[s++];
+            baseline[i] = baseline[i] / window;
+        }
+        else {
+            baseline[i] = baseline[i - 1] * (e - s) - data[s++];
+            baseline[i] = baseline[i] / (e - s);
+        }
+        if (!flag && data[i] < baseline[i] - threshold) {
+            begin = i;
+            while (data[begin] < baseline[begin] && begin > 0) 
+                begin--;
+            flag = true;
+        }
+        else if (flag && data[i] >= baseline[i]) {
+            finish = i;
+            flag = false;
+            out.push_back(std::pair<int, int>(begin, finish));
+        }
+    }
+    return out;
+}

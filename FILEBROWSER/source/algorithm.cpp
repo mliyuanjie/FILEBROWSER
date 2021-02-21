@@ -110,11 +110,11 @@ std::vector<std::pair<int, int>> findPeak(std::vector<float>& data, int window, 
     int finish;
     for (int i = 1; i < data.size(); i++) {
         if (e < window) {
-            baseline[i] = baseline[i - 1] * e + data[++e];
+            baseline[i] = baseline[i - 1] * e + data[e++];
             baseline[i] = baseline[i] / e;
         }
         else if (e < data.size()) {
-            baseline[i] = baseline[i - 1] * window + data[++e] - data[s++];
+            baseline[i] = baseline[i - 1] * window + data[e++] - data[s++];
             baseline[i] = baseline[i] / window;
         }
         else {

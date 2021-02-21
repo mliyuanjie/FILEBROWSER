@@ -35,11 +35,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -80,6 +80,9 @@
     </QtUic>
     <Link>
       <AddModuleNamesToAssembly>Qt</AddModuleNamesToAssembly>
+      <AdditionalDependencies>B:/QT/5.9.9/msvc2015/lib/Qt5Chartsd.lib;$(Qt_LIBS_);%(AdditionalDependencies);</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -179,13 +182,14 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\test.cpp" />
     <ClCompile Include="Source\abf.cpp" />
     <ClCompile Include="Source\achartview.cpp" />
     <ClCompile Include="source\algorithm.cpp" />
     <ClCompile Include="Source\ftreeview.cpp" />
-    <ClCompile Include="Source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\tools.h" />
     <QtMoc Include="Include\ftreeview.h" />
     <QtMoc Include="Include\abf.h" />
     <ClInclude Include="Include\abfwidget.h" />

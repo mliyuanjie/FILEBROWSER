@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1118</width>
+    <width>1072</width>
     <height>573</height>
    </rect>
   </property>
@@ -18,7 +18,50 @@
   </property>
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0" colspan="2">
+    <item row="1" column="5">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Back</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>Home</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox">
+        <item>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_2">
+        <item>
+         <property name="text">
+          <string>1</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton">
+        <property name="text">
+         <string>Select Data Mode</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="2" column="0" colspan="2">
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
        <number>0</number>
@@ -81,150 +124,7 @@
       </item>
      </layout>
     </item>
-    <item row="1" column="5">
-     <widget class="AChartView" name="graphicsView">
-      <property name="cursor" stdset="0">
-       <cursorShape>CrossCursor</cursorShape>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="5">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>Back</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="text">
-         <string>Home</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="comboBox">
-        <item>
-         <property name="text">
-          <string>0</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="comboBox_2">
-        <item>
-         <property name="text">
-          <string>1</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="radioButton">
-        <property name="text">
-         <string>Select Data Mode</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="1" column="6">
-     <widget class="QTableWidget" name="tableWidget">
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="lineWidth">
-       <number>1</number>
-      </property>
-      <property name="midLineWidth">
-       <number>0</number>
-      </property>
-      <property name="gridStyle">
-       <enum>Qt::SolidLine</enum>
-      </property>
-      <property name="rowCount">
-       <number>0</number>
-      </property>
-      <property name="columnCount">
-       <number>2</number>
-      </property>
-      <attribute name="horizontalHeaderVisible">
-       <bool>false</bool>
-      </attribute>
-      <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>75</number>
-      </attribute>
-      <attribute name="horizontalHeaderHighlightSections">
-       <bool>true</bool>
-      </attribute>
-      <attribute name="horizontalHeaderMinimumSectionSize">
-       <number>10</number>
-      </attribute>
-      <attribute name="verticalHeaderVisible">
-       <bool>false</bool>
-      </attribute>
-      <attribute name="verticalHeaderDefaultSectionSize">
-       <number>30</number>
-      </attribute>
-      <column/>
-      <column/>
-     </widget>
-    </item>
-    <item row="0" column="6">
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QPushButton" name="pushButton_3">
-        <property name="minimumSize">
-         <size>
-          <width>70</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>70</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>add</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_5">
-        <property name="minimumSize">
-         <size>
-          <width>70</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>70</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>del</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="2" column="5">
+    <item row="3" column="5">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">
        <number>6</number>
@@ -398,47 +298,237 @@
       </item>
      </layout>
     </item>
-    <item row="2" column="6">
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
-      <item>
-       <widget class="QPushButton" name="pushButton_4">
-        <property name="minimumSize">
-         <size>
-          <width>70</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>70</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>show</string>
+    <item row="2" column="5">
+     <widget class="AChartView" name="graphicsView">
+      <property name="cursor" stdset="0">
+       <cursorShape>CrossCursor</cursorShape>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="6" rowspan="3">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>160</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Tab 1</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QPushButton" name="pushButton_3">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>add</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_5">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>del</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tableWidget">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>150</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="lineWidth">
+           <number>1</number>
+          </property>
+          <property name="midLineWidth">
+           <number>0</number>
+          </property>
+          <property name="gridStyle">
+           <enum>Qt::SolidLine</enum>
+          </property>
+          <property name="rowCount">
+           <number>0</number>
+          </property>
+          <property name="columnCount">
+           <number>2</number>
+          </property>
+          <attribute name="horizontalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>75</number>
+          </attribute>
+          <attribute name="horizontalHeaderHighlightSections">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>10</number>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderDefaultSectionSize">
+           <number>30</number>
+          </attribute>
+          <column/>
+          <column/>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QPushButton" name="pushButton_4">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>show</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_6">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>save</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Tab 2</string>
+       </attribute>
+       <widget class="QLineEdit" name="lineEdit">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>10</y>
+          <width>71</width>
+          <height>20</height>
+         </rect>
         </property>
        </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_6">
-        <property name="minimumSize">
-         <size>
-          <width>70</width>
-          <height>0</height>
-         </size>
+       <widget class="QLabel" name="label_7">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>70</width>
-          <height>16777215</height>
-         </size>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
         </property>
         <property name="text">
-         <string>save</string>
+         <string>sigma:</string>
         </property>
        </widget>
-      </item>
-     </layout>
+       <widget class="QProgressBar" name="progressBar">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>40</y>
+          <width>118</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="value">
+         <number>24</number>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_15">
+        <property name="geometry">
+         <rect>
+          <x>14</x>
+          <y>80</y>
+          <width>121</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>ok</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -474,18 +564,34 @@
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton</sender>
+   <sender>pushButton_7</sender>
    <signal>clicked()</signal>
    <receiver>graphicsView</receiver>
-   <slot>back()</slot>
+   <slot>changey2()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>126</x>
-     <y>54</y>
+     <x>23</x>
+     <y>379</y>
     </hint>
     <hint type="destinationlabel">
-     <x>146</x>
-     <y>114</y>
+     <x>57</x>
+     <y>379</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_8</sender>
+   <signal>clicked()</signal>
+   <receiver>graphicsView</receiver>
+   <slot>changey1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>25</x>
+     <y>213</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>69</x>
+     <y>220</y>
     </hint>
    </hints>
   </connection>
@@ -512,7 +618,7 @@
    <slot>setchannel(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>583</x>
+     <x>549</x>
      <y>52</y>
     </hint>
     <hint type="destinationlabel">
@@ -528,7 +634,7 @@
    <slot>setsweep(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>767</x>
+     <x>722</x>
      <y>52</y>
     </hint>
     <hint type="destinationlabel">
@@ -544,12 +650,28 @@
    <slot>setmode(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>951</x>
+     <x>895</x>
      <y>51</y>
     </hint>
     <hint type="destinationlabel">
      <x>538</x>
      <y>123</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>graphicsView</receiver>
+   <slot>back()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>126</x>
+     <y>54</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>146</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -564,7 +686,7 @@
      <y>448</y>
     </hint>
     <hint type="destinationlabel">
-     <x>261</x>
+     <x>247</x>
      <y>562</y>
     </hint>
    </hints>
@@ -580,40 +702,8 @@
      <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>576</x>
+     <x>541</x>
      <y>562</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_3</sender>
-   <signal>clicked()</signal>
-   <receiver>graphicsView</receiver>
-   <slot>additem()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1029</x>
-     <y>54</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>595</x>
-     <y>232</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_5</sender>
-   <signal>clicked()</signal>
-   <receiver>graphicsView</receiver>
-   <slot>delitem()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1105</x>
-     <y>54</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>649</x>
-     <y>261</y>
     </hint>
    </hints>
   </connection>
@@ -624,8 +714,8 @@
    <slot>changex1()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>335</x>
-     <y>544</y>
+     <x>325</x>
+     <y>562</y>
     </hint>
     <hint type="destinationlabel">
      <x>336</x>
@@ -640,8 +730,8 @@
    <slot>changex2()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>654</x>
-     <y>549</y>
+     <x>619</x>
+     <y>562</y>
     </hint>
     <hint type="destinationlabel">
      <x>652</x>
@@ -650,34 +740,34 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_8</sender>
+   <sender>pushButton_3</sender>
    <signal>clicked()</signal>
    <receiver>graphicsView</receiver>
-   <slot>changey1()</slot>
+   <slot>additem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>25</x>
-     <y>213</y>
+     <x>976</x>
+     <y>85</y>
     </hint>
     <hint type="destinationlabel">
-     <x>69</x>
-     <y>220</y>
+     <x>595</x>
+     <y>232</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_7</sender>
+   <sender>pushButton_5</sender>
    <signal>clicked()</signal>
    <receiver>graphicsView</receiver>
-   <slot>changey2()</slot>
+   <slot>delitem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>23</x>
-     <y>379</y>
+     <x>1044</x>
+     <y>85</y>
     </hint>
     <hint type="destinationlabel">
-     <x>57</x>
-     <y>379</y>
+     <x>649</x>
+     <y>261</y>
     </hint>
    </hints>
   </connection>
@@ -688,8 +778,8 @@
    <slot>save()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1061</x>
-     <y>541</y>
+     <x>1044</x>
+     <y>549</y>
     </hint>
     <hint type="destinationlabel">
      <x>866</x>

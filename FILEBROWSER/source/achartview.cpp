@@ -129,7 +129,7 @@ void AChartView::changey2() {
 }
 
 void AChartView::additem() {
-    QTableWidget* pt = this->parent()->findChild<QTableWidget*>("tableWidget");
+    QTableWidget* pt = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QTableWidget*>("tableWidget");
     int index = pt->rowCount();
     pt->insertRow(index);
     pt->setItem(index, 0, new QTableWidgetItem(QString::number(start)));
@@ -138,7 +138,7 @@ void AChartView::additem() {
 }
 
 void AChartView::delitem() {
-    QTableWidget* pt = this->parent()->findChild<QTableWidget*>("tableWidget");
+    QTableWidget* pt = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QTableWidget*>("tableWidget");
     int index = pt->rowCount();
     pt->removeRow(index-1);
 }
@@ -186,7 +186,7 @@ void AChartView::open(QString fn) {
 }
 
 void AChartView::save() {
-    QTableWidget* pt = this->parent()->findChild<QTableWidget*>("tableWidget");
+    QTableWidget* pt = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QTableWidget*>("tableWidget");
     std::vector<unsigned int> start;
     std::vector<unsigned int> end;
     for (int i = 0; i < pt->rowCount(); i++) {

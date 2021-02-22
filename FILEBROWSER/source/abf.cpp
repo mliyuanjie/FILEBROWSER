@@ -5,7 +5,7 @@ ABF::ABF(std::string f, QObject* parent, unsigned int n) : QObject(parent) {
 	if (fn.substr(fn.length() - 3, 3) == "dat") {
 		Channel = 0;
 		Sweep = 1;
-		Interval = 10;
+		Interval = 2;
 		return;
 	}
 	error = 0;
@@ -42,12 +42,15 @@ void ABF::readData(int c, int s, bool m) {
 	if (fn.substr(fn.length() - 3, 3) == "dat") {
 		std::ifstream file;
 		file.open(fn, std::ios::binary);
-		float buffer;
-		data.clear();
-		while (file.read(reinterpret_cast<char*>(&buffer), sizeof(float))) {
-			data.push_back(buffer);
-		}
+		file.seekg(0, file.end);
+		int size = file.tellg();
+		file.seekg(0, file.beg);
+		
+		float* buffer = new float[size / sizeof(float)];
+		(file.read(reinterpret_cast<char*>(buffer), size));
 		file.close();
+		data = std::vector<float>(buffer, buffer + size / sizeof(float));
+		delete[] buffer;
 		return;
 	}
 	ABF_ReadOpen(fn.c_str(), &hfile, ABF_DATAFILE, &fh, &maxsamples, &maxepi, &error);
@@ -87,6 +90,35 @@ void ABF::readData(int c, int s, bool m) {
 }
 
 void ABF::save(std::vector<unsigned int>& start, std::vector<unsigned int>& end) {
+	if (fn.substr(fn.length() - 3, 3) == "dat") {
+		std::string fnout = "_cut.dat";
+		fnout.insert(0, fn, 0, fn.size() - 4);
+		std::ofstream file;
+		file.open(fnout, std::ios::binary);
+		int size = data.size();
+		float* buffer = new float[size];
+		int j = 0;
+		int i = 0;
+		int flag = start[0];
+		while (i < size) {
+			if (flag >= end[j]) {
+				j++;
+				if (j >= start.size()) {
+					break;
+				}
+				flag = start[j];
+			}
+			if (flag > i) {
+				buffer[i] = data[flag];
+			}
+			flag++;
+			i++;
+		}
+		file.write(reinterpret_cast<char*>(buffer), i * sizeof(float));
+		file.close();
+		delete[] buffer;
+		return;
+	}
 	if (fh.nOperationMode != 3) {
 		return;
 	}

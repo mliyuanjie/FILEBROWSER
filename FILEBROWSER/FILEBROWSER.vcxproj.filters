@@ -50,6 +50,9 @@
     <ClCompile Include="include\test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\abf_f.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\mainWindow.h">
@@ -62,6 +65,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\tools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\abf_f.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

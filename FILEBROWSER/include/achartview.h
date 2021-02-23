@@ -4,6 +4,7 @@
 #include <QtCharts/QChartView>
 #include <QtWidgets/QRubberBand>
 #include <QtCharts/qsplineseries.h>
+#include <QtCharts/qscatterseries.h>
 #include <QtCharts/qvalueaxis.h>
 #include "abf.h"
 
@@ -45,6 +46,8 @@ protected:
 
 private:
     QtCharts::QLineSeries* series;
+    QtCharts::QLineSeries* series_f;
+    QtCharts::QScatterSeries* series_s;
     QtCharts::QChart* charts;
     QtCharts::QValueAxis* axisx;
     QtCharts::QValueAxis* axisy;
@@ -55,6 +58,7 @@ private:
     QString filename;
     float interval;
     ABF* abf = NULL;
+    ABF_F* abf_f = NULL;
     std::vector<QPair<int, int>> stx;
     std::vector<QPair<float, float>> sty;
     bool mode = false;

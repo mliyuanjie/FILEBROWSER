@@ -152,6 +152,7 @@ void AChartView::update() {
     axisx->setRange(stx.back().first * interval / 1000, stx.back().second * interval / 1000);
     qDebug() << sty.back().first;
     abf->draw(stx.back().first, stx.back().second);
+    if ()
 }
 
 void AChartView::plot() {

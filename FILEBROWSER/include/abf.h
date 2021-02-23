@@ -7,7 +7,7 @@
 #include <vector>
 #include <QtCore/qobject.h>
 #include <QtCharts/qlineseries.h>
-#include <gsl/gsl_vector.h>
+
 
 QT_CHARTS_USE_NAMESPACE
 

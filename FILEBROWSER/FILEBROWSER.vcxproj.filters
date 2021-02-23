@@ -50,6 +50,9 @@
     <ClCompile Include="include\test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\abf_f.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\mainWindow.h">
@@ -73,6 +76,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Include\abf.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="include\abf_f.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

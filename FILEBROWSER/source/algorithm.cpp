@@ -5,6 +5,8 @@
 float gauss(float sigma, float x) {
     float expVal = -1 * (pow(x, 2) / pow(2 * sigma, 2));
     float divider = sqrt(2 * M_PI * pow(sigma, 2));
+    int i;
+
     return (1 / divider) * exp(expVal);
 }
 

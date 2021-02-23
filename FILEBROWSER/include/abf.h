@@ -8,6 +8,7 @@
 #include <QtCore/qobject.h>
 #include <QtCharts/qlineseries.h>
 
+
 QT_CHARTS_USE_NAMESPACE
 
 class ABF:public QObject {
@@ -50,7 +51,7 @@ private:
 	unsigned long maxepi;
 	HINSTANCE module;
 	QLineSeries* series;
-	std::vector<std::vector<float>> thumb;
+	bool filetype;
 
 	pABF_ReadOpen ABF_ReadOpen;
 	pABF_ReadChannel ABF_ReadChannel;

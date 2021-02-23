@@ -6,6 +6,7 @@ ABF::ABF(std::string f, QObject* parent, unsigned int n) : QObject(parent) {
 		Channel = 0;
 		Sweep = 1;
 		Interval = 2;
+		filetype = false;
 		return;
 	}
 	error = 0;
@@ -30,6 +31,7 @@ ABF::ABF(std::string f, QObject* parent, unsigned int n) : QObject(parent) {
 		Sweep = fh.lActualEpisodes;
 	}
 	Interval = fh.fADCSequenceInterval;
+	filetype = true;
 	ABF_Close(hfile, &error);
 }
 
@@ -39,13 +41,12 @@ ABF::~ABF(){
 }
 
 void ABF::readData(int c, int s, bool m) {
-	if (fn.substr(fn.length() - 3, 3) == "dat") {
+	if (!filetype) {
 		std::ifstream file;
 		file.open(fn, std::ios::binary);
 		file.seekg(0, file.end);
 		int size = file.tellg();
 		file.seekg(0, file.beg);
-		
 		float* buffer = new float[size / sizeof(float)];
 		(file.read(reinterpret_cast<char*>(buffer), size));
 		file.close();
@@ -90,7 +91,7 @@ void ABF::readData(int c, int s, bool m) {
 }
 
 void ABF::save(std::vector<unsigned int>& start, std::vector<unsigned int>& end) {
-	if (fn.substr(fn.length() - 3, 3) == "dat") {
+	if (!filetype) {
 		std::string fnout = "_cut.dat";
 		fnout.insert(0, fn, 0, fn.size() - 4);
 		std::ofstream file;

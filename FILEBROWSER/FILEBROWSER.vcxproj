@@ -70,7 +70,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories);$(ProjectDir)/include;C:/vcpkg/packages/gsl_x64-windows/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories);$(ProjectDir)/include;B:/vcpkg/packages/gsl_x64-windows/include</AdditionalIncludeDirectories>
     </ClCompile>
     <QtUic>
       <QtUicDir>$(ProjectDir)/include</QtUicDir>
@@ -190,7 +190,7 @@
     <ClCompile Include="Source\ftreeview.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\abf_f.h" />
+    <QtMoc Include="include\abf_f.h" />
     <ClInclude Include="include\tools.h" />
     <QtMoc Include="Include\ftreeview.h" />
     <QtMoc Include="Include\abf.h" />

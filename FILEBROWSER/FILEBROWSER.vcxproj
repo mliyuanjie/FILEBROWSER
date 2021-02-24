@@ -70,7 +70,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories);$(ProjectDir)/include;B:/vcpkg/packages/gsl_x64-windows/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories);$(ProjectDir)/include;C:/vcpkg/packages/gsl_x64-windows/include</AdditionalIncludeDirectories>
     </ClCompile>
     <QtUic>
       <QtUicDir>$(ProjectDir)/include</QtUicDir>
@@ -80,7 +80,7 @@
     </QtUic>
     <Link>
       <AddModuleNamesToAssembly>Qt</AddModuleNamesToAssembly>
-      <AdditionalDependencies>B:/QT/5.9.9/msvc2015/lib/Qt5Chartsd.lib;$(Qt_LIBS_);%(AdditionalDependencies);</AdditionalDependencies>
+      <AdditionalDependencies>$(Qt_LIBS_);%(AdditionalDependencies);</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -182,12 +182,12 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\test.cpp" />
     <ClCompile Include="Source\abf.cpp" />
     <ClCompile Include="source\abf_f.cpp" />
     <ClCompile Include="Source\achartview.cpp" />
     <ClCompile Include="source\algorithm.cpp" />
     <ClCompile Include="Source\ftreeview.cpp" />
+    <ClCompile Include="source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\abf_f.h" />

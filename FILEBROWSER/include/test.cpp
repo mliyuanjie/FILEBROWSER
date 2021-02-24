@@ -15,7 +15,7 @@ void show(std::vector<float>& data, std::vector<float>& filter, std::vector<std:
 	int s = 0;
 	int e = data.size();
 	int n = e - s;
-	int skip = (n / 200000 == 0) ? 1 : n / 200000;
+	int skip = (n / 2000 == 0) ? 1 : n / 2000;
 	QList<QPointF> interVariables;
 	QList<QPointF> interFilter;
 	int i = s;
@@ -43,11 +43,11 @@ void show(std::vector<float>& data, std::vector<float>& filter, std::vector<std:
 			int max = j;
 			int min = j;
 			for (; j < i + skip && j < e; j++) {
-				max = (data[max] > data[j]) ? max : j;
-				min = (data[min] < data[j]) ? min : j;
+				max = (filter[max] > filter[j]) ? max : j;
+				min = (filter[min] < filter[j]) ? min : j;
 			}
-			interFilter.append(QPointF(min * 10 / 1000, data[min]));
-			interFilter.append(QPointF(max * 10 / 1000, data[max]));
+			interFilter.append(QPointF(min * 10 / 1000, filter[min]));
+			interFilter.append(QPointF(max * 10 / 1000, filter[max]));
 		}
 		QLineSeries* series = new QLineSeries();
 		series->append(interFilter);
@@ -76,11 +76,11 @@ int main(int argc, char* argv[]) {
 	QMainWindow window;
 	window.resize(500, 500);
 	window.show();
-	ABF* abf = new ABF("D:/ctest/abf/test.abf");
+	ABF* abf = new ABF("U:/test/test8.dat");
 	abf->readData();
-	//std::vector<float> filter = gaussSmooth(abf->data, 0.5, abf->data.size());
-	std::vector<std::pair<int, int>> sig = findPeak(abf->data, 20000, 5);
-	show(abf->data, std::vector<float>(), sig, window);
+	std::vector<float> filter = meanSmooth(abf->data, 10);
+	std::vector<std::pair<int, int>> sig = findPeak(filter, 2000, 500);
+	show(abf->data, filter, sig, window);
 	
 	return app.exec();
 }

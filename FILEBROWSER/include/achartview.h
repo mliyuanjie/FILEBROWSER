@@ -7,6 +7,7 @@
 #include <QtCharts/qscatterseries.h>
 #include <QtCharts/qvalueaxis.h>
 #include "abf.h"
+#include "abf_f.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -34,10 +35,12 @@ public slots:
     void additem();
     void delitem();
     void save();
+    void startprocess();
 
 signals:
     void setstart(double num);
     void setend(double num);
+    void redraw(int s, int e);
 
 protected:
     void mousePressEvent(QMouseEvent* event);

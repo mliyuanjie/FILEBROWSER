@@ -4,8 +4,10 @@
 #include <QtWidgets/qmessagebox.h>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QTableWidget>
+#include <QtWidgets/QLineEdit>
 #include <QtCore/QtMath>
 #include <QtCore/qdebug.h>
+#include <QtCore/qthread.h>
 
 
 AChartView::AChartView(QWidget* parent) :
@@ -14,9 +16,13 @@ AChartView::AChartView(QWidget* parent) :
     axisx = new QtCharts::QValueAxis();
     axisy = new QtCharts::QValueAxis();
     series = new QtCharts::QLineSeries();
+    series_f = new QLineSeries();
+    series_s = new QScatterSeries();
     series->setPen(QPen(Qt::darkBlue, 1)); 
     //series->setUseOpenGL(true);
     charts = new QtCharts::QChart();
+    charts->addSeries(series_f);
+    charts->addSeries(series_s);
     charts->addSeries(series);
     charts->setAxisX(axisx, series);
     charts->setAxisY(axisy, series);
@@ -152,7 +158,7 @@ void AChartView::update() {
     axisx->setRange(stx.back().first * interval / 1000, stx.back().second * interval / 1000);
     qDebug() << sty.back().first;
     abf->draw(stx.back().first, stx.back().second);
-    if ()
+    emit redraw(stx.back().first, stx.back().second);
 }
 
 void AChartView::plot() {
@@ -196,4 +202,15 @@ void AChartView::save() {
     }
     abf->save(start, end);
     pt->clear();
+}
+
+void AChartView::startprocess() {
+    QLineEdit* pt_sigma = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QWidget*>("tab_2")->findChild<QLineEdit*>("lineEdit");
+    QLineEdit* pt_freq = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QWidget*>("tab_2")->findChild<QLineEdit*>("lineEdit_2");
+    QThread* thread = new QThread;
+    abf_f = new ABF_F(abf, series_f, series_s, pt_sigma->text().toFloat(), pt_freq->text().toFloat()); 
+    abf_f->moveToThread(thread);
+    connect(thread, SIGNAL(started()), abf_f, SLOT(process()));
+    connect(this, SIGNAL(redraw(int, int)), abf_f, SLOT(draw(int, int)));
+    thread->start();
 }

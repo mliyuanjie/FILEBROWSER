@@ -47,10 +47,10 @@
     <ClCompile Include="source\algorithm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\test.cpp">
+    <ClCompile Include="source\abf_f.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\abf_f.cpp">
+    <ClCompile Include="source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

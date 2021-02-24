@@ -204,7 +204,6 @@ void ABF::draw(int s, int e) {
 	int n = e-s;
 	int skip = (n / 3000 == 0) ? 1 : n / 3000;
 	QVector<QPointF> interVariables;
-	int valmax;
 	int i = s;
 	for (; i < e; i += skip) {
 		int j = i;

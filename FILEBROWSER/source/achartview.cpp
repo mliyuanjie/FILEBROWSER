@@ -54,7 +54,7 @@ void AChartView::mousePressEvent(QMouseEvent* event) {
         emit setstart(start);
     }
     else {
-        if (pf.x() * 1000 / interval < stx.back().first || pf.y() > sty.back().second)
+        if (pf.x() < stx.back().first || pf.y() > sty.back().second)
             return;
     }
     if (!rubberBand)
@@ -79,19 +79,19 @@ void AChartView::mouseReleaseEvent(QMouseEvent* event) {
         emit setend(end);
     }
     else {
-        if (pf.x() * 1000 / interval < stx.back().second && pf.y() > sty.back().first) {
-            QPair<int, int> x;
+        if (pf.x() < stx.back().second && pf.y() > sty.back().first) {
+            QPair<float, float> x;
             QPair<float, float> y;
-            x.second = pf.x() * 1000 / interval;
+            x.second = pf.x();
             y.first = pf.y();
             pf = mapToScene(rubberBand->pos());
             pf = charts->mapFromScene(pf);
             pf = charts->mapToValue(pf);
-            x.first = pf.x() * 1000 / interval;
+            x.first = pf.x();
             y.second = pf.y();
             stx.push_back(x);
             sty.push_back(y);
-            update();
+            emit getdata(stx.back().first, stx.back().second);
         }
     }
     delete rubberBand;
@@ -103,14 +103,14 @@ void AChartView::back() {
         return;
     stx.pop_back();
     sty.pop_back();
-    update();
+    getdata(stx.back().first, stx.back().second);
 }
 
 void AChartView::changex1() {
     float range = stx.back().second - stx.back().first;
     stx.back().first = (stx.back().first - 0.2 * range <= 0) ? 0 : stx.back().first - 0.2 * range;
-    stx.back().second = (stx.back().second + 0.2 * range >= abf->data.size()) ? abf->data.size() : stx.back().second + 0.2 * range;
-    update();
+    stx.back().second = (stx.back().second + 0.2 * range >= stx.front().second) ? stx.front().second : stx.back().second + 0.2 * range;
+    getdata(stx.back().first, stx.back().second);
 }
 
 void AChartView::changex2() {
@@ -153,28 +153,32 @@ void AChartView::setmode(bool i) {
     mode = i;
 }
 
-void AChartView::update() {
+void AChartView::update_d(QVector<QPointF> data) {
     axisy->setRange(sty.back().first, sty.back().second);
     axisx->setRange(stx.back().first * interval / 1000, stx.back().second * interval / 1000);
-    qDebug() << sty.back().first;
-    abf->draw(stx.back().first, stx.back().second);
-    emit redraw(stx.back().first, stx.back().second);
+    series->replace(data);
+    return;
 }
 
-void AChartView::plot() {
+void AChartView::update_f(QVector<QPointF> data) {
+    series_f->replace(data);
+    return;
+}
+
+void AChartView::update_s(QVector<QPointF> data) {
+    series_s->replace(data);
+    return;
+}
+
+void AChartView::initui(float x1, float x2, float y1, float y2) {
     axisx->setTitleText(QString("ms"));
     axisy->setTitleText(unit);
-    if (abf == NULL) {
-        return;
-    }
-    abf->readData(channel, sweep, true);
-    std::pair<float, float> t = abf->getLimit();
-    
-    stx.clear();
-    sty.clear();
-    stx.push_back(QPair<int, int>(0, abf->data.size()));
-    sty.push_back(QPair<float, float>(t.first - 100, t.second + 100));
-    update();
+    stx.push_back(QPair<float, float>(x1, x2));
+    sty.push_back(QPair<float, float>(y1, y2));
+    axisx->setRange(x1, x2);
+    axisy->setRange(y1, y2);
+    emit getdata(x1, x2);
+
 }
 
 void AChartView::open(QString fn) {
@@ -182,14 +186,18 @@ void AChartView::open(QString fn) {
         delete abf;
     }
     abf = new ABF(fn.toStdString());
-    for (int i = 1; i < abf->Channel; i++) 
+    for (int i = 1; i < abf->Channel; i++)
         this->parent()->findChild<QComboBox*>("comboBox")->addItem(QString::number(i));
-    for (int i = 2; i <= abf->Sweep; i++) 
+    for (int i = 2; i <= abf->Sweep; i++)
         this->parent()->findChild<QComboBox*>("comboBox_2")->addItem(QString::number(i));
-    interval = abf->Interval;
-    abf->setSeries(series);
-    plot(); 
-    
+    QThread* thread = new QThread;
+    abf->moveToThread(thread);
+    connect(this, SIGNAL(loaddata(int, int, bool)), abf, SLOT(readData(int, int, bool)));
+    connect(this, SIGNAL(getdata(float, float)), abf, SLOT(draw(float, float)));
+    connect(abf, SIGNAL(sendAxis(float, float, float, float)), this, SLOT(initui(float, float, float, float)));
+    connect(abf, SIGNAL(sendData(QVector<QPointF>)), this, SLOT(update_d(QVector<QPointF>)));
+    thread->start();
+    emit loaddata(0, 1, true);
 }
 
 void AChartView::save() {
@@ -205,12 +213,16 @@ void AChartView::save() {
 }
 
 void AChartView::startprocess() {
+    /*
     QLineEdit* pt_sigma = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QWidget*>("tab_2")->findChild<QLineEdit*>("lineEdit");
     QLineEdit* pt_freq = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QWidget*>("tab_2")->findChild<QLineEdit*>("lineEdit_2");
+    
     QThread* thread = new QThread;
-    abf_f = new ABF_F(abf, series_f, series_s, pt_sigma->text().toFloat(), pt_freq->text().toFloat()); 
+    abf_f = new ABF_F(abf, pt_sigma->text().toFloat(), pt_freq->text().toFloat()); 
     abf_f->moveToThread(thread);
+    
     connect(thread, SIGNAL(started()), abf_f, SLOT(process()));
     connect(this, SIGNAL(redraw(int, int)), abf_f, SLOT(draw(int, int)));
     thread->start();
+    */
 }

@@ -47,9 +47,6 @@
     <ClCompile Include="source\algorithm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\abf_f.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -76,9 +73,6 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Include\abf.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="include\abf_f.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

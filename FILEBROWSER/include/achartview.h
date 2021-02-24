@@ -30,17 +30,21 @@ public slots:
     //void home();
     void setchannel(QString s);
     void setsweep(QString s);
-    void plot();
+    void initui(float x1, float x2, float y1, float y2);
     void setmode(bool);
     void additem();
     void delitem();
     void save();
     void startprocess();
+    void update_d(QVector<QPointF>);
+    void update_f(QVector<QPointF>);
+    void update_s(QVector<QPointF>);
 
 signals:
     void setstart(double num);
     void setend(double num);
-    void redraw(int s, int e);
+    void getdata(float s, float e);
+    void loaddata(int c, int s, bool m);
 
 protected:
     void mousePressEvent(QMouseEvent* event);
@@ -62,11 +66,11 @@ private:
     float interval;
     ABF* abf = NULL;
     ABF_F* abf_f = NULL;
-    std::vector<QPair<int, int>> stx;
+    std::vector<QPair<float, float>> stx;
     std::vector<QPair<float, float>> sty;
     bool mode = false;
     double start = 0;
     double end = 0;
-    void update();
+    
 };
 #endif //ACHARTVIEW_H 

@@ -183,14 +183,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\abf.cpp" />
-    <ClCompile Include="source\abf_f.cpp" />
     <ClCompile Include="Source\achartview.cpp" />
     <ClCompile Include="source\algorithm.cpp" />
     <ClCompile Include="Source\ftreeview.cpp" />
     <ClCompile Include="source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="include\abf_f.h" />
     <ClInclude Include="include\tools.h" />
     <QtMoc Include="Include\ftreeview.h" />
     <QtMoc Include="Include\abf.h" />

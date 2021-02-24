@@ -52,6 +52,15 @@ void ABF::readData(int c, int s, bool m) {
 		file.close();
 		data = std::vector<float>(buffer, buffer + size / sizeof(float));
 		delete[] buffer;
+		float xmin = 0;
+		float xmax = data.size() * Interval / 1000;
+		float ymin = 0;
+		float ymax = 0;
+		for (int i = 0; i < data.size(); i++) {
+			ymin = (ymin < data[i]) ? ymin : data[i];
+			ymax = (ymax > data[i]) ? ymax : data[i];
+		}
+		emit sendAxis(xmin, xmax, ymin, ymax);
 		return;
 	}
 	ABF_ReadOpen(fn.c_str(), &hfile, ABF_DATAFILE, &fh, &maxsamples, &maxepi, &error);
@@ -87,6 +96,15 @@ void ABF::readData(int c, int s, bool m) {
 	}
 	ABF_Close(hfile, &error);
 	delete[] buffer;
+	float xmin = 0;
+	float xmax = data.size() * Interval / 1000;
+	float ymin = 0;
+	float ymax = 0;
+	for (int i = 0; i < data.size(); i++) {
+		ymin = (ymin < data[i]) ? ymin : data[i];
+		ymax = (ymax > data[i]) ? ymax : data[i];
+	}
+	emit sendAxis(xmin, xmax, ymin, ymax);
 	return;
 }
 
@@ -194,13 +212,9 @@ void ABF::save(std::vector<unsigned int>& start, std::vector<unsigned int>& end)
 	return;
 }
 
-void ABF::setSeries(QLineSeries* s) {
-	series = s;
-}
-
-void ABF::draw(int s, int e) {
-	if (series == NULL) 
-		return;
+void ABF::draw(float xmin, float xmax) {
+	int s = xmin * 1000 / Interval;
+	int e = xmax * 1000 / Interval;
 	int n = e-s;
 	int skip = (n / 3000 == 0) ? 1 : n / 3000;
 	QVector<QPointF> interVariables;
@@ -216,20 +230,8 @@ void ABF::draw(int s, int e) {
 		interVariables.append(QPointF(min * Interval / 1000, data[min]));
 		interVariables.append(QPointF(max * Interval / 1000, data[max]));
 	}
-	series->replace(interVariables);
+	emit sendData(interVariables);
+	return;
 }
 
-std::pair<float, float> ABF::getLimit() {
-	float min = 0;
-	float max = data[0];
-	for (int i = 1; i < data.size(); i++) {
-		if (data[i] < min) {
-			min = data[i];
-		}
-		else if (data[i] > max) {
-			max = data[i];
-		}
-	}
-	return std::pair<float, float>(min, max);
-}
 	

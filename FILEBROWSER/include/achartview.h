@@ -45,6 +45,7 @@ signals:
     void setend(double num);
     void getdata(float s, float e);
     void loaddata(int c, int s, bool m);
+    void loadprocess(float sigma, float freq);
 
 protected:
     void mousePressEvent(QMouseEvent* event);
@@ -63,7 +64,6 @@ private:
     int sweep = 1;
     QString unit;
     QString filename;
-    float interval;
     ABF* abf = NULL;
     ABF_F* abf_f = NULL;
     std::vector<QPair<float, float>> stx;

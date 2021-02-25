@@ -1,4 +1,5 @@
 #include "abf.h"
+#include "algorithm.h"
 
 ABF::ABF(std::string f, QObject* parent, unsigned int n) : QObject(parent) {
 	fn = f;
@@ -54,13 +55,13 @@ void ABF::readData(int c, int s, bool m) {
 		delete[] buffer;
 		float xmin = 0;
 		float xmax = data.size() * Interval / 1000;
-		float ymin = 0;
-		float ymax = 0;
-		for (int i = 0; i < data.size(); i++) {
+		float ymin = data[0];
+		float ymax = data[0];
+		for (int i = 1; i < data.size(); i++) {
 			ymin = (ymin < data[i]) ? ymin : data[i];
 			ymax = (ymax > data[i]) ? ymax : data[i];
 		}
-		emit sendAxis(xmin, xmax, ymin, ymax);
+		emit sendAxis(xmin, xmax, ymin-500, ymax+500);
 		return;
 	}
 	ABF_ReadOpen(fn.c_str(), &hfile, ABF_DATAFILE, &fh, &maxsamples, &maxepi, &error);
@@ -98,13 +99,13 @@ void ABF::readData(int c, int s, bool m) {
 	delete[] buffer;
 	float xmin = 0;
 	float xmax = data.size() * Interval / 1000;
-	float ymin = 0;
-	float ymax = 0;
-	for (int i = 0; i < data.size(); i++) {
+	float ymin = data[0];
+	float ymax = data[0];
+	for (int i = 1; i < data.size(); i++) {
 		ymin = (ymin < data[i]) ? ymin : data[i];
 		ymax = (ymax > data[i]) ? ymax : data[i];
 	}
-	emit sendAxis(xmin, xmax, ymin, ymax);
+	emit sendAxis(xmin, xmax, ymin - 500, ymax + 500);
 	return;
 }
 
@@ -213,10 +214,12 @@ void ABF::save(std::vector<unsigned int>& start, std::vector<unsigned int>& end)
 }
 
 void ABF::draw(float xmin, float xmax) {
+	start_time = xmin;
+	end_time = xmax;
 	int s = xmin * 1000 / Interval;
 	int e = xmax * 1000 / Interval;
 	int n = e-s;
-	int skip = (n / 3000 == 0) ? 1 : n / 3000;
+	int skip = (n / 1500 == 0) ? 1 : n / 1500;
 	QVector<QPointF> interVariables;
 	int i = s;
 	for (; i < e; i += skip) {
@@ -227,11 +230,54 @@ void ABF::draw(float xmin, float xmax) {
 			max = (data[max] > data[j]) ? max : j;
 			min = (data[min] < data[j]) ? min : j;
 		}
-		interVariables.append(QPointF(min * Interval / 1000, data[min]));
-		interVariables.append(QPointF(max * Interval / 1000, data[max]));
+		if (max > min) {
+			interVariables.append(QPointF(min * Interval / 1000, data[min]));
+			interVariables.append(QPointF(max * Interval / 1000, data[max]));
+		}
+		else {
+			interVariables.append(QPointF(max * Interval / 1000, data[max]));
+			interVariables.append(QPointF(min * Interval / 1000, data[min]));
+		}
+		
 	}
 	emit sendData(interVariables);
+	if (filter) {
+		QVector<QPointF> interVariables;
+		int i = s;
+		for (; i < e; i += skip) {
+			int j = i;
+			int max = j;
+			int min = j;
+			for (; j < i + skip && j < e; j++) {
+				max = (data_f[max] > data_f[j]) ? max : j;
+				min = (data_f[min] < data_f[j]) ? min : j;
+			}
+			if (max > min) {
+				interVariables.append(QPointF(min * Interval / 1000, data_f[min]));
+				interVariables.append(QPointF(max * Interval / 1000, data_f[max]));
+			}
+			else {
+				interVariables.append(QPointF(max * Interval / 1000, data_f[max]));
+				interVariables.append(QPointF(min * Interval / 1000, data_f[min]));
+			}
+
+		}
+		emit sendData_f(interVariables);
+		QVector<QPointF> interFilter;
+		for (int i = 0; i < sig.size(); i++) {
+			interFilter.append(QPointF(sig[i].first * Interval / 1000, data[sig[i].first]));
+			interFilter.append(QPointF(sig[i].second * Interval / 1000, data[sig[i].second]));
+		}
+		emit sendSig(interFilter);
+	}
 	return;
+}
+
+void ABF::readSignal(float sigma, float freq) {
+	filter = true;
+	data_f = meanSmooth(data, sigma);
+	sig = findPeak(data, 2000, freq);
+	draw(start_time, end_time);
 }
 
 	

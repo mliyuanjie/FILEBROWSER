@@ -313,7 +313,6 @@ public:
         retranslateUi(ABFDockWidget);
         QObject::connect(pushButton_7, SIGNAL(clicked()), graphicsView, SLOT(changey2()));
         QObject::connect(pushButton_8, SIGNAL(clicked()), graphicsView, SLOT(changey1()));
-        QObject::connect(pushButton_2, SIGNAL(clicked()), graphicsView, SLOT(plot()));
         QObject::connect(comboBox, SIGNAL(currentTextChanged(QString)), graphicsView, SLOT(setchannel(QString)));
         QObject::connect(comboBox_2, SIGNAL(currentTextChanged(QString)), graphicsView, SLOT(setsweep(QString)));
         QObject::connect(radioButton, SIGNAL(toggled(bool)), graphicsView, SLOT(setmode(bool)));
@@ -326,6 +325,7 @@ public:
         QObject::connect(pushButton_5, SIGNAL(clicked()), graphicsView, SLOT(delitem()));
         QObject::connect(pushButton_6, SIGNAL(clicked()), graphicsView, SLOT(save()));
         QObject::connect(pushButton_15, SIGNAL(clicked()), graphicsView, SLOT(startprocess()));
+        QObject::connect(pushButton_2, SIGNAL(clicked()), graphicsView, SLOT(home()));
 
         tabWidget->setCurrentIndex(1);
 

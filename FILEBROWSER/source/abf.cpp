@@ -109,7 +109,7 @@ void ABF::readData(int c, int s, bool m) {
 	return;
 }
 
-void ABF::save(std::vector<float> start, std::vector<float> end) {
+void ABF::save(QVector<QPointF> point) {
 	if (!filetype) {
 		std::string fnout = "_cut.dat";
 		fnout.insert(0, fn, 0, fn.size() - 4);
@@ -119,14 +119,14 @@ void ABF::save(std::vector<float> start, std::vector<float> end) {
 		float* buffer = new float[size];
 		int j = 0;
 		int i = 0;
-		int flag = start[0] * 1000 / Interval;
+		int flag = point[0].x() * 1000 / Interval;
 		while (i < size) {
-			if (flag >= end[j] * 1000 / Interval) {
+			if (flag >= point[j].y() * 1000 / Interval) {
 				j++;
-				if (j >= start.size()) {
+				if (j >= point.size()) {
 					break;
 				}
-				flag = start[j] * 1000 / Interval;
+				flag = point[j].x() * 1000 / Interval;
 			}
 			if (flag > i) {
 				buffer[i] = data[flag];
@@ -158,14 +158,14 @@ void ABF::save(std::vector<float> start, std::vector<float> end) {
 		int a = res - buffer;
 		int i = 0;
 		int j = 0;
-		int flag = Channel * start[j] * 1000 / Interval;
+		int flag = Channel * point[j].x() * 1000 / Interval;
 		while(i < res - buffer) {
-			if (flag >= Channel * end[j] * 1000 / Interval) {
+			if (flag >= Channel * point[j].x() * 1000 / Interval) {
 				j++;
-				if (j >= start.size()) {
+				if (j >= point.size()) {
 					break;
 				}
-				flag = Channel * start[j] * 1000 / Interval;
+				flag = Channel * point[j].y() * 1000 / Interval;
 			}
 			if (flag > i) {
 				for (int n = 0; n < Channel; n++) {
@@ -187,14 +187,14 @@ void ABF::save(std::vector<float> start, std::vector<float> end) {
 		}
 		int i = 0;
 		int j = 0;
-		int flag = Channel*start[j] * 1000 / Interval;
+		int flag = Channel*point[j].x() * 1000 / Interval;
 		while (i < res - buffer) {
-			if (flag >= Channel*end[j] * 1000 / Interval) {
+			if (flag >= Channel*point[j].y() * 1000 / Interval) {
 				j++;
-				if (i >= start.size()) {
+				if (i >= point.size()) {
 					break;
 				}
-				flag = Channel*start[j] * 1000 / Interval;
+				flag = Channel*point[j].x() * 1000 / Interval;
 			}
 			if (flag > i) {
 				for (int n = 0; n < Channel; n++) {
@@ -282,8 +282,8 @@ void ABF::draw(float xmin, float xmax) {
 void ABF::readSignal(float sigma, float freq) {
 	data_f = meanSmooth(data, sigma);
 	sig = findPeak(data_f, 2000, freq);
-	draw(start_time, end_time);
 	filter = true;
+	draw(start_time, end_time);
 }
 
 	

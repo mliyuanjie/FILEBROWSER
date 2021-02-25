@@ -113,38 +113,23 @@ std::vector<float> meanSmooth(std::vector<float>& data, int window) {
 
 
 std::vector<std::pair<int, int>> findPeak(std::vector<float>& data, int window, float threshold) {
-    std::vector<float> baseline(data.size());
+    std::vector<float> baseline;
     std::vector<std::pair<int, int>> out;
-    int s = 0;
-    int e = window / 2;
-    bool flag = false;
-    for (int i = 0; i < e; i++) {
-        baseline[0] += data[i];
-    }
-    baseline[0] = baseline[0] / e;
+    baseline = meanSmooth(data, window);
     int begin;
     int finish;
-    for (int i = 1; i < data.size(); i++) {
-        if (e < window) {
-            baseline[i] = baseline[i - 1] * e + data[e++];
-            baseline[i] = baseline[i] / e;
-        }
-        else if (e < data.size()) {
-            baseline[i] = baseline[i - 1] * window + data[e++] - data[s++];
-            baseline[i] = baseline[i] / window;
-        }
-        else {
-            baseline[i] = baseline[i - 1] * (e - s) - data[s++];
-            baseline[i] = baseline[i] / (e - s);
-        }
+    bool flag = false;
+    for (int i = 0; i < data.size(); i++) {
         if (!flag && data[i] < baseline[i] - threshold) {
             begin = i;
-            while (data[begin] < baseline[begin] && begin > 1 && !(data[begin] > data[begin-1] && data[begin] >data[begin + 1])) 
+            while (!(data[begin] >= data[begin] && begin > 1 && data[begin] >= data[begin-1] && data[begin] >= data[begin + 1])) 
                 begin--;
             flag = true;
         }
-        else if (flag && data[i] >= baseline[i] && i>0 && i < data.size()-1 && data[i] > data[i - 1] && data[i] > data[i + 1]) {
+        else if (flag && data[i] < baseline[i] - 0.6 * threshold) {
             finish = i;
+            while (!(data[finish] >= baseline[finish] && finish < data.size()-1 && data[finish] >= data[finish - 1] && data[finish] >= data[finish + 1]))
+                finish++;
             flag = false;
             out.push_back(std::pair<int, int>(begin, finish));
         }

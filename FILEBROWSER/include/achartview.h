@@ -27,7 +27,7 @@ public slots:
     void changey2();
     void changey1();
     void back();
-    //void home();
+    void home();
     void setchannel(QString s);
     void setsweep(QString s);
     void initui(float x1, float x2, float y1, float y2);
@@ -46,7 +46,7 @@ signals:
     void getdata(float s, float e);
     void loaddata(int c, int s, bool m);
     void loadprocess(float sigma, float freq);
-    void sendsave(std::vector<float> s, std::vector<float> e);
+    void sendsave(QVector<QPointF>);
 
 protected:
     void mousePressEvent(QMouseEvent* event);
@@ -65,8 +65,7 @@ private:
     int sweep = 1;
     QString unit;
     QString filename;
-    ABF* abf = NULL;
-    ABF_F* abf_f = NULL;
+    QThread* thread = NULL;
     std::vector<QPair<float, float>> stx;
     std::vector<QPair<float, float>> sty;
     bool mode = false;

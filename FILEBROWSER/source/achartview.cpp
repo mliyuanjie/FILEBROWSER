@@ -19,7 +19,9 @@ AChartView::AChartView(QWidget* parent) :
     series = new QLineSeries();
     series_f = new QLineSeries();
     series_s = new QScatterSeries();
-    series->setPen(QPen(Qt::darkBlue, 1)); 
+    series->setPen(QPen(Qt::darkBlue, 2)); 
+    series_f->setPen(QPen(Qt::green, 1));
+    series_s->setMarkerSize(10);
     //series->setUseOpenGL(true);
     charts = new QtCharts::QChart();
     charts->addSeries(series);
@@ -39,7 +41,7 @@ AChartView::AChartView(QWidget* parent) :
 }
 
 AChartView::~AChartView() {
-    delete abf;
+    thread->quit();
 }
 
 void AChartView::setchannel(QString s) {
@@ -188,16 +190,18 @@ void AChartView::initui(float x1, float x2, float y1, float y2) {
 }
 
 void AChartView::open(QString fn) {
-    if (abf != NULL) {
-        delete abf;
+    if (thread != NULL) {
+        thread->quit();
+        thread = NULL;
     }
-    QThread* thread = new QThread;
-    abf = new ABF(fn.toStdString());
+    thread = new QThread;
+    ABF* abf = new ABF(fn.toStdString());
     for (int i = 1; i < abf->Channel; i++)
         this->parent()->findChild<QComboBox*>("comboBox")->addItem(QString::number(i));
     for (int i = 2; i <= abf->Sweep; i++)
         this->parent()->findChild<QComboBox*>("comboBox_2")->addItem(QString::number(i));
     abf->moveToThread(thread);
+    connect(thread, SIGNAL(finished()), abf, SLOT(deleteLater()));
     connect(this, SIGNAL(loaddata(int, int, bool)), abf, SLOT(readData(int, int, bool)));
     connect(this, SIGNAL(getdata(float, float)), abf, SLOT(draw(float, float)));
     connect(abf, SIGNAL(sendAxis(float, float, float, float)), this, SLOT(initui(float, float, float, float)));
@@ -205,20 +209,18 @@ void AChartView::open(QString fn) {
     connect(this, SIGNAL(loadprocess(float, float)), abf, SLOT(readSignal(float, float)));
     connect(abf, SIGNAL(sendData_f(QVector<QPointF>)), this, SLOT(update_f(QVector<QPointF>)));
     connect(abf, SIGNAL(sendSig(QVector<QPointF>)), this, SLOT(update_s(QVector<QPointF>)));
-    connect(this, SIGNAL(sendsave(std::vector<float>, std::vector<float>)), abf, save(std::vector<float>, std::vector<float>));
+    connect(this, SIGNAL(sendsave(QVector<QPointF>)), abf, SLOT(save(QVector<QPointF>)));
     thread->start();
     emit loaddata(0, 1, true);
 }
 
 void AChartView::save() {
     QTableWidget* pt = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QTableWidget*>("tableWidget");
-    std::vector<float> start;
-    std::vector<float> end;
+    QVector<QPointF> range;
     for (int i = 0; i < pt->rowCount(); i++) {
-        start.push_back(pt->item(i, 0)->text().toFloat());
-        end.push_back(pt->item(i, 1)->text().toFloat());
+        range.push_back(QPointF(pt->item(i, 0)->text().toFloat(), pt->item(i, 1)->text().toFloat()));
     }
-    emit sendsave(start, end);
+    emit sendsave(range);
     pt->clear();
 }
 
@@ -226,4 +228,8 @@ void AChartView::startprocess() {
     QLineEdit* pt_sigma = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QWidget*>("tab_2")->findChild<QLineEdit*>("lineEdit");
     QLineEdit* pt_freq = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QWidget*>("tab_2")->findChild<QLineEdit*>("lineEdit_2");
     emit  loadprocess(pt_sigma->text().toFloat(), pt_freq->text().toFloat());
+}
+
+void AChartView::home() {
+    emit loaddata(channel, sweep, true);
 }

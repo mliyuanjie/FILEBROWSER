@@ -574,7 +574,6 @@
     <signal>setend(double)</signal>
     <slot>open(QString)</slot>
     <slot>back()</slot>
-    <slot>plot()</slot>
     <slot>setsweep(QString)</slot>
     <slot>setchannel(QString)</slot>
     <slot>clear()</slot>
@@ -588,6 +587,7 @@
     <slot>changey2()</slot>
     <slot>slot1()</slot>
     <slot>startprocess()</slot>
+    <slot>home()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -622,22 +622,6 @@
     <hint type="destinationlabel">
      <x>69</x>
      <y>220</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_2</sender>
-   <signal>clicked()</signal>
-   <receiver>graphicsView</receiver>
-   <slot>plot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>265</x>
-     <y>54</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>379</x>
-     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -716,8 +700,8 @@
      <y>448</y>
     </hint>
     <hint type="destinationlabel">
-     <x>263</x>
-     <y>524</y>
+     <x>268</x>
+     <y>520</y>
     </hint>
    </hints>
   </connection>
@@ -732,8 +716,8 @@
      <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>581</x>
-     <y>524</y>
+     <x>583</x>
+     <y>520</y>
     </hint>
    </hints>
   </connection>
@@ -744,8 +728,8 @@
    <slot>changex1()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>349</x>
-     <y>524</y>
+     <x>353</x>
+     <y>519</y>
     </hint>
     <hint type="destinationlabel">
      <x>336</x>
@@ -760,12 +744,12 @@
    <slot>changex2()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>667</x>
-     <y>524</y>
+     <x>668</x>
+     <y>519</y>
     </hint>
     <hint type="destinationlabel">
      <x>652</x>
-     <y>497</y>
+     <y>489</y>
     </hint>
    </hints>
   </connection>
@@ -776,8 +760,8 @@
    <slot>additem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1047</x>
-     <y>85</y>
+     <x>1044</x>
+     <y>112</y>
     </hint>
     <hint type="destinationlabel">
      <x>595</x>
@@ -792,8 +776,8 @@
    <slot>delitem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1115</x>
-     <y>85</y>
+     <x>1044</x>
+     <y>112</y>
     </hint>
     <hint type="destinationlabel">
      <x>649</x>
@@ -808,8 +792,8 @@
    <slot>save()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1115</x>
-     <y>511</y>
+     <x>1044</x>
+     <y>123</y>
     </hint>
     <hint type="destinationlabel">
      <x>866</x>
@@ -830,6 +814,22 @@
     <hint type="destinationlabel">
      <x>941</x>
      <y>163</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>graphicsView</receiver>
+   <slot>home()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>353</x>
+     <y>52</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>362</x>
+     <y>116</y>
     </hint>
    </hints>
   </connection>

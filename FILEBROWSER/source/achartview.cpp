@@ -205,19 +205,20 @@ void AChartView::open(QString fn) {
     connect(this, SIGNAL(loadprocess(float, float)), abf, SLOT(readSignal(float, float)));
     connect(abf, SIGNAL(sendData_f(QVector<QPointF>)), this, SLOT(update_f(QVector<QPointF>)));
     connect(abf, SIGNAL(sendSig(QVector<QPointF>)), this, SLOT(update_s(QVector<QPointF>)));
+    connect(this, SIGNAL(sendsave(std::vector<float>, std::vector<float>)), abf, save(std::vector<float>, std::vector<float>));
     thread->start();
     emit loaddata(0, 1, true);
 }
 
 void AChartView::save() {
     QTableWidget* pt = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QTableWidget*>("tableWidget");
-    std::vector<unsigned int> start;
-    std::vector<unsigned int> end;
+    std::vector<float> start;
+    std::vector<float> end;
     for (int i = 0; i < pt->rowCount(); i++) {
         start.push_back(pt->item(i, 0)->text().toFloat());
         end.push_back(pt->item(i, 1)->text().toFloat());
     }
-    abf->save(start, end);
+    emit sendsave(start, end);
     pt->clear();
 }
 

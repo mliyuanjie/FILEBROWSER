@@ -18,7 +18,7 @@ public:
 public slots:
 	void readData(int channel = 0, int sweep = 1, bool m = true);
 	void readSignal(float sigma, float freq);
-	void save(std::vector<unsigned int>& start, std::vector<unsigned int>& end);
+	void save(std::vector<float> start, std::vector<float> end);
 	void draw(float xmin, float xmax);
 
 

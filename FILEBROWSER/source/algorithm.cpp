@@ -139,11 +139,11 @@ std::vector<std::pair<int, int>> findPeak(std::vector<float>& data, int window, 
         }
         if (!flag && data[i] < baseline[i] - threshold) {
             begin = i;
-            while (data[begin] < baseline[begin] && begin > 0) 
+            while (data[begin] < baseline[begin] && begin > 1 && !(data[begin] > data[begin-1] && data[begin] >data[begin + 1])) 
                 begin--;
             flag = true;
         }
-        else if (flag && data[i] >= baseline[i]) {
+        else if (flag && data[i] >= baseline[i] && i>0 && i < data.size()-1 && data[i] > data[i - 1] && data[i] > data[i + 1]) {
             finish = i;
             flag = false;
             out.push_back(std::pair<int, int>(begin, finish));

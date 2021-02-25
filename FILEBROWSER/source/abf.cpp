@@ -109,7 +109,7 @@ void ABF::readData(int c, int s, bool m) {
 	return;
 }
 
-void ABF::save(std::vector<unsigned int>& start, std::vector<unsigned int>& end) {
+void ABF::save(std::vector<float> start, std::vector<float> end) {
 	if (!filetype) {
 		std::string fnout = "_cut.dat";
 		fnout.insert(0, fn, 0, fn.size() - 4);
@@ -119,14 +119,14 @@ void ABF::save(std::vector<unsigned int>& start, std::vector<unsigned int>& end)
 		float* buffer = new float[size];
 		int j = 0;
 		int i = 0;
-		int flag = start[0];
+		int flag = start[0] * 1000 / Interval;
 		while (i < size) {
-			if (flag >= end[j]) {
+			if (flag >= end[j] * 1000 / Interval) {
 				j++;
 				if (j >= start.size()) {
 					break;
 				}
-				flag = start[j];
+				flag = start[j] * 1000 / Interval;
 			}
 			if (flag > i) {
 				buffer[i] = data[flag];
@@ -158,14 +158,14 @@ void ABF::save(std::vector<unsigned int>& start, std::vector<unsigned int>& end)
 		int a = res - buffer;
 		int i = 0;
 		int j = 0;
-		int flag = Channel * start[j];
+		int flag = Channel * start[j] * 1000 / Interval;
 		while(i < res - buffer) {
-			if (flag >= Channel * end[j]) {
+			if (flag >= Channel * end[j] * 1000 / Interval) {
 				j++;
 				if (j >= start.size()) {
 					break;
 				}
-				flag = Channel * start[j];
+				flag = Channel * start[j] * 1000 / Interval;
 			}
 			if (flag > i) {
 				for (int n = 0; n < Channel; n++) {
@@ -187,14 +187,14 @@ void ABF::save(std::vector<unsigned int>& start, std::vector<unsigned int>& end)
 		}
 		int i = 0;
 		int j = 0;
-		int flag = Channel*start[j];
+		int flag = Channel*start[j] * 1000 / Interval;
 		while (i < res - buffer) {
-			if (flag >= Channel*end[j]) {
+			if (flag >= Channel*end[j] * 1000 / Interval) {
 				j++;
 				if (i >= start.size()) {
 					break;
 				}
-				flag = Channel*start[j];
+				flag = Channel*start[j] * 1000 / Interval;
 			}
 			if (flag > i) {
 				for (int n = 0; n < Channel; n++) {
@@ -234,9 +234,12 @@ void ABF::draw(float xmin, float xmax) {
 			interVariables.append(QPointF(min * Interval / 1000, data[min]));
 			interVariables.append(QPointF(max * Interval / 1000, data[max]));
 		}
-		else {
+		else if (min > max) {
 			interVariables.append(QPointF(max * Interval / 1000, data[max]));
 			interVariables.append(QPointF(min * Interval / 1000, data[min]));
+		}
+		else {
+			interVariables.append(QPointF(max * Interval / 1000, data[max]));
 		}
 		
 	}
@@ -256,9 +259,12 @@ void ABF::draw(float xmin, float xmax) {
 				interVariables.append(QPointF(min * Interval / 1000, data_f[min]));
 				interVariables.append(QPointF(max * Interval / 1000, data_f[max]));
 			}
-			else {
+			else if(max < min) {
 				interVariables.append(QPointF(max * Interval / 1000, data_f[max]));
 				interVariables.append(QPointF(min * Interval / 1000, data_f[min]));
+			}
+			else {
+				interVariables.append(QPointF(max * Interval / 1000, data_f[max]));
 			}
 
 		}
@@ -274,10 +280,10 @@ void ABF::draw(float xmin, float xmax) {
 }
 
 void ABF::readSignal(float sigma, float freq) {
-	filter = true;
 	data_f = meanSmooth(data, sigma);
-	sig = findPeak(data, 2000, freq);
+	sig = findPeak(data_f, 2000, freq);
 	draw(start_time, end_time);
+	filter = true;
 }
 
 	

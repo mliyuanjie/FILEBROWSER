@@ -46,6 +46,7 @@ signals:
     void getdata(float s, float e);
     void loaddata(int c, int s, bool m);
     void loadprocess(float sigma, float freq);
+    void sendsave(std::vector<float> s, std::vector<float> e);
 
 protected:
     void mousePressEvent(QMouseEvent* event);

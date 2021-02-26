@@ -198,6 +198,17 @@
     <ClInclude Include="include\algorithm.h" />
     <ClInclude Include="Include\mainWindow.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="bin\gsl.lib" />
+    <Library Include="bin\gslcblas.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Debug\ABFFIO.dll" />
+    <None Include="..\Debug\gsl.dll" />
+    <None Include="..\Debug\gsl.pdb" />
+    <None Include="..\Debug\gslcblas.dll" />
+    <None Include="..\Debug\gslcblas.pdb" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />

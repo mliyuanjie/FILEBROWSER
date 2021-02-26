@@ -22,8 +22,11 @@
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
-    <Filter Include="bin">
+    <Filter Include="lib">
       <UniqueIdentifier>{f4ac63ca-ef2d-4b1a-9515-cd3d8f9565f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bin">
+      <UniqueIdentifier>{2b74a365-3e62-44ce-821a-3acf6cf1ed1f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -75,5 +78,30 @@
     <QtMoc Include="Include\abf.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="bin\gsl.lib">
+      <Filter>lib</Filter>
+    </Library>
+    <Library Include="bin\gslcblas.lib">
+      <Filter>lib</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Debug\ABFFIO.dll">
+      <Filter>bin</Filter>
+    </None>
+    <None Include="..\Debug\gsl.dll">
+      <Filter>bin</Filter>
+    </None>
+    <None Include="..\Debug\gsl.pdb">
+      <Filter>bin</Filter>
+    </None>
+    <None Include="..\Debug\gslcblas.dll">
+      <Filter>bin</Filter>
+    </None>
+    <None Include="..\Debug\gslcblas.pdb">
+      <Filter>bin</Filter>
+    </None>
   </ItemGroup>
 </Project>

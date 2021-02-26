@@ -6,10 +6,8 @@
 #include <fstream>
 #include <vector>
 #include <QtCore/qobject.h>
-#include <QtCharts/qlineseries.h>
-
-
-QT_CHARTS_USE_NAMESPACE
+#include <QtCore/qvector.h>
+#include <gsl/gsl_vector.h>
 
 class ABF:public QObject {
 	Q_OBJECT 
@@ -17,16 +15,19 @@ public:
 	ABF(std::string f, QObject* parent = 0, unsigned int n = 1024 * 16);
 	int Channel;
 	int Sweep;
-	float Interval;
-	std::vector<float> data;
-
-	void setSeries(QLineSeries* s);
-	std::pair<float, float> getLimit();
 	~ABF();
 public slots:
 	void readData(int channel = 0, int sweep = 1, bool m = true);
-	void save(std::vector<unsigned int>& start, std::vector<unsigned int>& end);
-	void draw(int s, int e);
+	void readSignal(float sigma, float freq, float thres);
+	void save(QVector<QPointF>);
+	void draw(float xmin, float xmax);
+
+
+signals:
+	void sendData(QVector<QPointF>);
+	void sendAxis(float xmin, float xmax, float ymin, float ymax);
+	void sendData_f(QVector<QPointF>);
+	void sendSig(QVector<QPointF>);
 
 private:
 	typedef int(_stdcall* pABF_ReadOpen)(const char* szFileName, int* phFile, UINT uFlags, ABFFileHeader* pFH, UINT* puMaxSamples, DWORD* pdwMaxEpi, int* pnError);
@@ -41,17 +42,21 @@ private:
 	typedef int(_stdcall* pABF_UpdateHeader)(int hFile, ABFFileHeader* pFH, int* pnError);      
 	typedef int(_stdcall* pABF_SynchCountFromEpisode)(int hFile, const ABFFileHeader* pFH, DWORD dwEpisode, DWORD* pdwSynchCount, int* pnError);
 
-
 	ABFFileHeader fh;
 	std::string fn;
 	int hfile;
 	int error;
-	DWORD synstart;
 	unsigned int maxsamples;
 	unsigned long maxepi;
 	HINSTANCE module;
-	QLineSeries* series;
 	bool filetype;
+	bool filter = false;
+	float Interval;
+	gsl_vector* data = NULL;
+	gsl_vector* data_f = NULL;
+	std::vector<std::pair<int, int>> sig;
+	float start_time;
+	float end_time;
 
 	pABF_ReadOpen ABF_ReadOpen;
 	pABF_ReadChannel ABF_ReadChannel;

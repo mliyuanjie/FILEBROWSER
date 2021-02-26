@@ -468,91 +468,89 @@
        <attribute name="title">
         <string>Tab 2</string>
        </attribute>
-       <widget class="QLineEdit" name="lineEdit">
-        <property name="geometry">
-         <rect>
-          <x>60</x>
-          <y>10</y>
-          <width>71</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_7">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>20</x>
           <y>10</y>
-          <width>41</width>
-          <height>21</height>
+          <width>81</width>
+          <height>18</height>
          </rect>
         </property>
-        <property name="font">
-         <font>
-          <pointsize>11</pointsize>
-         </font>
-        </property>
         <property name="text">
-         <string>sigma:</string>
+         <string>Sigma:</string>
         </property>
        </widget>
-       <widget class="QProgressBar" name="progressBar">
+       <widget class="QLineEdit" name="lineEdit">
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>60</y>
-          <width>118</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="value">
-         <number>24</number>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_15">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>90</y>
-          <width>121</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>ok</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_8">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
           <y>30</y>
-          <width>41</width>
-          <height>21</height>
+          <width>113</width>
+          <height>25</height>
          </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>11</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Freq:</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="lineEdit_2">
         <property name="geometry">
          <rect>
-          <x>60</x>
-          <y>30</y>
-          <width>71</width>
-          <height>20</height>
+          <x>20</x>
+          <y>90</y>
+          <width>113</width>
+          <height>25</height>
          </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_8">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>70</y>
+          <width>101</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Frequency:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_3">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>150</y>
+          <width>113</width>
+          <height>25</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_9">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>130</y>
+          <width>101</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Threshold:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_11">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>190</y>
+          <width>112</width>
+          <height>34</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>FindPeak</string>
         </property>
        </widget>
       </widget>
@@ -574,7 +572,6 @@
     <signal>setend(double)</signal>
     <slot>open(QString)</slot>
     <slot>back()</slot>
-    <slot>plot()</slot>
     <slot>setsweep(QString)</slot>
     <slot>setchannel(QString)</slot>
     <slot>clear()</slot>
@@ -588,6 +585,7 @@
     <slot>changey2()</slot>
     <slot>slot1()</slot>
     <slot>startprocess()</slot>
+    <slot>home()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -622,22 +620,6 @@
     <hint type="destinationlabel">
      <x>69</x>
      <y>220</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_2</sender>
-   <signal>clicked()</signal>
-   <receiver>graphicsView</receiver>
-   <slot>plot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>265</x>
-     <y>54</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>379</x>
-     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -716,8 +698,8 @@
      <y>448</y>
     </hint>
     <hint type="destinationlabel">
-     <x>263</x>
-     <y>524</y>
+     <x>268</x>
+     <y>520</y>
     </hint>
    </hints>
   </connection>
@@ -732,8 +714,8 @@
      <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>581</x>
-     <y>524</y>
+     <x>583</x>
+     <y>520</y>
     </hint>
    </hints>
   </connection>
@@ -744,8 +726,8 @@
    <slot>changex1()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>349</x>
-     <y>524</y>
+     <x>353</x>
+     <y>519</y>
     </hint>
     <hint type="destinationlabel">
      <x>336</x>
@@ -760,12 +742,12 @@
    <slot>changex2()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>667</x>
-     <y>524</y>
+     <x>668</x>
+     <y>519</y>
     </hint>
     <hint type="destinationlabel">
      <x>652</x>
-     <y>497</y>
+     <y>489</y>
     </hint>
    </hints>
   </connection>
@@ -776,8 +758,8 @@
    <slot>additem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1047</x>
-     <y>85</y>
+     <x>1044</x>
+     <y>112</y>
     </hint>
     <hint type="destinationlabel">
      <x>595</x>
@@ -792,8 +774,8 @@
    <slot>delitem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1115</x>
-     <y>85</y>
+     <x>1113</x>
+     <y>117</y>
     </hint>
     <hint type="destinationlabel">
      <x>649</x>
@@ -808,8 +790,8 @@
    <slot>save()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1115</x>
-     <y>511</y>
+     <x>1113</x>
+     <y>503</y>
     </hint>
     <hint type="destinationlabel">
      <x>866</x>
@@ -818,18 +800,34 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_15</sender>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>graphicsView</receiver>
+   <slot>home()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>353</x>
+     <y>52</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>362</x>
+     <y>116</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_11</sender>
    <signal>clicked()</signal>
    <receiver>graphicsView</receiver>
    <slot>startprocess()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1034</x>
-     <y>161</y>
+     <x>1017</x>
+     <y>275</y>
     </hint>
     <hint type="destinationlabel">
-     <x>941</x>
-     <y>163</y>
+     <x>916</x>
+     <y>277</y>
     </hint>
    </hints>
   </connection>

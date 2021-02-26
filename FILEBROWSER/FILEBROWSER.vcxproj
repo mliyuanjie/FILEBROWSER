@@ -70,7 +70,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories);$(ProjectDir)/include;C:/vcpkg/packages/gsl_x64-windows/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories);$(ProjectDir)/include</AdditionalIncludeDirectories>
     </ClCompile>
     <QtUic>
       <QtUicDir>$(ProjectDir)/include</QtUicDir>
@@ -80,9 +80,10 @@
     </QtUic>
     <Link>
       <AddModuleNamesToAssembly>Qt</AddModuleNamesToAssembly>
-      <AdditionalDependencies>$(Qt_LIBS_);%(AdditionalDependencies);</AdditionalDependencies>
+      <AdditionalDependencies>$(Qt_LIBS_);%(AdditionalDependencies);$(ProjectDir)/bin/gsl.lib;$(ProjectDir)/bin/gslcblas.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
+      <AdditionalLibraryDirectories>$(Qt_LIBPATH_);$(ProjectDir)/bin</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -183,14 +184,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\abf.cpp" />
-    <ClCompile Include="source\abf_f.cpp" />
     <ClCompile Include="Source\achartview.cpp" />
     <ClCompile Include="source\algorithm.cpp" />
     <ClCompile Include="Source\ftreeview.cpp" />
     <ClCompile Include="source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="include\abf_f.h" />
     <ClInclude Include="include\tools.h" />
     <QtMoc Include="Include\ftreeview.h" />
     <QtMoc Include="Include\abf.h" />
@@ -198,9 +197,6 @@
     <QtMoc Include="Include\achartview.h" />
     <ClInclude Include="include\algorithm.h" />
     <ClInclude Include="Include\mainWindow.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\ABFFIO.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

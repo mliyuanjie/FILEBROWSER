@@ -20,7 +20,6 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QTabWidget>
@@ -66,12 +65,13 @@ public:
     QPushButton *pushButton_4;
     QPushButton *pushButton_6;
     QWidget *tab_2;
-    QLineEdit *lineEdit;
     QLabel *label_7;
-    QProgressBar *progressBar;
-    QPushButton *pushButton_15;
-    QLabel *label_8;
+    QLineEdit *lineEdit;
     QLineEdit *lineEdit_2;
+    QLabel *label_8;
+    QLineEdit *lineEdit_3;
+    QLabel *label_9;
+    QPushButton *pushButton_11;
 
     void setupUi(QDockWidget *ABFDockWidget)
     {
@@ -278,32 +278,27 @@ public:
         tabWidget->addTab(tab, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));
-        lineEdit = new QLineEdit(tab_2);
-        lineEdit->setObjectName(QStringLiteral("lineEdit"));
-        lineEdit->setGeometry(QRect(60, 10, 71, 20));
         label_7 = new QLabel(tab_2);
         label_7->setObjectName(QStringLiteral("label_7"));
-        label_7->setGeometry(QRect(10, 10, 41, 21));
-        QFont font;
-        font.setPointSize(11);
-        label_7->setFont(font);
-        progressBar = new QProgressBar(tab_2);
-        progressBar->setObjectName(QStringLiteral("progressBar"));
-        progressBar->setGeometry(QRect(20, 60, 118, 23));
-        progressBar->setValue(24);
-        pushButton_15 = new QPushButton(tab_2);
-        pushButton_15->setObjectName(QStringLiteral("pushButton_15"));
-        pushButton_15->setGeometry(QRect(20, 90, 121, 41));
-        QFont font1;
-        font1.setPointSize(15);
-        pushButton_15->setFont(font1);
-        label_8 = new QLabel(tab_2);
-        label_8->setObjectName(QStringLiteral("label_8"));
-        label_8->setGeometry(QRect(10, 30, 41, 21));
-        label_8->setFont(font);
+        label_7->setGeometry(QRect(20, 10, 81, 18));
+        lineEdit = new QLineEdit(tab_2);
+        lineEdit->setObjectName(QStringLiteral("lineEdit"));
+        lineEdit->setGeometry(QRect(20, 30, 113, 25));
         lineEdit_2 = new QLineEdit(tab_2);
         lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
-        lineEdit_2->setGeometry(QRect(60, 30, 71, 20));
+        lineEdit_2->setGeometry(QRect(20, 90, 113, 25));
+        label_8 = new QLabel(tab_2);
+        label_8->setObjectName(QStringLiteral("label_8"));
+        label_8->setGeometry(QRect(20, 70, 101, 18));
+        lineEdit_3 = new QLineEdit(tab_2);
+        lineEdit_3->setObjectName(QStringLiteral("lineEdit_3"));
+        lineEdit_3->setGeometry(QRect(20, 150, 113, 25));
+        label_9 = new QLabel(tab_2);
+        label_9->setObjectName(QStringLiteral("label_9"));
+        label_9->setGeometry(QRect(20, 130, 101, 18));
+        pushButton_11 = new QPushButton(tab_2);
+        pushButton_11->setObjectName(QStringLiteral("pushButton_11"));
+        pushButton_11->setGeometry(QRect(20, 190, 112, 34));
         tabWidget->addTab(tab_2, QString());
 
         gridLayout->addWidget(tabWidget, 0, 6, 3, 1);
@@ -313,7 +308,6 @@ public:
         retranslateUi(ABFDockWidget);
         QObject::connect(pushButton_7, SIGNAL(clicked()), graphicsView, SLOT(changey2()));
         QObject::connect(pushButton_8, SIGNAL(clicked()), graphicsView, SLOT(changey1()));
-        QObject::connect(pushButton_2, SIGNAL(clicked()), graphicsView, SLOT(plot()));
         QObject::connect(comboBox, SIGNAL(currentTextChanged(QString)), graphicsView, SLOT(setchannel(QString)));
         QObject::connect(comboBox_2, SIGNAL(currentTextChanged(QString)), graphicsView, SLOT(setsweep(QString)));
         QObject::connect(radioButton, SIGNAL(toggled(bool)), graphicsView, SLOT(setmode(bool)));
@@ -325,7 +319,8 @@ public:
         QObject::connect(pushButton_3, SIGNAL(clicked()), graphicsView, SLOT(additem()));
         QObject::connect(pushButton_5, SIGNAL(clicked()), graphicsView, SLOT(delitem()));
         QObject::connect(pushButton_6, SIGNAL(clicked()), graphicsView, SLOT(save()));
-        QObject::connect(pushButton_15, SIGNAL(clicked()), graphicsView, SLOT(startprocess()));
+        QObject::connect(pushButton_2, SIGNAL(clicked()), graphicsView, SLOT(home()));
+        QObject::connect(pushButton_11, SIGNAL(clicked()), graphicsView, SLOT(startprocess()));
 
         tabWidget->setCurrentIndex(1);
 
@@ -362,9 +357,11 @@ public:
         pushButton_4->setText(QApplication::translate("ABFDockWidget", "show", Q_NULLPTR));
         pushButton_6->setText(QApplication::translate("ABFDockWidget", "save", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("ABFDockWidget", "Tab 1", Q_NULLPTR));
-        label_7->setText(QApplication::translate("ABFDockWidget", "sigma:", Q_NULLPTR));
-        pushButton_15->setText(QApplication::translate("ABFDockWidget", "ok", Q_NULLPTR));
-        label_8->setText(QApplication::translate("ABFDockWidget", "Freq:", Q_NULLPTR));
+        label_7->setText(QApplication::translate("ABFDockWidget", "Sigma:", Q_NULLPTR));
+        lineEdit_2->setText(QString());
+        label_8->setText(QApplication::translate("ABFDockWidget", "Frequency:", Q_NULLPTR));
+        label_9->setText(QApplication::translate("ABFDockWidget", "Threshold:", Q_NULLPTR));
+        pushButton_11->setText(QApplication::translate("ABFDockWidget", "FindPeak", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("ABFDockWidget", "Tab 2", Q_NULLPTR));
     } // retranslateUi
 

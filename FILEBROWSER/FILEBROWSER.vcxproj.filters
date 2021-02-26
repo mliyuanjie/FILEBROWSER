@@ -76,9 +76,4 @@
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\ABFFIO.dll">
-      <Filter>bin</Filter>
-    </None>
-  </ItemGroup>
 </Project>

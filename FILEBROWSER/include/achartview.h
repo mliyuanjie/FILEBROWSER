@@ -45,7 +45,7 @@ signals:
     void setend(double num);
     void getdata(float s, float e);
     void loaddata(int c, int s, bool m);
-    void loadprocess(float sigma, float freq);
+    void loadprocess(float sigma, float freq, float thres);
     void sendsave(QVector<QPointF>);
 
 protected:

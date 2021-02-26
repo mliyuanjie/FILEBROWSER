@@ -7,6 +7,7 @@
 #include <vector>
 #include <QtCore/qobject.h>
 #include <QtCore/qvector.h>
+#include <gsl/gsl_vector.h>
 
 class ABF:public QObject {
 	Q_OBJECT 
@@ -17,7 +18,7 @@ public:
 	~ABF();
 public slots:
 	void readData(int channel = 0, int sweep = 1, bool m = true);
-	void readSignal(float sigma, float freq);
+	void readSignal(float sigma, float freq, float thres);
 	void save(QVector<QPointF>);
 	void draw(float xmin, float xmax);
 
@@ -51,8 +52,8 @@ private:
 	bool filetype;
 	bool filter = false;
 	float Interval;
-	std::vector<float> data;
-	std::vector<float> data_f;
+	gsl_vector* data = NULL;
+	gsl_vector* data_f = NULL;
 	std::vector<std::pair<int, int>> sig;
 	float start_time;
 	float end_time;

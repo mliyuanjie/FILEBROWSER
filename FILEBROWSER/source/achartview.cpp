@@ -206,7 +206,7 @@ void AChartView::open(QString fn) {
     connect(this, SIGNAL(getdata(float, float)), abf, SLOT(draw(float, float)));
     connect(abf, SIGNAL(sendAxis(float, float, float, float)), this, SLOT(initui(float, float, float, float)));
     connect(abf, SIGNAL(sendData(QVector<QPointF>)), this, SLOT(update_d(QVector<QPointF>)));
-    connect(this, SIGNAL(loadprocess(float, float)), abf, SLOT(readSignal(float, float)));
+    connect(this, SIGNAL(loadprocess(float, float, float)), abf, SLOT(readSignal(float, float, float)));
     connect(abf, SIGNAL(sendData_f(QVector<QPointF>)), this, SLOT(update_f(QVector<QPointF>)));
     connect(abf, SIGNAL(sendSig(QVector<QPointF>)), this, SLOT(update_s(QVector<QPointF>)));
     connect(this, SIGNAL(sendsave(QVector<QPointF>)), abf, SLOT(save(QVector<QPointF>)));
@@ -227,7 +227,8 @@ void AChartView::save() {
 void AChartView::startprocess() {
     QLineEdit* pt_sigma = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QWidget*>("tab_2")->findChild<QLineEdit*>("lineEdit");
     QLineEdit* pt_freq = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QWidget*>("tab_2")->findChild<QLineEdit*>("lineEdit_2");
-    emit  loadprocess(pt_sigma->text().toFloat(), pt_freq->text().toFloat());
+    QLineEdit* pt_thres = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QWidget*>("tab_2")->findChild<QLineEdit*>("lineEdit_3");
+    emit  loadprocess(pt_sigma->text().toFloat(), pt_freq->text().toFloat(), pt_thres->text().toFloat());
 }
 
 void AChartView::home() {

@@ -116,8 +116,8 @@ void AChartView::back() {
 
 void AChartView::changex1() {
     float range = stx.back().second - stx.back().first;
-    stx.back().first = (stx.back().first - 0.2 * range <= 0) ? 0 : stx.back().first - 0.2 * range;
-    stx.back().second = (stx.back().second + 0.2 * range >= stx.front().second) ? stx.front().second : stx.back().second + 0.2 * range;
+    stx.back().first = stx.back().first - 0.2 * range;
+    stx.back().second = stx.back().second + 0.2 * range;
     emit getdata(stx.back().first, stx.back().second);
 }
 
@@ -132,14 +132,14 @@ void AChartView::changey1() {
     float range = sty.back().second - sty.back().first;
     sty.back().first = sty.back().first - 0.2 * range;
     sty.back().second = sty.back().second + 0.2 * range;
-    emit getdata(sty.back().first, sty.back().second);
+    axisy->setRange(sty.back().first, sty.back().second);
 }
 
 void AChartView::changey2() {
     float range = sty.back().second - sty.back().first;
     sty.back().first = sty.back().first + 0.2 * range;
     sty.back().second = sty.back().second - 0.2 * range;
-    emit getdata(sty.back().first, sty.back().second);
+    axisy->setRange(sty.back().first, sty.back().second);
 }
 
 void AChartView::additem() {

@@ -80,10 +80,10 @@
     </QtUic>
     <Link>
       <AddModuleNamesToAssembly>Qt</AddModuleNamesToAssembly>
-      <AdditionalDependencies>$(Qt_LIBS_);%(AdditionalDependencies);$(ProjectDir)/bin/gsl.lib;$(ProjectDir)/bin/gslcblas.lib</AdditionalDependencies>
+      <AdditionalDependencies>$(Qt_LIBS_);%(AdditionalDependencies);$(ProjectDir)/lib/gsl.lib;$(ProjectDir)/lib/gslcblas.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
-      <AdditionalLibraryDirectories>$(Qt_LIBPATH_);$(ProjectDir)/bin</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(Qt_LIBPATH_);$(ProjectDir)/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

@@ -6,6 +6,7 @@
 #include<QtGui/QMouseEvent>
 #include<QtGui/qstandarditemmodel.h>
 #include "abfwidget.h" 
+#include "txtwidget.h"
 
 class FTreeView : public QTreeView {
 	Q_OBJECT;
@@ -17,6 +18,7 @@ public slots:
 signals:
 	void rootpath(QString fn);
 	void showabf(QString fn);
+	void doubleClicked();
 
 private:
 	QFileSystemModel* model;

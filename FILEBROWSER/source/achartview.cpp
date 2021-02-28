@@ -18,30 +18,27 @@ AChartView::AChartView(QWidget* parent) :
     axisy = new QValueAxis();
     series = new QLineSeries();
     series_f = new QLineSeries();
-    series_s = new QScatterSeries();
     series->setPen(QPen(Qt::darkBlue, 2)); 
-    series_f->setPen(QPen(Qt::green, 1));
-    series_s->setMarkerSize(10);
+    series_f->setPen(QPen(Qt::green, 2, Qt::DashDotDotLine));
     //series->setUseOpenGL(true);
     charts = new QtCharts::QChart();
     charts->addSeries(series);
     charts->addSeries(series_f);
-    charts->addSeries(series_s);
     charts->setAxisX(axisx, series);
     charts->setAxisY(axisy, series);
     charts->setAxisX(axisx, series_f);
     charts->setAxisY(axisy, series_f);
-    charts->setAxisX(axisx, series_s);
-    charts->setAxisY(axisy, series_s);
     charts->legend()->hide();
     setChart(charts);
     qRegisterMetaType<QVector<QPointF>>("QVector<QPointF>");
-    //setRubberBand(QChartView::RectangleRubberBand);
+    rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
+    thread = new QThread;
 
 }
 
 AChartView::~AChartView() {
     thread->quit();
+    thread = NULL;
 }
 
 void AChartView::setchannel(QString s) {
@@ -57,36 +54,32 @@ void AChartView::mousePressEvent(QMouseEvent* event) {
     QPointF pf = mapToScene(p);
     pf = charts->mapFromScene(pf);
     pf = charts->mapToValue(pf);
-    if (mode) {
+    if (pf.x() < stx.back().first || pf.y() > sty.back().second)
+        return;
+    if (event->button() == Qt::LeftButton) {
         start = pf.x();
         emit setstart(start);
     }
-    else {
-        if (pf.x() < stx.back().first || pf.y() > sty.back().second)
-            return;
-    }
-    if (!rubberBand)
-        rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
-    rubberBand->setGeometry(QRect(p, QSize()).normalized());
+    rubberBand->setGeometry(QRect(p, QSize()));
     rubberBand->show();
 }
 
 void AChartView::mouseMoveEvent(QMouseEvent* event) {
-    if (rubberBand == NULL)
-        return;
-    rubberBand->setGeometry(QRect(rubberBand->pos(), event->pos()).normalized());
+    rubberBand->setGeometry(QRect(rubberBand->pos(), event->pos()));
 }
 
 void AChartView::mouseReleaseEvent(QMouseEvent* event) {
+    if (rubberBand == NULL)
+        return;
     QPoint p = event->pos();
     QPointF pf = mapToScene(p);
     pf = charts->mapFromScene(pf);
     pf = charts->mapToValue(pf);
-    if (mode) {
+    if (event->button() == Qt::LeftButton) {
         end = pf.x();
         emit setend(end);
     }
-    else {
+    else if (event->button() == Qt::RightButton) {
         if (pf.x() < stx.back().second && pf.y() > sty.back().first) {
             QPair<float, float> x;
             QPair<float, float> y;
@@ -102,8 +95,7 @@ void AChartView::mouseReleaseEvent(QMouseEvent* event) {
             emit getdata(stx.back().first, stx.back().second);
         }
     }
-    delete rubberBand;
-    rubberBand = NULL;
+    rubberBand->hide();
 }
 
 void AChartView::back() {
@@ -157,30 +149,22 @@ void AChartView::delitem() {
     pt->removeRow(index-1);
 }
 
-void AChartView::setmode(bool i) {
-    mode = i;
-}
-
 void AChartView::update_d(QVector<QPointF> data) {
-    axisy->setRange(sty.back().first, sty.back().second);
-    axisx->setRange(stx.back().first, stx.back().second);
     series->replace(data);
+    chart()->axisX()->setRange(stx.back().first, stx.back().second);
+    chart()->axisY()->setRange(sty.back().first, sty.back().second);
     return;
 }
 
 void AChartView::update_f(QVector<QPointF> data) {
+    emit setsignum(QString().setNum(data.size() / 4));
     series_f->replace(data);
     return;
 }
 
-void AChartView::update_s(QVector<QPointF> data) {
-    series_s->replace(data);
-    return;
-}
-
 void AChartView::initui(float x1, float x2, float y1, float y2) {
-    axisx->setTitleText(QString("ms"));
-    axisy->setTitleText(unit);
+    axisx->setTitleText(QString("Time(ms)"));
+    axisy->setTitleText(QString("Current(pA)"));
     stx.push_back(QPair<float, float>(x1, x2));
     sty.push_back(QPair<float, float>(y1, y2));
     axisx->setRange(x1, x2);
@@ -190,17 +174,13 @@ void AChartView::initui(float x1, float x2, float y1, float y2) {
 }
 
 void AChartView::open(QString fn) {
-    if (thread != NULL) {
-        thread->quit();
-        thread = NULL;
-    }
-    thread = new QThread;
     ABF* abf = new ABF(fn.toStdString());
     for (int i = 1; i < abf->Channel; i++)
         this->parent()->findChild<QComboBox*>("comboBox")->addItem(QString::number(i));
     for (int i = 2; i <= abf->Sweep; i++)
         this->parent()->findChild<QComboBox*>("comboBox_2")->addItem(QString::number(i));
     abf->moveToThread(thread);
+    connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     connect(thread, SIGNAL(finished()), abf, SLOT(deleteLater()));
     connect(this, SIGNAL(loaddata(int, int, bool)), abf, SLOT(readData(int, int, bool)));
     connect(this, SIGNAL(getdata(float, float)), abf, SLOT(draw(float, float)));
@@ -208,8 +188,8 @@ void AChartView::open(QString fn) {
     connect(abf, SIGNAL(sendData(QVector<QPointF>)), this, SLOT(update_d(QVector<QPointF>)));
     connect(this, SIGNAL(loadprocess(float, float, float)), abf, SLOT(readSignal(float, float, float)));
     connect(abf, SIGNAL(sendData_f(QVector<QPointF>)), this, SLOT(update_f(QVector<QPointF>)));
-    connect(abf, SIGNAL(sendSig(QVector<QPointF>)), this, SLOT(update_s(QVector<QPointF>)));
     connect(this, SIGNAL(sendsave(QVector<QPointF>)), abf, SLOT(save(QVector<QPointF>)));
+    connect(abf, SIGNAL(sendProcess(int)), this, SLOT(currentprocess(int)));
     thread->start();
     emit loaddata(0, 1, true);
 }
@@ -233,4 +213,8 @@ void AChartView::startprocess() {
 
 void AChartView::home() {
     emit loaddata(channel, sweep, true);
+}
+
+void AChartView::currentprocess(int a) {
+    emit setprocess(a);
 }

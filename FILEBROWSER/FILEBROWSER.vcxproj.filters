@@ -36,6 +36,9 @@
     <QtUic Include="UI\abfwidget.ui">
       <Filter>Resource Files</Filter>
     </QtUic>
+    <QtUic Include="ui\txtwidget.ui">
+      <Filter>Resource Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\ftreeview.cpp">
@@ -67,6 +70,9 @@
     <ClInclude Include="include\tools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\txtwidget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Include\ftreeview.h">
@@ -80,10 +86,10 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="bin\gsl.lib">
+    <Library Include="lib\gsl.lib">
       <Filter>lib</Filter>
     </Library>
-    <Library Include="bin\gslcblas.lib">
+    <Library Include="lib\gslcblas.lib">
       <Filter>lib</Filter>
     </Library>
   </ItemGroup>

@@ -22,12 +22,11 @@ public slots:
 	void save(QVector<QPointF>);
 	void draw(float xmin, float xmax);
 
-
 signals:
 	void sendData(QVector<QPointF>);
 	void sendAxis(float xmin, float xmax, float ymin, float ymax);
 	void sendData_f(QVector<QPointF>);
-	void sendSig(QVector<QPointF>);
+	void sendProcess(int);
 
 private:
 	typedef int(_stdcall* pABF_ReadOpen)(const char* szFileName, int* phFile, UINT uFlags, ABFFileHeader* pFH, UINT* puMaxSamples, DWORD* pdwMaxEpi, int* pnError);
@@ -50,11 +49,10 @@ private:
 	unsigned long maxepi;
 	HINSTANCE module;
 	bool filetype;
-	bool filter = false;
 	float Interval;
 	gsl_vector* data = NULL;
-	gsl_vector* data_f = NULL;
-	std::vector<std::pair<int, int>> sig;
+	//ABFTemp temp;
+	size_t size;
 	float start_time;
 	float end_time;
 
@@ -71,5 +69,19 @@ private:
 	pABF_ReadDACFileEpi ABF_ReadDACFileEpi;
 };
 
+struct NanoporeSig {
+	NanoporeSig(unsigned a, float b, float c, float d, float e) {
+		index = a;
+		start = b;
+		end = c;
+		current = d;
+		baseline = e;
+	}
+	unsigned index;
+	float start;
+	float end;
+	float current;
+	float baseline;
+};
 
 #endif //ABF_H

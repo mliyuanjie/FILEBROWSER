@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1143</width>
+    <width>1290</width>
     <height>535</height>
    </rect>
   </property>
@@ -115,21 +115,7 @@
         </item>
        </widget>
       </item>
-      <item>
-       <widget class="QRadioButton" name="radioButton">
-        <property name="text">
-         <string>Select Data Mode</string>
-        </property>
-       </widget>
-      </item>
      </layout>
-    </item>
-    <item row="1" column="5">
-     <widget class="AChartView" name="graphicsView">
-      <property name="cursor" stdset="0">
-       <cursorShape>CrossCursor</cursorShape>
-      </property>
-     </widget>
     </item>
     <item row="2" column="5">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -155,13 +141,13 @@
        <widget class="QLabel" name="label">
         <property name="minimumSize">
          <size>
-          <width>50</width>
+          <width>100</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>50</width>
+          <width>100</width>
           <height>16777215</height>
          </size>
         </property>
@@ -174,13 +160,13 @@
        <widget class="QLabel" name="label_4">
         <property name="minimumSize">
          <size>
-          <width>50</width>
+          <width>150</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>50</width>
+          <width>150</width>
           <height>16777215</height>
          </size>
         </property>
@@ -209,44 +195,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_2">
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>end time:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_5">
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="pushButton_10">
         <property name="minimumSize">
          <size>
@@ -266,35 +214,35 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="label_2">
         <property name="minimumSize">
          <size>
-          <width>50</width>
+          <width>100</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>50</width>
+          <width>100</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
-         <string>voltage:</string>
+         <string>end time:</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="label_5">
         <property name="minimumSize">
          <size>
-          <width>50</width>
+          <width>150</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>50</width>
+          <width>150</width>
           <height>16777215</height>
          </size>
         </property>
@@ -473,7 +421,7 @@
          <rect>
           <x>20</x>
           <y>10</y>
-          <width>81</width>
+          <width>121</width>
           <height>18</height>
          </rect>
         </property>
@@ -485,39 +433,16 @@
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>30</y>
+          <y>70</y>
           <width>113</width>
           <height>25</height>
          </rect>
+        </property>
+        <property name="text">
+         <string>0</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="lineEdit_2">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>90</y>
-          <width>113</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_8">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>70</y>
-          <width>101</width>
-          <height>18</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Frequency:</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_3">
         <property name="geometry">
          <rect>
           <x>20</x>
@@ -526,13 +451,42 @@
           <height>25</height>
          </rect>
         </property>
+        <property name="text">
+         <string>50</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_8">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>110</y>
+          <width>121</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Window Size:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_3">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>230</y>
+          <width>113</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>1.5</string>
+        </property>
        </widget>
        <widget class="QLabel" name="label_9">
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>130</y>
-          <width>101</width>
+          <y>190</y>
+          <width>111</width>
           <height>18</height>
          </rect>
         </property>
@@ -544,7 +498,7 @@
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>190</y>
+          <y>360</y>
           <width>112</width>
           <height>34</height>
          </rect>
@@ -553,7 +507,105 @@
          <string>FindPeak</string>
         </property>
        </widget>
+       <widget class="QLabel" name="label_3">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>320</y>
+          <width>91</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_6">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>30</y>
+          <width>131</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Gaussfilter&gt;0</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_11">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>130</y>
+          <width>131</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>10/250kHz=25 </string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_12">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>210</y>
+          <width>131</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Threshold*SD</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_13">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>50</y>
+          <width>131</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Meanfilter=0</string>
+        </property>
+       </widget>
+       <widget class="QProgressBar" name="progressBar">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>270</y>
+          <width>120</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_10">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>300</y>
+          <width>121</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>SignalNum:</string>
+        </property>
+       </widget>
       </widget>
+     </widget>
+    </item>
+    <item row="1" column="5">
+     <widget class="AChartView" name="graphicsView">
+      <property name="cursor" stdset="0">
+       <cursorShape>CrossCursor</cursorShape>
+      </property>
      </widget>
     </item>
    </layout>
@@ -570,6 +622,8 @@
     <signal>endchange(QString)</signal>
     <signal>setstart(double)</signal>
     <signal>setend(double)</signal>
+    <signal>setsignum(QString)</signal>
+    <signal>setprocess(int)</signal>
     <slot>open(QString)</slot>
     <slot>back()</slot>
     <slot>setsweep(QString)</slot>
@@ -586,6 +640,8 @@
     <slot>slot1()</slot>
     <slot>startprocess()</slot>
     <slot>home()</slot>
+    <slot>close(bool)</slot>
+    <slot>savesig()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -630,7 +686,7 @@
    <slot>setchannel(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>549</x>
+     <x>581</x>
      <y>52</y>
     </hint>
     <hint type="destinationlabel">
@@ -646,28 +702,12 @@
    <slot>setsweep(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>722</x>
-     <y>52</y>
+     <x>848</x>
+     <y>72</y>
     </hint>
     <hint type="destinationlabel">
      <x>538</x>
      <y>128</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButton</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>graphicsView</receiver>
-   <slot>setmode(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>895</x>
-     <y>51</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>538</x>
-     <y>123</y>
     </hint>
    </hints>
   </connection>
@@ -698,7 +738,7 @@
      <y>448</y>
     </hint>
     <hint type="destinationlabel">
-     <x>268</x>
+     <x>292</x>
      <y>520</y>
     </hint>
    </hints>
@@ -714,7 +754,7 @@
      <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>583</x>
+     <x>908</x>
      <y>520</y>
     </hint>
    </hints>
@@ -726,7 +766,7 @@
    <slot>changex1()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>353</x>
+     <x>518</x>
      <y>519</y>
     </hint>
     <hint type="destinationlabel">
@@ -742,7 +782,7 @@
    <slot>changex2()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>668</x>
+     <x>616</x>
      <y>519</y>
     </hint>
     <hint type="destinationlabel">
@@ -758,8 +798,8 @@
    <slot>additem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1044</x>
-     <y>112</y>
+     <x>1192</x>
+     <y>84</y>
     </hint>
     <hint type="destinationlabel">
      <x>595</x>
@@ -774,8 +814,8 @@
    <slot>delitem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1113</x>
-     <y>117</y>
+     <x>1260</x>
+     <y>84</y>
     </hint>
     <hint type="destinationlabel">
      <x>649</x>
@@ -790,8 +830,8 @@
    <slot>save()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1113</x>
-     <y>503</y>
+     <x>1260</x>
+     <y>470</y>
     </hint>
     <hint type="destinationlabel">
      <x>866</x>
@@ -822,8 +862,8 @@
    <slot>startprocess()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1017</x>
-     <y>275</y>
+     <x>1250</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel">
      <x>916</x>
@@ -831,5 +871,40 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>graphicsView</sender>
+   <signal>setsignum(QString)</signal>
+   <receiver>label_3</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>965</x>
+     <y>325</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1229</x>
+     <y>420</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>graphicsView</sender>
+   <signal>setprocess(int)</signal>
+   <receiver>progressBar</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>855</x>
+     <y>314</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1171</x>
+     <y>360</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <signal>closed()</signal>
+ </slots>
 </ui>

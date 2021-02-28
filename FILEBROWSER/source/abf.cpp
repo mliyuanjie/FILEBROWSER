@@ -39,29 +39,25 @@ ABF::ABF(std::string f, QObject* parent, unsigned int n) : QObject(parent) {
 ABF::~ABF(){
 	if (fn.substr(fn.length() - 3, 3) == "abf")
 		FreeLibrary(module);
-}
-
-void ABF::readData(int c, int s, bool m) {
 	if (data != NULL) {
 		gsl_vector_free(data);
 		data = NULL;
 	}
-	if (data_f != NULL) {
-		gsl_vector_free(data_f);
-		data_f = NULL;
-		filter = false;
-	}
-	int size;
+}
+
+void ABF::readData(int c, int s, bool m) {
+	if (data != NULL) 
+		gsl_vector_free(data);
 	if (!filetype) {
 		FILE* file = fopen(fn.c_str(), "r");
 		fseek(file, sizeof(float), SEEK_END);
 		size = ftell(file);
 		data = gsl_vector_alloc(size);
 		gsl_vector_fread(file, data);
-		double xmin = 0;
-		double xmax = size * Interval / 1000;
-		double ymin = gsl_vector_min(data);
-		double ymax = gsl_vector_max(data);
+		float xmin = 0;
+		float xmax = size * Interval / 1000;
+		double ymin, ymax;
+		gsl_vector_minmax(data, &ymin, &ymax);
 		emit sendAxis(xmin, xmax, ymin - 3 * (ymax - ymin), ymax + 3 * (ymax - ymin));
 		fclose(file);
 		return;
@@ -112,10 +108,10 @@ void ABF::readData(int c, int s, bool m) {
 	*/
 	ABF_Close(hfile, &error);
 	delete[] buffer;
-	double xmin = 0;
-	double xmax = size * Interval / 1000;
-	double ymin = gsl_vector_min(data);
-	double ymax = gsl_vector_max(data);
+	float xmin = 0;
+	float xmax = size * Interval / 1000;
+	double ymin, ymax;
+	gsl_vector_minmax(data, &ymin, &ymax);
 	emit sendAxis(xmin, xmax, ymin - 3 * (ymax - ymin), ymax + 3 * (ymax - ymin));
 	return;
 }
@@ -126,7 +122,7 @@ void ABF::save(QVector<QPointF> point) {
 		fnout.insert(0, fn, 0, fn.size() - 4);
 		std::ofstream file;
 		file.open(fnout, std::ios::binary);
-		int size = data->size;
+		unsigned int size = data->size;
 		float* buffer = new float[size];
 		int j = 0;
 		int i = 0;
@@ -227,44 +223,47 @@ void ABF::save(QVector<QPointF> point) {
 void ABF::draw(float xmin, float xmax) {
 	start_time = xmin;
 	end_time = xmax;
-	int s = xmin * 1000 / Interval;
-	int e = xmax * 1000 / Interval;
-	int n = e-s;
-	int skip = (n / 1500 == 0) ? 1 : n / 1500;
-	int max, min;
-	QVector<QPointF> interVariables;
-	for (int i = s; i < e; i += skip) {
+	unsigned int s = xmin * 1000 / Interval;
+	unsigned int e = xmax * 1000 / Interval;
+	unsigned int n = e-s;
+	unsigned int skip = n / 1500;
+	skip = (skip == 0) ? 1 : skip;
+	unsigned int j;
+	size_t max, min;
+	QVector<QPointF> point;
+	for (unsigned int i = s; i < e; i += skip) {
+		j = (i + skip <= e) ? i + skip : e;
 		gsl_vector_view tmp;
-		if (i + skip > data->size) 
-			tmp = gsl_vector_subvector(data, i, data->size - i);
-		else 
-			tmp = gsl_vector_subvector(data, i, skip);
-		max = gsl_vector_max_index(&tmp.vector) + i;
-		min = gsl_vector_min_index(&tmp.vector) + i;
+		tmp = gsl_vector_subvector(data, i, j-i);
+		gsl_vector_minmax_index(&tmp.vector, &min, &max);
+		min += i;
+		max += i;
 		if (max > min) {
-			interVariables.append(QPointF(min * Interval / 1000, data->data[min]));
-			interVariables.append(QPointF(max * Interval / 1000, data->data[max]));
+			point.append(QPointF(min * Interval / 1000, data->data[min]));
+			point.append(QPointF(max * Interval / 1000, data->data[max]));
 		}
 		else if (min > max) {
-			interVariables.append(QPointF(max * Interval / 1000, data->data[max]));
-			interVariables.append(QPointF(min * Interval / 1000, data->data[min]));
+			point.append(QPointF(max * Interval / 1000, data->data[max]));
+			point.append(QPointF(min * Interval / 1000, data->data[min]));
 		}
 		else {
-			interVariables.append(QPointF(max * Interval / 1000, data->data[max]));
+			point.append(QPointF(max * Interval / 1000, data->data[max]));
 		}
 	}
-	emit sendData(interVariables);
-	if (filter) {
-		int max, min;
+	emit sendData(point);
+		/*
+		unsigned int max, min;
 		QVector<QPointF> interVariables;
-		for (int i = s; i < e; i += skip) {
+		for (unsigned int i = s; i < e; i += skip) {
+			int j =
 			gsl_vector_view tmp;
 			if (i + skip > data->size)
 				tmp = gsl_vector_subvector(data_f, i, data->size - i);
 			else
 				tmp = gsl_vector_subvector(data_f, i, skip);
-			max = gsl_vector_max_index(&tmp.vector) + i;
-			min = gsl_vector_min_index(&tmp.vector) + i;
+			gsl_vector_minmax_index(&tmp.vector, &min, &max);
+			min += i;
+			max += i;
 			if (max > min) {
 				interVariables.append(QPointF(min * Interval / 1000, data_f->data[min]));
 				interVariables.append(QPointF(max * Interval / 1000, data_f->data[max]));
@@ -278,27 +277,47 @@ void ABF::draw(float xmin, float xmax) {
 			}
 		}
 		emit sendData_f(interVariables);
-		QVector<QPointF> interFilter;
-		for (int i = 0; i < sig.size(); i++) {
-			interFilter.append(QPointF(sig[i].first * Interval / 1000, data->data[sig[i].first]));
-			interFilter.append(QPointF(sig[i].second * Interval / 1000, data->data[sig[i].second]));
-		}
-		emit sendSig(interFilter);
-	}
+		*/
 	return;
 }
 
 void ABF::readSignal(float sigma, float freq, float thres) {
-	gsl_vector* tmp = gaussSmooth(data, sigma, freq);
-	if (data_f != NULL) {
-		gsl_vector_free(data_f);
-		data_f = NULL;
-	}	
-	data_f = meanSmooth(tmp, 2000);
-	sig = findPeak(tmp->data, data_f->data, data_f->size, thres);
-	filter = true;
+	gsl_vector* tmp;
+	if (sigma == 0)
+		tmp = meanSmooth(data, freq);
+	else
+		tmp = gaussSmooth(data, sigma, freq);
+	emit sendProcess(50);
+	gsl_vector* data_f = meanSmooth(tmp, 2000);
+	std::vector<std::pair<int, int>> sig = findPeak(tmp->data, data_f->data, data_f->size, thres);
+	QVector<QPointF> point;
+	std::vector<NanoporeSig> sigs;
+	float val;
+	unsigned s, e;
+	for (int i = 0; i < sig.size(); i++) {
+		s = sig[i].first;
+		e = sig[i].second;
+		val = gsl_vector_min(&gsl_vector_subvector(data, s, e - s).vector);
+		point.append(QPointF(s * Interval / 1000, data_f->data[s]));
+		point.append(QPointF(s * Interval / 1000, val));
+		point.append(QPointF(e * Interval / 1000, val));
+		point.append(QPointF(e * Interval / 1000, data_f->data[e]));
+		sigs.push_back(NanoporeSig(i + 1, s * Interval / 1000, e * Interval / 1000, val, (data_f->data[s] + data_f->data[e]) / 2));
+	}
+	emit sendProcess(90);
+	emit sendData_f(point);
 	gsl_vector_free(tmp);
-	draw(start_time, end_time);
+	gsl_vector_free(data_f);
+	std::string fnout = "_sig.csv";
+	fnout.insert(0, fn, 0, fn.size() - 4);
+	std::ofstream file;
+	file.open(fnout);
+	file << "Index,Start(ms),End(ms),Current(pA),Baseline(pA)\n";
+	for (int i = 0; i < sigs.size(); i++) {
+		file << std::to_string(sigs[i].index) + "," + std::to_string(sigs[i].start) + "," + std::to_string(sigs[i].end) + "," + std::to_string(sigs[i].current) + "," + std::to_string(sigs[i].baseline) + "\n";
+	}
+	file.close();
+	emit sendProcess(100);
 }
 
 	

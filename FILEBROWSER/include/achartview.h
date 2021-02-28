@@ -31,14 +31,13 @@ public slots:
     void setchannel(QString s);
     void setsweep(QString s);
     void initui(float x1, float x2, float y1, float y2);
-    void setmode(bool);
     void additem();
     void delitem();
     void save();
     void startprocess();
     void update_d(QVector<QPointF>);
     void update_f(QVector<QPointF>);
-    void update_s(QVector<QPointF>);
+    void currentprocess(int);
 
 signals:
     void setstart(double num);
@@ -47,6 +46,8 @@ signals:
     void loaddata(int c, int s, bool m);
     void loadprocess(float sigma, float freq, float thres);
     void sendsave(QVector<QPointF>);
+    void setsignum(QString);
+    void setprocess(int);
 
 protected:
     void mousePressEvent(QMouseEvent* event);
@@ -56,19 +57,15 @@ protected:
 private:
     QtCharts::QLineSeries* series;
     QtCharts::QLineSeries* series_f;
-    QtCharts::QScatterSeries* series_s;
     QtCharts::QChart* charts;
     QtCharts::QValueAxis* axisx;
     QtCharts::QValueAxis* axisy;
     QRubberBand* rubberBand = NULL;
     int channel = 0;
     int sweep = 1;
-    QString unit;
-    QString filename;
     QThread* thread = NULL;
     std::vector<QPair<float, float>> stx;
     std::vector<QPair<float, float>> sty;
-    bool mode = false;
     double start = 0;
     double end = 0;
     

@@ -17,24 +17,31 @@ void FTreeView::open() {
 }
 
 void FTreeView::mouseDoubleClickEvent(QMouseEvent* event) {
+	emit doubleClicked();
 	QModelIndex index = currentIndex();
 	QFileInfo fileinfo = QFileInfo(model->filePath(index));
+	QDockWidget* dockWidget = this->parent()->parent()->parent()->findChild<QDockWidget*>("fileWidget");
+	delete dockWidget->findChild<QWidget*>("dockWidgetContents");
 	//qDebug()<<fileinfo.fileName();
-	if (fileinfo.suffix() == QString("abf")) {
-		QDockWidget* dockWidget = this->parent()->parent()->parent()->findChild<QDockWidget*>("fileWidget");
-		if (dockWidget->windowTitle() != "ABF") {
-			Ui::ABFDockWidget ui;
-			ui.setupUi(dockWidget);
-		}
+	if (fileinfo.suffix() == QString("abf") || fileinfo.suffix() == QString("dat")) {
+		Ui::ABFDockWidget ui;
+		ui.setupUi(dockWidget);
 		dockWidget->findChild<QWidget*>("dockWidgetContents")->findChild<AChartView*>("graphicsView")->open(fileinfo.filePath());
 	}
-	else if (fileinfo.suffix() == QString("dat")) {
-		QDockWidget* dockWidget = this->parent()->parent()->parent()->findChild<QDockWidget*>("fileWidget");
-		if (dockWidget->windowTitle() != "ABF") {
-			Ui::ABFDockWidget ui;
-			ui.setupUi(dockWidget);
+	else {
+		QFile file(fileinfo.filePath());
+		if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+			return;
+		Ui::DockWidget ui;
+		ui.setupUi(dockWidget);
+		QString str;
+		while (!file.atEnd())
+		{
+			QByteArray line = file.readLine();
+			str.append(QString(line));
 		}
-		dockWidget->findChild<QWidget*>("dockWidgetContents")->findChild<AChartView*>("graphicsView")->open(fileinfo.filePath());
+		dockWidget->findChild<QWidget*>("dockWidgetContents")->findChild<QTextBrowser*>("textBrowser")->setText(str);
 	}
+	
 	return;
 }

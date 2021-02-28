@@ -58,7 +58,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QStringLiteral("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1290, 21));
+        menubar->setGeometry(QRect(0, 0, 1290, 30));
         menuFile = new QMenu(menubar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         MainWindow->setMenuBar(menubar);
@@ -101,7 +101,7 @@ public:
         retranslateUi(MainWindow);
         QObject::connect(treeView, SIGNAL(rootpath(QString)), lineEdit, SLOT(setText(QString)));
         QObject::connect(actionOpen, SIGNAL(triggered()), treeView, SLOT(open()));
-        QObject::connect(treeView, SIGNAL(doubleClicked(QModelIndex)), fileWidget, SLOT(show()));
+        QObject::connect(treeView, SIGNAL(doubleClicked()), fileWidget, SLOT(show()));
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi

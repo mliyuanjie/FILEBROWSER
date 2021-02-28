@@ -26,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>1290</width>
-     <height>21</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -100,6 +100,7 @@
    <slots>
     <signal>rootpath(QString)</signal>
     <signal>showabf(QString)</signal>
+    <signal>doubleClicked()</signal>
     <slot>open()</slot>
    </slots>
   </customwidget>
@@ -118,7 +119,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>85</x>
-     <y>71</y>
+     <y>97</y>
     </hint>
    </hints>
   </connection>
@@ -140,17 +141,17 @@
   </connection>
   <connection>
    <sender>treeView</sender>
-   <signal>doubleClicked(QModelIndex)</signal>
+   <signal>doubleClicked()</signal>
    <receiver>fileWidget</receiver>
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>205</x>
-     <y>208</y>
+     <x>217</x>
+     <y>311</y>
     </hint>
     <hint type="destinationlabel">
-     <x>353</x>
-     <y>221</y>
+     <x>355</x>
+     <y>326</y>
     </hint>
    </hints>
   </connection>

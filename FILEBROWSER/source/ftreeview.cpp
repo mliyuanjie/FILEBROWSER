@@ -1,4 +1,5 @@
 #include <QtWidgets/QFileDialog>
+#include <QtWidgets/qmenu.h>
 #include <QtCore/qdebug.h>
 #include <QtCore/qfileinfo.h>
 #include <QtWidgets/QDockWidget>
@@ -7,6 +8,7 @@
 FTreeView::FTreeView(QWidget* parent) :
 	QTreeView(parent) {
 	model = new QFileSystemModel();
+	model->setReadOnly(false);
 	QTreeView::setModel(model);
 } 
 
@@ -44,4 +46,30 @@ void FTreeView::mouseDoubleClickEvent(QMouseEvent* event) {
 	}
 	
 	return;
+}
+
+void FTreeView::contextMenuEvent(QContextMenuEvent* event)
+{
+	QMenu* popMenu = new QMenu(this);
+	QModelIndex index = currentIndex();
+	QFileInfo fileinfo = QFileInfo(model->filePath(index));
+	if (fileinfo.isDir())
+		return;
+	// qDebug()<<"right:"<<i;
+	QAction* ren = new QAction(QObject::tr("Rename"), this);
+	QAction* del = new QAction(QObject::tr("Delete"), this);
+	popMenu->addAction(ren);
+	popMenu->addAction(del);
+	connect(ren, SIGNAL(triggered()), this, SLOT(renamefile()));
+	connect(del, SIGNAL(triggered()), this, SLOT(deletefile()));
+	popMenu->exec(QCursor::pos());
+}
+
+void FTreeView::renamefile() {
+	QModelIndex index = currentIndex();
+	edit(index);
+}
+
+void FTreeView::deletefile() {
+	model->remove(currentIndex());
 }

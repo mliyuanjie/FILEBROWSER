@@ -78,7 +78,7 @@ public:
 
         treeView = new FTreeView(dockWidgetContents);
         treeView->setObjectName(QStringLiteral("treeView"));
-        treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
+        treeView->setContextMenuPolicy(Qt::DefaultContextMenu);
 
         verticalLayout->addWidget(treeView);
 

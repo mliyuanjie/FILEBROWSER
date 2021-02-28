@@ -14,6 +14,8 @@ public:
 	FTreeView(QWidget* parent);
 public slots:
 	void open();
+	void renamefile();
+	void deletefile();
 
 signals:
 	void rootpath(QString fn);
@@ -25,5 +27,6 @@ private:
 
 protected:
 	void mouseDoubleClickEvent(QMouseEvent* event);
+	void contextMenuEvent(QContextMenuEvent* event);
 };
 #endif // !FTREEVIEW_H

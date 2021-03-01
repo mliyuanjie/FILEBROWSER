@@ -30,11 +30,11 @@ std::vector<std::pair<int, int>> findPeak(double* x, double* b, size_t size, int
         if (mean > 0) {
             if (!flag && b[i] - x[i] > t * sd) {
                 j = i;
-                while (!(j < 1 || abs(b[j] - x[j]) < sd && j > 1 && x[j] >= x[j - 1] && x[j] >= x[j + 1]))
+                while (!(j < 1 || abs(b[j] - x[j]) < sd))
                     j--;
                 flag = true;
             }
-            if (flag && abs(b[j] - b[i]) < 0.8 * sd && abs(b[i] - x[i]) < sd && i < size - 1 && x[i] >= x[i - 1] && x[i] >= x[i + 1]) {
+            if (flag && abs(b[j] - b[i]) < 0.8 * sd && abs(b[i] - x[i]) < sd) {
                 flag = false;
                 out.push_back(std::pair<int, int>(j, i));
             }        
@@ -42,11 +42,11 @@ std::vector<std::pair<int, int>> findPeak(double* x, double* b, size_t size, int
         else {
             if (!flag && x[i] - b[i] > t * sd) {
                 j = i;
-                while (!(j < 1 || abs(b[j] - x[j]) < sd && j > 1 && x[j] <= x[j - 1] && x[j] <= x[j + 1]))
+                while (!(j < 1 || abs(b[j] - x[j]) < sd))
                     j--;
                 flag = true;
             }
-            if (flag && abs(b[j] - b[i]) < sd && abs(b[i] - x[i]) < sd && i < size - 1 && x[i] <= x[i - 1] && x[i] <= x[i + 1]) {
+            if (flag && abs(b[j] - b[i]) < sd && abs(b[i] - x[i]) < sd) {
                 flag = false;
                 out.push_back(std::pair<int, int>(j, i));
             }

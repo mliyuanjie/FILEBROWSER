@@ -1,4 +1,5 @@
 #include <QtWidgets/QFileDialog>
+#include <QtWidgets/qmessagebox.h>
 #include <QtWidgets/qmenu.h>
 #include <QtCore/qdebug.h>
 #include <QtCore/qfileinfo.h>
@@ -71,5 +72,19 @@ void FTreeView::renamefile() {
 }
 
 void FTreeView::deletefile() {
-	model->remove(currentIndex());
+	QMessageBox msgBox;
+	msgBox.setText(model->filePath(currentIndex()));
+	msgBox.setInformativeText("Are you sure to delete it?");
+	msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+	msgBox.setDefaultButton(QMessageBox::No);
+	int ret = msgBox.exec();
+	switch (ret) {
+	case QMessageBox::Yes:
+		model->remove(currentIndex());
+	case QMessageBox::No:
+		break;
+	default:
+		break;
+	}
+	return;
 }

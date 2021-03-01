@@ -49,17 +49,24 @@ void ABF::readData(int c, int s, bool m) {
 	if (data != NULL) 
 		gsl_vector_free(data);
 	if (!filetype) {
-		FILE* file = fopen(fn.c_str(), "r");
-		fseek(file, sizeof(float), SEEK_END);
-		size = ftell(file);
+		std::ifstream file;
+		file.open(fn, std::ios::binary);
+		file.seekg(0, std::ios_base::end);
+		size = file.tellg() / sizeof(float);
+		file.seekg(0, std::ios::beg);
+		float* buffer = new float[size];
+		file.read(reinterpret_cast<char*>(buffer), size * sizeof(float));
+		file.close();
 		data = gsl_vector_alloc(size);
-		gsl_vector_fread(file, data);
+		for (int i = 0; i < size; i++) {
+			gsl_vector_set(data, i, buffer[i]);
+		}
+		delete[] buffer;
 		float xmin = 0;
 		float xmax = size * Interval / 1000;
 		double ymin, ymax;
 		gsl_vector_minmax(data, &ymin, &ymax);
 		emit sendAxis(xmin, xmax, ymin - 3 * (ymax - ymin), ymax + 3 * (ymax - ymin));
-		fclose(file);
 		return;
 	}
 	ABF_ReadOpen(fn.c_str(), &hfile, ABF_DATAFILE, &fh, &maxsamples, &maxepi, &error);
@@ -146,9 +153,9 @@ void ABF::save(QVector<QPointF> point) {
 		delete[] buffer;
 		return;
 	}
-	if (fh.nOperationMode != 3) {
-		return;
-	}
+	//if (fh.nOperationMode != 3) {
+	//	return;
+	//}
 	int phfile = 0;
 	std::string fnout = "_cut.abf";
 	fnout.insert(0, fn, 0, fn.size() - 4);
@@ -223,8 +230,8 @@ void ABF::save(QVector<QPointF> point) {
 void ABF::draw(float xmin, float xmax) {
 	start_time = xmin;
 	end_time = xmax;
-	unsigned int s = xmin * 1000 / Interval;
-	unsigned int e = xmax * 1000 / Interval;
+	unsigned int s = (xmin * 1000 / Interval >= 0) ? xmin * 1000 / Interval : 0;
+	unsigned int e = (xmax * 1000 / Interval <= data->size && xmax * 1000 / Interval >=0) ? xmax * 1000 / Interval : data->size;
 	unsigned int n = e-s;
 	unsigned int skip = n / 1500;
 	skip = (skip == 0) ? 1 : skip;
@@ -289,7 +296,8 @@ void ABF::readSignal(float sigma, float freq, float thres) {
 		tmp = gaussSmooth(data, sigma, freq);
 	emit sendProcess(50);
 	gsl_vector* data_f = meanSmooth(tmp, 2000);
-	std::vector<std::pair<int, int>> sig = findPeak(tmp->data, data_f->data, data_f->size, thres);
+	float mean, sd;
+	std::vector<std::pair<int, int>> sig = findPeak(tmp->data, data_f->data, data_f->size, thres, sd, mean);
 	QVector<QPointF> point;
 	std::vector<NanoporeSig> sigs;
 	float val;
@@ -297,7 +305,10 @@ void ABF::readSignal(float sigma, float freq, float thres) {
 	for (int i = 0; i < sig.size(); i++) {
 		s = sig[i].first;
 		e = sig[i].second;
-		val = gsl_vector_min(&gsl_vector_subvector(data, s, e - s).vector);
+		if (data->data[s] < 0)
+			val = gsl_vector_max(&gsl_vector_subvector(data, s, e - s).vector);
+		else 
+			val = gsl_vector_min(&gsl_vector_subvector(data, s, e - s).vector);
 		point.append(QPointF(s * Interval / 1000, data_f->data[s]));
 		point.append(QPointF(s * Interval / 1000, val));
 		point.append(QPointF(e * Interval / 1000, val));
@@ -305,7 +316,7 @@ void ABF::readSignal(float sigma, float freq, float thres) {
 		sigs.push_back(NanoporeSig(i + 1, s * Interval / 1000, e * Interval / 1000, val, (data_f->data[s] + data_f->data[e]) / 2));
 	}
 	emit sendProcess(90);
-	emit sendData_f(point);
+	emit sendData_f(point, mean, sd);
 	gsl_vector_free(tmp);
 	gsl_vector_free(data_f);
 	std::string fnout = "_sig.csv";

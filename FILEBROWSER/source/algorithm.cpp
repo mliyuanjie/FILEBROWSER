@@ -20,22 +20,38 @@ gsl_vector* meanSmooth(gsl_vector* x, int w) {
 }
 
 
-std::vector<std::pair<int, int>> findPeak(double* x, double* b, size_t size, int t) {
+std::vector<std::pair<int, int>> findPeak(double* x, double* b, size_t size, int t, float& sd, float& mean) {
     std::vector<std::pair<int, int>> out;
-    float sd = gsl_stats_sd(x, 1, size);
+    sd = gsl_stats_sd(x, 1, size);
+    mean = gsl_stats_mean(x, 0, size);
     unsigned int j;
     bool flag = false;
     for (int i = 0; i < size; i++) {
-        if (!flag && abs(b[i]) - abs(x[i]) > t * sd) {
-            j = i;
-            while (!(abs(x[j] - b[j]) < sd && j > 1 && x[j] >= x[j - 1] && x[j] >= x[j + 1])) 
-                j--;               
-            flag = true;
+        if (mean > 0) {
+            if (!flag && b[i] - x[i] > t * sd) {
+                j = i;
+                while (!(j < 1 || abs(b[j] - x[j]) < sd && j > 1 && x[j] >= x[j - 1] && x[j] >= x[j + 1]))
+                    j--;
+                flag = true;
+            }
+            if (flag && abs(b[j] - b[i]) < 0.8 * sd && abs(b[i] - x[i]) < sd && i < size - 1 && x[i] >= x[i - 1] && x[i] >= x[i + 1]) {
+                flag = false;
+                out.push_back(std::pair<int, int>(j, i));
+            }        
         }
-        if (flag && abs(b[j] - b[i]) < 0.5 * sd && abs(b[i]) - abs(x[i]) < sd  && i < size - 1 && x[i] >= x[i - 1] && x[i] >= x[i + 1]) {
-            flag = false;
-            out.push_back(std::pair<int, int>(j, i));
+        else {
+            if (!flag && x[i] - b[i] > t * sd) {
+                j = i;
+                while (!(j < 1 || abs(b[j] - x[j]) < sd && j > 1 && x[j] <= x[j - 1] && x[j] <= x[j + 1]))
+                    j--;
+                flag = true;
+            }
+            if (flag && abs(b[j] - b[i]) < sd && abs(b[i] - x[i]) < sd && i < size - 1 && x[i] <= x[i - 1] && x[i] <= x[i + 1]) {
+                flag = false;
+                out.push_back(std::pair<int, int>(j, i));
+            }
         }
+        
     }
     return out;
 }

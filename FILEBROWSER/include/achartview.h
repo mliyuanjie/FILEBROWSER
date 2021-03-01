@@ -36,7 +36,7 @@ public slots:
     void save();
     void startprocess();
     void update_d(QVector<QPointF>);
-    void update_f(QVector<QPointF>);
+    void update_f(QVector<QPointF>, float, float);
     void currentprocess(int);
 
 signals:
@@ -48,6 +48,9 @@ signals:
     void sendsave(QVector<QPointF>);
     void setsignum(QString);
     void setprocess(int);
+    void setmean(QString);
+    void setSD(QString);
+    void setcurrent(double);
 
 protected:
     void mousePressEvent(QMouseEvent* event);

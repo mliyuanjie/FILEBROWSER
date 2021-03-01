@@ -39,6 +39,7 @@ AChartView::AChartView(QWidget* parent) :
 AChartView::~AChartView() {
     thread->quit();
     thread = NULL;
+    deleteLater();
 }
 
 void AChartView::setchannel(QString s) {
@@ -65,7 +66,7 @@ void AChartView::mousePressEvent(QMouseEvent* event) {
 }
 
 void AChartView::mouseMoveEvent(QMouseEvent* event) {
-    rubberBand->setGeometry(QRect(rubberBand->pos(), event->pos()));
+    rubberBand->setGeometry(QRect(rubberBand->pos(), event->pos()));    
 }
 
 void AChartView::mouseReleaseEvent(QMouseEvent* event) {
@@ -78,6 +79,7 @@ void AChartView::mouseReleaseEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
         end = pf.x();
         emit setend(end);
+        emit setcurrent(pf.y());
     }
     else if (event->button() == Qt::RightButton) {
         if (pf.x() < stx.back().second && pf.y() > sty.back().first) {
@@ -156,8 +158,10 @@ void AChartView::update_d(QVector<QPointF> data) {
     return;
 }
 
-void AChartView::update_f(QVector<QPointF> data) {
+void AChartView::update_f(QVector<QPointF> data, float mean, float sd) {
     emit setsignum(QString().setNum(data.size() / 4));
+    emit setmean(QString().setNum(mean));
+    emit setSD(QString().setNum(sd));
     series_f->replace(data);
     return;
 }
@@ -187,7 +191,7 @@ void AChartView::open(QString fn) {
     connect(abf, SIGNAL(sendAxis(float, float, float, float)), this, SLOT(initui(float, float, float, float)));
     connect(abf, SIGNAL(sendData(QVector<QPointF>)), this, SLOT(update_d(QVector<QPointF>)));
     connect(this, SIGNAL(loadprocess(float, float, float)), abf, SLOT(readSignal(float, float, float)));
-    connect(abf, SIGNAL(sendData_f(QVector<QPointF>)), this, SLOT(update_f(QVector<QPointF>)));
+    connect(abf, SIGNAL(sendData_f(QVector<QPointF>, float, float)), this, SLOT(update_f(QVector<QPointF>, float, float)));
     connect(this, SIGNAL(sendsave(QVector<QPointF>)), abf, SLOT(save(QVector<QPointF>)));
     connect(abf, SIGNAL(sendProcess(int)), this, SLOT(currentprocess(int)));
     thread->start();
@@ -202,6 +206,7 @@ void AChartView::save() {
     }
     emit sendsave(range);
     pt->clear();
+    pt->removeRow(0);
 }
 
 void AChartView::startprocess() {

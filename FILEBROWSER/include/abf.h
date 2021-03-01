@@ -25,7 +25,7 @@ public slots:
 signals:
 	void sendData(QVector<QPointF>);
 	void sendAxis(float xmin, float xmax, float ymin, float ymax);
-	void sendData_f(QVector<QPointF>);
+	void sendData_f(QVector<QPointF>, float, float);
 	void sendProcess(int);
 
 private:

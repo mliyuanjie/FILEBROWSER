@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1290</width>
+    <width>1200</width>
     <height>535</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1200</width>
+    <height>311</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1200</width>
+    <height>524287</height>
+   </size>
   </property>
   <property name="cursor">
    <cursorShape>ArrowCursor</cursorShape>
@@ -278,13 +290,13 @@
      <widget class="QTabWidget" name="tabWidget">
       <property name="minimumSize">
        <size>
-        <width>160</width>
+        <width>200</width>
         <height>0</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>160</width>
+        <width>200</width>
         <height>16777215</height>
        </size>
       </property>
@@ -342,13 +354,13 @@
          <widget class="QTableWidget" name="tableWidget">
           <property name="minimumSize">
            <size>
-            <width>150</width>
+            <width>170</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>150</width>
+            <width>170</width>
             <height>16777215</height>
            </size>
           </property>
@@ -598,7 +610,7 @@
          <rect>
           <x>20</x>
           <y>270</y>
-          <width>120</width>
+          <width>161</width>
           <height>23</height>
          </rect>
         </property>
@@ -611,7 +623,7 @@
          <rect>
           <x>30</x>
           <y>400</y>
-          <width>121</width>
+          <width>131</width>
           <height>18</height>
          </rect>
         </property>
@@ -637,7 +649,7 @@
          <rect>
           <x>30</x>
           <y>380</y>
-          <width>21</width>
+          <width>31</width>
           <height>16</height>
          </rect>
         </property>
@@ -650,12 +662,12 @@
          <rect>
           <x>80</x>
           <y>360</y>
-          <width>47</width>
-          <height>13</height>
+          <width>101</width>
+          <height>16</height>
          </rect>
         </property>
         <property name="text">
-         <string/>
+         <string>0</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_17">
@@ -663,12 +675,12 @@
          <rect>
           <x>80</x>
           <y>380</y>
-          <width>47</width>
-          <height>13</height>
+          <width>101</width>
+          <height>16</height>
          </rect>
         </property>
         <property name="text">
-         <string/>
+         <string>0</string>
         </property>
        </widget>
       </widget>

@@ -15,7 +15,9 @@ AChartView::AChartView(QWidget* parent) :
     QChartView(parent)
 {
     axisx = new QValueAxis();
+    axisx->setGridLineVisible(false);
     axisy = new QValueAxis();
+    axisy->setGridLineVisible(false);
     series = new QLineSeries();
     series_f = new QLineSeries();
     series->setPen(QPen(Qt::darkBlue, 2)); 
@@ -55,8 +57,6 @@ void AChartView::mousePressEvent(QMouseEvent* event) {
     QPointF pf = mapToScene(p);
     pf = charts->mapFromScene(pf);
     pf = charts->mapToValue(pf);
-    if (pf.x() < stx.back().first || pf.y() > sty.back().second)
-        return;
     if (event->button() == Qt::LeftButton) {
         start = pf.x();
         emit setstart(start);
@@ -80,24 +80,25 @@ void AChartView::mouseReleaseEvent(QMouseEvent* event) {
         end = pf.x();
         emit setend(end);
         emit setcurrent(pf.y());
+        return;
     }
     else if (event->button() == Qt::RightButton) {
-        if (pf.x() < stx.back().second && pf.y() > sty.back().first) {
-            QPair<float, float> x;
-            QPair<float, float> y;
-            x.second = pf.x();
-            y.first = pf.y();
-            pf = mapToScene(rubberBand->pos());
-            pf = charts->mapFromScene(pf);
-            pf = charts->mapToValue(pf);
-            x.first = pf.x();
-            y.second = pf.y();
-            stx.push_back(x);
-            sty.push_back(y);
-            emit getdata(stx.back().first, stx.back().second);
-        }
+        QPair<float, float> x;
+        QPair<float, float> y;
+        x.second = pf.x();
+        y.first = pf.y();
+        pf = mapToScene(rubberBand->pos());
+        pf = charts->mapFromScene(pf);
+        pf = charts->mapToValue(pf);
+        x.first = pf.x();
+        y.second = pf.y();
+        stx.push_back(x);
+        sty.push_back(y);
+        emit getdata(stx.back().first, stx.back().second);
     }
     rubberBand->hide();
+    axisx->setRange(stx.back().first, stx.back().second);
+    axisy->setRange(sty.back().first, sty.back().second);
 }
 
 void AChartView::back() {
@@ -105,6 +106,8 @@ void AChartView::back() {
         return;
     stx.pop_back();
     sty.pop_back();
+    axisx->setRange(stx.back().first, stx.back().second);
+    axisy->setRange(sty.back().first, sty.back().second);
     getdata(stx.back().first, stx.back().second);
 }
 
@@ -153,8 +156,6 @@ void AChartView::delitem() {
 
 void AChartView::update_d(QVector<QPointF> data) {
     series->replace(data);
-    chart()->axisX()->setRange(stx.back().first, stx.back().second);
-    chart()->axisY()->setRange(sty.back().first, sty.back().second);
     return;
 }
 
@@ -169,6 +170,8 @@ void AChartView::update_f(QVector<QPointF> data, float mean, float sd) {
 void AChartView::initui(float x1, float x2, float y1, float y2) {
     axisx->setTitleText(QString("Time(ms)"));
     axisy->setTitleText(QString("Current(pA)"));
+    stx.clear();
+    sty.clear();
     stx.push_back(QPair<float, float>(x1, x2));
     sty.push_back(QPair<float, float>(y1, y2));
     axisx->setRange(x1, x2);

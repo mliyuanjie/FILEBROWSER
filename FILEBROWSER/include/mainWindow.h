@@ -31,9 +31,12 @@ class Ui_MainWindow
 public:
     QAction *actionOpen;
     QAction *actionNew;
+    QAction *actioncheck_signals;
+    QAction *actionfit_signals;
     QWidget *centralwidget;
     QMenuBar *menubar;
     QMenu *menuFile;
+    QMenu *menuTools;
     QStatusBar *statusbar;
     QDockWidget *dockWidget;
     QWidget *dockWidgetContents;
@@ -47,26 +50,34 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1290, 629);
+        MainWindow->resize(1576, 723);
         MainWindow->setMinimumSize(QSize(1000, 588));
         actionOpen = new QAction(MainWindow);
         actionOpen->setObjectName(QStringLiteral("actionOpen"));
         actionNew = new QAction(MainWindow);
         actionNew->setObjectName(QStringLiteral("actionNew"));
+        actioncheck_signals = new QAction(MainWindow);
+        actioncheck_signals->setObjectName(QStringLiteral("actioncheck_signals"));
+        actionfit_signals = new QAction(MainWindow);
+        actionfit_signals->setObjectName(QStringLiteral("actionfit_signals"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QStringLiteral("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1290, 30));
+        menubar->setGeometry(QRect(0, 0, 1576, 30));
         menuFile = new QMenu(menubar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
+        menuTools = new QMenu(menubar);
+        menuTools->setObjectName(QStringLiteral("menuTools"));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QStringLiteral("statusbar"));
         MainWindow->setStatusBar(statusbar);
         dockWidget = new QDockWidget(MainWindow);
         dockWidget->setObjectName(QStringLiteral("dockWidget"));
+        dockWidget->setMinimumSize(QSize(348, 197));
+        dockWidget->setMaximumSize(QSize(348, 524287));
         dockWidgetContents = new QWidget();
         dockWidgetContents->setObjectName(QStringLiteral("dockWidgetContents"));
         verticalLayout = new QVBoxLayout(dockWidgetContents);
@@ -86,7 +97,8 @@ public:
         MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget);
         fileWidget = new QDockWidget(MainWindow);
         fileWidget->setObjectName(QStringLiteral("fileWidget"));
-        fileWidget->setMinimumSize(QSize(1000, 588));
+        fileWidget->setMinimumSize(QSize(1200, 588));
+        fileWidget->setMaximumSize(QSize(1200, 524287));
         fileWidget->setSizeIncrement(QSize(1000, 588));
         fileWidget->setBaseSize(QSize(1000, 588));
         fileWidget->setCursor(QCursor(Qt::CrossCursor));
@@ -96,8 +108,11 @@ public:
         MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(2), fileWidget);
 
         menubar->addAction(menuFile->menuAction());
+        menubar->addAction(menuTools->menuAction());
         menuFile->addAction(actionOpen);
         menuFile->addAction(actionNew);
+        menuTools->addAction(actioncheck_signals);
+        menuTools->addAction(actionfit_signals);
 
         retranslateUi(MainWindow);
         QObject::connect(treeView, SIGNAL(rootpath(QString)), lineEdit, SLOT(setText(QString)));
@@ -112,7 +127,10 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", Q_NULLPTR));
         actionOpen->setText(QApplication::translate("MainWindow", "Open", Q_NULLPTR));
         actionNew->setText(QApplication::translate("MainWindow", "New", Q_NULLPTR));
+        actioncheck_signals->setText(QApplication::translate("MainWindow", "check signals", Q_NULLPTR));
+        actionfit_signals->setText(QApplication::translate("MainWindow", "fit signals", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", Q_NULLPTR));
+        menuTools->setTitle(QApplication::translate("MainWindow", "Tools", Q_NULLPTR));
     } // retranslateUi
 
 };

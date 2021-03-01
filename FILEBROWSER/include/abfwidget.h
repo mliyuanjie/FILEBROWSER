@@ -87,7 +87,9 @@ public:
     {
         if (ABFDockWidget->objectName().isEmpty())
             ABFDockWidget->setObjectName(QStringLiteral("ABFDockWidget"));
-        ABFDockWidget->resize(1290, 535);
+        ABFDockWidget->resize(1200, 535);
+        ABFDockWidget->setMinimumSize(QSize(1200, 311));
+        ABFDockWidget->setMaximumSize(QSize(1200, 524287));
         ABFDockWidget->setCursor(QCursor(Qt::ArrowCursor));
         dockWidgetContents = new QWidget();
         dockWidgetContents->setObjectName(QStringLiteral("dockWidgetContents"));
@@ -212,8 +214,8 @@ public:
 
         tabWidget = new QTabWidget(dockWidgetContents);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
-        tabWidget->setMinimumSize(QSize(160, 0));
-        tabWidget->setMaximumSize(QSize(160, 16777215));
+        tabWidget->setMinimumSize(QSize(200, 0));
+        tabWidget->setMaximumSize(QSize(200, 16777215));
         tab = new QWidget();
         tab->setObjectName(QStringLiteral("tab"));
         verticalLayout_2 = new QVBoxLayout(tab);
@@ -241,8 +243,8 @@ public:
         if (tableWidget->columnCount() < 2)
             tableWidget->setColumnCount(2);
         tableWidget->setObjectName(QStringLiteral("tableWidget"));
-        tableWidget->setMinimumSize(QSize(150, 0));
-        tableWidget->setMaximumSize(QSize(150, 16777215));
+        tableWidget->setMinimumSize(QSize(170, 0));
+        tableWidget->setMaximumSize(QSize(170, 16777215));
         tableWidget->setLineWidth(1);
         tableWidget->setMidLineWidth(0);
         tableWidget->setGridStyle(Qt::SolidLine);
@@ -317,23 +319,23 @@ public:
         label_13->setGeometry(QRect(20, 50, 131, 18));
         progressBar = new QProgressBar(tab_2);
         progressBar->setObjectName(QStringLiteral("progressBar"));
-        progressBar->setGeometry(QRect(20, 270, 120, 23));
+        progressBar->setGeometry(QRect(20, 270, 161, 23));
         progressBar->setValue(0);
         label_10 = new QLabel(tab_2);
         label_10->setObjectName(QStringLiteral("label_10"));
-        label_10->setGeometry(QRect(30, 400, 121, 18));
+        label_10->setGeometry(QRect(30, 400, 131, 18));
         label_14 = new QLabel(tab_2);
         label_14->setObjectName(QStringLiteral("label_14"));
         label_14->setGeometry(QRect(30, 360, 47, 13));
         label_15 = new QLabel(tab_2);
         label_15->setObjectName(QStringLiteral("label_15"));
-        label_15->setGeometry(QRect(30, 380, 21, 16));
+        label_15->setGeometry(QRect(30, 380, 31, 16));
         label_16 = new QLabel(tab_2);
         label_16->setObjectName(QStringLiteral("label_16"));
-        label_16->setGeometry(QRect(80, 360, 47, 13));
+        label_16->setGeometry(QRect(80, 360, 101, 16));
         label_17 = new QLabel(tab_2);
         label_17->setObjectName(QStringLiteral("label_17"));
-        label_17->setGeometry(QRect(80, 380, 47, 13));
+        label_17->setGeometry(QRect(80, 380, 101, 16));
         tabWidget->addTab(tab_2, QString());
 
         gridLayout->addWidget(tabWidget, 0, 6, 3, 1);
@@ -410,8 +412,8 @@ public:
         label_10->setText(QApplication::translate("ABFDockWidget", "SignalNum:", Q_NULLPTR));
         label_14->setText(QApplication::translate("ABFDockWidget", "Mean:", Q_NULLPTR));
         label_15->setText(QApplication::translate("ABFDockWidget", "SD:", Q_NULLPTR));
-        label_16->setText(QString());
-        label_17->setText(QString());
+        label_16->setText(QApplication::translate("ABFDockWidget", "0", Q_NULLPTR));
+        label_17->setText(QApplication::translate("ABFDockWidget", "0", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("ABFDockWidget", "Tab 2", Q_NULLPTR));
     } // retranslateUi
 

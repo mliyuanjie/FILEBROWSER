@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1290</width>
-    <height>629</height>
+    <width>1576</width>
+    <height>723</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -25,7 +25,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1290</width>
+     <width>1576</width>
      <height>30</height>
     </rect>
    </property>
@@ -36,10 +36,30 @@
     <addaction name="actionOpen"/>
     <addaction name="actionNew"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actioncheck_signals"/>
+    <addaction name="actionfit_signals"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuTools"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="dockWidget">
+   <property name="minimumSize">
+    <size>
+     <width>348</width>
+     <height>197</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>348</width>
+     <height>524287</height>
+    </size>
+   </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
@@ -61,8 +81,14 @@
   <widget class="QDockWidget" name="fileWidget">
    <property name="minimumSize">
     <size>
-     <width>1000</width>
+     <width>1200</width>
      <height>588</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>1200</width>
+     <height>524287</height>
     </size>
    </property>
    <property name="sizeIncrement">
@@ -93,6 +119,16 @@
   <action name="actionNew">
    <property name="text">
     <string>New</string>
+   </property>
+  </action>
+  <action name="actioncheck_signals">
+   <property name="text">
+    <string>check signals</string>
+   </property>
+  </action>
+  <action name="actionfit_signals">
+   <property name="text">
+    <string>fit signals</string>
    </property>
   </action>
  </widget>

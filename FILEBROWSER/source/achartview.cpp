@@ -80,6 +80,7 @@ void AChartView::mouseReleaseEvent(QMouseEvent* event) {
         end = pf.x();
         emit setend(end);
         emit setcurrent(pf.y());
+        rubberBand->hide();
         return;
     }
     else if (event->button() == Qt::RightButton) {

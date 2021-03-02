@@ -319,13 +319,13 @@ void ABF::readSignal(float sigma, float freq, float thres) {
 	emit sendData_f(point, mean, sd);
 	gsl_vector_free(tmp);
 	gsl_vector_free(data_f);
-	std::string fnout = "_sig.csv";
-	fnout.insert(0, fn, 0, fn.size() - 4);
+	std::string fnout = "csv";
+	fnout.insert(0, fn, 0, fn.size() - 3);
 	std::ofstream file;
 	file.open(fnout);
-	file << "Index,Start(ms),End(ms),Current(pA),Baseline(pA)\n";
+	file << "Index Start(ms) End(ms) Current(pA) Baseline(pA)\n";
 	for (int i = 0; i < sigs.size(); i++) {
-		file << std::to_string(sigs[i].index) + "," + std::to_string(sigs[i].start) + "," + std::to_string(sigs[i].end) + "," + std::to_string(sigs[i].current) + "," + std::to_string(sigs[i].baseline) + "\n";
+		file << std::to_string(sigs[i].index) + " " + std::to_string(sigs[i].start) + " " + std::to_string(sigs[i].end) + " " + std::to_string(sigs[i].current) + " " + std::to_string(sigs[i].baseline) + "\n";
 	}
 	file.close();
 	emit sendProcess(100);

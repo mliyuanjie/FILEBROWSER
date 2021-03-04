@@ -188,6 +188,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtUic Include="UI\abfwidget.ui" />
+    <QtUic Include="ui\fitwidget.ui" />
     <QtUic Include="UI\mainWindow.ui">
       <QtUicDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Include</QtUicDir>
       <QtUicDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Include</QtUicDir>
@@ -204,6 +205,7 @@
     <ClCompile Include="source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\nps.h" />
     <ClInclude Include="include\tools.h" />
     <ClInclude Include="include\txtwidget.h" />
     <QtMoc Include="Include\ftreeview.h" />

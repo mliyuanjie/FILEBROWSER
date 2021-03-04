@@ -39,6 +39,9 @@
     <QtUic Include="ui\txtwidget.ui">
       <Filter>Resource Files</Filter>
     </QtUic>
+    <QtUic Include="ui\fitwidget.ui">
+      <Filter>Resource Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\ftreeview.cpp">
@@ -71,6 +74,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\txtwidget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\nps.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

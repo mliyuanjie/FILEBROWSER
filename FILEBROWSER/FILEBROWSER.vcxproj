@@ -203,9 +203,10 @@
     <ClCompile Include="source\algorithm.cpp" />
     <ClCompile Include="Source\ftreeview.cpp" />
     <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\nps.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\nps.h" />
+    <QtMoc Include="include\nps.h" />
     <ClInclude Include="include\tools.h" />
     <ClInclude Include="include\txtwidget.h" />
     <QtMoc Include="Include\ftreeview.h" />

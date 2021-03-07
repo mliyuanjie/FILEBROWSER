@@ -28,6 +28,7 @@ class NPS: QObject {
 public slots:
 	void trace(float, float);
 	void setCounter(int);
+	void hist(int, int);
 	void multiFit();
 	void singleFit(int);
 	void save();

@@ -1,6 +1,7 @@
 #include "nps.h" 
 #include <Python.h>
 #include <ndarrayobject.h>
+#include <gsl/gsl_histogram.h>
 
 void NPS::load(std::string& fn) {
 	std::ifstream file;
@@ -168,4 +169,20 @@ void NPS::multiFit() {
 	Py_DECREF(pArgs);
 	Py_Finalize();
 	return;
+}
+
+void NPS::hist(int n, int bin) {
+	if (n >= 0) {
+		if (sigtodata[n] != counter) {
+			setCounter(counter);
+		}
+		Peak peak = siglist[n];
+		gsl_histogram* h = gsl_histogram_alloc(bin);
+		double max = *std::max_element(data.begin() + peak.start, data.begin() + peak.end);
+		double min = *std::min_element(data.begin() + peak.start, data.begin() + peak.end);
+		gsl_histogram_set_ranges_uniform(h, min, max);
+		for (int i = peak.start; i <= peak.end; i++)
+			gsl_histogram_increment(h, data[i]);
+
+	}
 }

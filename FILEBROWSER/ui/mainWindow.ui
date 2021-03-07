@@ -43,8 +43,16 @@
     <addaction name="actioncheck_signals"/>
     <addaction name="actionfit_signals"/>
    </widget>
+   <widget class="QMenu" name="menuPython">
+    <property name="title">
+     <string>Python</string>
+    </property>
+    <addaction name="actionTerminal"/>
+    <addaction name="actionSetting"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTools"/>
+   <addaction name="menuPython"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="dockWidget">
@@ -131,6 +139,16 @@
     <string>fit signals</string>
    </property>
   </action>
+  <action name="actionTerminal">
+   <property name="text">
+    <string>Terminal</string>
+   </property>
+  </action>
+  <action name="actionSetting">
+   <property name="text">
+    <string>Setting</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -190,8 +208,8 @@
      <y>311</y>
     </hint>
     <hint type="destinationlabel">
-     <x>355</x>
-     <y>326</y>
+     <x>731</x>
+     <y>356</y>
     </hint>
    </hints>
   </connection>

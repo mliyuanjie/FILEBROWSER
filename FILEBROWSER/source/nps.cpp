@@ -6,24 +6,21 @@
 void NPS::load(std::string& fn) {
 	std::ifstream file;
 	file.open(fn, std::ios::binary);
-	size_t number, length, size;
-	file.read(reinterpret_cast<char*>(&number), sizeof(size_t));
-	int k = 0;
-	for (int i = 0; i < number; i++) {
-		file.read(reinterpret_cast<char*>(&length), sizeof(size_t));
+	size_t length, size;
+	int j = 0;
+	while (file.read(reinterpret_cast<char*>(&length), sizeof(size_t))) {
 		char* filename = new char[length];
 		file.read(filename, length);
-		file.read(reinterpret_cast<char*>(&size), sizeof(size_t));
-		Peak peak;
-		for (int j = 0; j < size; j++) {
-			file.read(reinterpret_cast<char*>(&peak), sizeof(Peak));
-			siglist.push_back(peak);
-			sigtodata[k] = i;
-			k++;
-		}
 		filelist.push_back(std::string(filename));
-		datatosig[i] = std::pair<int, int>(k-size, size);
+		file.read(reinterpret_cast<char*>(&size), sizeof(size_t));
+		Peak* buffer = new Peak[size];
+		file.read(reinterpret_cast<char*>(buffer), size * sizeof(Peak));
+		for (int i = 0; i < size; i++) 
+			siglist.push_back(buffer[i]);
+		mymap[j] = std::pair<int, int>(j-size, size);
+		j++;
 		delete[] filename;
+		delete[] buffer;
 	}
 	file.close();
 	if (filelist.size() > 0) {

@@ -42,8 +42,7 @@ signals:
 private:
 	std::vector<std::string> filelist;
 	std::vector<Peak> siglist;
-	std::unordered_map<int, std::pair<int,int>> datatosig;
-	std::unordered_map<int, int> sigtodata;
+	std::unordered_map<int, std::pair<int,int>> mymap;
 	std::vector<float> data;
 	float interval;
 	int counter = -1;

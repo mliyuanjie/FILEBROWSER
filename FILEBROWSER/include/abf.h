@@ -21,6 +21,7 @@ public slots:
 	void readSignal(float sigma, float freq, float thres);
 	void save(QVector<QPointF>);
 	void draw(float xmin, float xmax);
+	void savenps();
 
 signals:
 	void sendData(QVector<QPointF>);
@@ -51,6 +52,7 @@ private:
 	bool filetype;
 	float Interval;
 	gsl_vector* data = NULL;
+	std::vector<NanoporeSig> sigs;
 	//ABFTemp temp;
 	size_t size;
 	float start_time;
@@ -82,6 +84,11 @@ struct NanoporeSig {
 	float end;
 	float current;
 	float baseline;
+	float Imax;
+	float Imin;
+	float volume;
+	float shape;
 };
+
 
 #endif //ABF_H

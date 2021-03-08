@@ -34,6 +34,7 @@ public slots:
     void additem();
     void delitem();
     void save();
+    void savesig();
     void startprocess();
     void update_d(QVector<QPointF>);
     void update_f(QVector<QPointF>, float, float);
@@ -50,6 +51,7 @@ signals:
     void setprocess(int);
     void setmean(QString);
     void setSD(QString);
+    void savenps();
     void setcurrent(double);
 
 protected:

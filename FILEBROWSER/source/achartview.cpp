@@ -198,6 +198,7 @@ void AChartView::open(QString fn) {
     connect(abf, SIGNAL(sendData_f(QVector<QPointF>, float, float)), this, SLOT(update_f(QVector<QPointF>, float, float)));
     connect(this, SIGNAL(sendsave(QVector<QPointF>)), abf, SLOT(save(QVector<QPointF>)));
     connect(abf, SIGNAL(sendProcess(int)), this, SLOT(currentprocess(int)));
+    connect(this, SIGNAL(nps()), abf, SLOT(savenps()));
     thread->start();
     emit loaddata(0, 1, true);
 }
@@ -226,4 +227,8 @@ void AChartView::home() {
 
 void AChartView::currentprocess(int a) {
     emit setprocess(a);
+}
+
+void AChartView::savesig() {
+    emit nps();
 }

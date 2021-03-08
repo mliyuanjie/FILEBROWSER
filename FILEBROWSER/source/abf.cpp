@@ -299,7 +299,6 @@ void ABF::readSignal(float sigma, float freq, float thres) {
 	float mean, sd;
 	std::vector<std::pair<int, int>> sig = findPeak(tmp->data, data_f->data, data_f->size, thres, sd, mean);
 	QVector<QPointF> point;
-	std::vector<NanoporeSig> sigs;
 	float val;
 	unsigned s, e;
 	for (int i = 0; i < sig.size(); i++) {
@@ -331,4 +330,14 @@ void ABF::readSignal(float sigma, float freq, float thres) {
 	emit sendProcess(100);
 }
 
-	
+void ABF::savenps() {
+	std::string filename(fn.substr(0, fn.find_last_of("/")) + std::string("/result.nps"));
+	std::ofstream file;
+	file.open(filename, std::fstream::app | std::ios::binary);
+	size_t size = fn.size();
+	file.write(reinterpret_cast<char*>(&size), sizeof(size_t));
+	file.write(fn.c_str(), size);
+	size = sigs.size();
+	file.write(reinterpret_cast<char*>(sigs.data()), size * sizeof(NanoporeSig));
+	file.close();
+}

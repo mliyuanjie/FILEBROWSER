@@ -58,11 +58,11 @@ protected:
     void mouseReleaseEvent(QMouseEvent* event);
 
 private:
-    QtCharts::QLineSeries* series;
-    QtCharts::QLineSeries* series_f;
-    QtCharts::QChart* charts;
-    QtCharts::QValueAxis* axisx;
-    QtCharts::QValueAxis* axisy;
+    QLineSeries* series;
+    QLineSeries* series_f;
+    QChart* charts;
+    QValueAxis* axisx;
+    QValueAxis* axisy;
     QRubberBand* rubberBand = NULL;
     int channel = 0;
     int sweep = 1;

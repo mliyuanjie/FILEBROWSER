@@ -70,7 +70,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories);$(ProjectDir)/include;B:/python39/include;B:/python39/Lib/site-packages/numpy/core/include/numpy</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories);$(ProjectDir)/include;C:/python39/include;C:/python39/Lib/site-packages/numpy/core/include/numpy</AdditionalIncludeDirectories>
     </ClCompile>
     <QtUic>
       <QtUicDir>$(ProjectDir)/include</QtUicDir>
@@ -204,9 +204,14 @@
     <ClCompile Include="Source\ftreeview.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\nps.cpp" />
+    <ClCompile Include="source\npschartview.cpp" />
+    <ClCompile Include="source\npswidget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\nps.h" />
+    <QtMoc Include="include\npschartview.h" />
+    <ClInclude Include="include\fitwidget.h" />
+    <ClInclude Include="include\npswidget.h" />
     <ClInclude Include="include\tools.h" />
     <ClInclude Include="include\txtwidget.h" />
     <QtMoc Include="Include\ftreeview.h" />

@@ -4,6 +4,8 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/qpushbutton.h>
 #include <QtCore/qthread.h>
+#include <QtWidgets/qlineedit.h>
+#include <QtWidgets/qlabel.h>
 #include "nps.h"
 
 QT_BEGIN_NAMESPACE

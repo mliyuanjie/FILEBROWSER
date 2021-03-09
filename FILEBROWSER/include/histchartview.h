@@ -22,22 +22,10 @@ public slots:
     void initaxis(float, float, float, float);
     void update(QVector<QPointF>);
 
-signals:
-
-protected:
-    void mousePressEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
-    void mouseReleaseEvent(QMouseEvent* event);
-
 private:
-    QLineSeries* series_d;
-    QLineSeries* series_f;
-    QScatterSeries* series_p;
+    QLineSeries* series;
     QChart* charts;
-    QRubberBand* rubberBand = NULL;
-    std::vector<QPair<float, float>> stx;
-    std::vector<QPair<float, float>> sty;
-    double start = 0;
-    double end = 0;
+    QValueAxis* axisx;
+    QValueAxis* axisy;
 };
 #endif // !HISTCHARTVIEW_H

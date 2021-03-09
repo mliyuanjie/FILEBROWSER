@@ -41,7 +41,6 @@ AChartView::AChartView(QWidget* parent) :
 AChartView::~AChartView() {
     thread->quit();
     thread = NULL;
-    deleteLater();
 }
 
 void AChartView::setchannel(QString s) {

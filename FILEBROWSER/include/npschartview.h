@@ -23,9 +23,12 @@ public slots:
     void update_d(QVector<QPointF>);
     void update_f(QVector<QPointF>);
     void update_p(QVector<QPointF>);
+    void back();
+    void home();
 
 signals:
-    
+    void gettrace(float, float);
+
 protected:
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
@@ -34,7 +37,9 @@ protected:
 private:
     QLineSeries* series_d;
     QLineSeries* series_f;
-    QScatterSeries* series_p;
+    QLineSeries* series_p;
+    QValueAxis* axisx;
+    QValueAxis* axisy;
     QChart* charts;
     QRubberBand* rubberBand = NULL;
     std::vector<QPair<float, float>> stx;

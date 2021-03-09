@@ -3,7 +3,7 @@
 #include <ndarrayobject.h>
 #include <gsl/gsl_histogram.h>
 
-void NPS::load(std::string& fn) {
+void NPS::load(std::string fn) {
 	std::ifstream file;
 	file.open(fn, std::ios::binary);
 	size_t length, size;
@@ -17,7 +17,7 @@ void NPS::load(std::string& fn) {
 		file.read(reinterpret_cast<char*>(buffer), size * sizeof(Peak));
 		for (int i = 0; i < size; i++) 
 			siglist.push_back(buffer[i]);
-		mymap[j] = std::pair<int, int>(j-size, size);
+		mymap[j] = std::pair<int, int>(siglist.size() - size, siglist.size());
 		j++;
 		delete[] filename;
 		delete[] buffer;
@@ -111,6 +111,14 @@ void NPS::loaddata() {
 	std::pair<std::vector<float>::iterator, std::vector<float>::iterator> y;
 	y = std::minmax_element(data.begin(), data.end());
 	emit sendaxis(xmin, xmax, *y.first - 3 * (*y.second - *y.first), *y.second + 3 * (*y.second - *y.first));
+	QVector<QPointF> r;
+	for (int i = mymap[counter].first; i < mymap[counter].second; i++) {
+		r.push_back(QPointF(siglist[i].start, siglist[i].currentbase));
+		r.push_back(QPointF(siglist[i].start, siglist[i].currentmax));
+		r.push_back(QPointF(siglist[i].end, siglist[i].currentbase));
+		r.push_back(QPointF(siglist[i].end, siglist[i].currentmax));
+	}
+	emit sendsig(r);
 	return;
 }
 
@@ -121,20 +129,29 @@ void NPS::setCounter(int n) {
 }
 
 void NPS::singleFit(int n) {
-	if (sigtodata[n] != counter) {
-		setCounter(counter);
+	int c = counter;
+	while (n < mymap[c].first || n >= mymap[c].second) {
+		if (n < mymap[c].first)
+			c--;
+		else
+			c++;
+		if (c >= filelist.size() || c < 0)
+			return;
 	}
-	if (!siglist[n].eventtype)
-		return;
+	if (c != counter)
+		setCounter(c);
 	Peak peak = siglist[n];
 	PyObject* pModule, * pFunc, * pArgs, * pValue;
 	Py_Initialize();
 	pModule = PyImport_ImportModule("pyalgorithm");
 	pFunc = PyObject_GetAttrString(pModule, "hist");
-	double* buffer = new double[peak.end - peak.start + 1];
-	for (int i = peak.start; i <= peak.end; i++)
-		buffer[i - peak.start] = data[i];
-	npy_intp dims[1] = { peak.end - peak.start + 1 };
+	size_t start, end;
+	start = peak.start * 1000 / interval;
+	end = peak.end * 1000 / interval;
+	double* buffer = new double[end-start + 1];
+	for (int i = start; i <= end; i++)
+		buffer[i - start] = data[i];
+	npy_intp dims[1] = { end - start + 1 };
 	PyObject* args = PyArray_SimpleNewFromData(1, dims, NPY_FLOAT64, (void*)buffer);
 	pArgs = PyTuple_New(1);
 	PyTuple_SetItem(pArgs, 0, args);
@@ -150,8 +167,7 @@ void NPS::singleFit(int n) {
 void NPS::multiFit() {
 	std::vector<double> buffer;
 	for (int i = 0; i < siglist.size(); i++) 
-		if (siglist[i].eventtype)
-			buffer.push_back(siglist[i].currentmax);
+		buffer.push_back(siglist[i].currentmax);
 	PyObject* pModule, * pFunc, * pArgs, * pValue;
 	Py_Initialize();
 	pModule = PyImport_ImportModule("pyalgorithm");
@@ -170,16 +186,72 @@ void NPS::multiFit() {
 
 void NPS::hist(int n, int bin) {
 	if (n >= 0) {
-		if (sigtodata[n] != counter) {
-			setCounter(counter);
+		int c = counter;
+		while (n < mymap[c].first || n >= mymap[c].second) {
+			if (n < mymap[c].first)
+				c--;
+			else
+				c++;
+			if (c >= filelist.size() || c < 0)
+				return;
 		}
+		if (c != counter)
+			setCounter(c);
 		Peak peak = siglist[n];
 		gsl_histogram* h = gsl_histogram_alloc(bin);
-		double max = *std::max_element(data.begin() + peak.start, data.begin() + peak.end);
-		double min = *std::min_element(data.begin() + peak.start, data.begin() + peak.end);
+		size_t start, end;
+		start = peak.start * 1000 / interval;
+		end = peak.end * 1000 / interval;
+		double max = (peak.currentbase - *std::max_element(data.begin() + start, data.begin() + end + 1)) / peak.currentbase;
+		double min = (peak.currentbase - *std::min_element(data.begin() + start, data.begin() + end + 1)) / peak.currentbase;
+		if (max < min)
+			gsl_histogram_set_ranges_uniform(h, max, min);
+		else 
+			gsl_histogram_set_ranges_uniform(h, min, max);
+		for (int i = start; i <= end; i++)
+			gsl_histogram_increment(h, (peak.currentbase - data[i]) / peak.currentbase);
+		QVector<QPointF> r;
+		for (int i = 0; i < h->n; i++) {
+			r.push_back(QPointF(h->range[i], 0));
+			r.push_back(QPointF(h->range[i], h->bin[i]));
+			r.push_back(QPointF(h->range[i+1], h->bin[i]));
+			r.push_back(QPointF(h->range[i+1], 0));
+		}
+		emit sendhist(r);
+		QVector<QPointF> r2;
+		r2.push_back(QPointF(peak.start, peak.currentbase));
+		r2.push_back(QPointF(peak.start, peak.currentmax));
+		r2.push_back(QPointF(peak.end, peak.currentbase));
+		r2.push_back(QPointF(peak.end, peak.currentmax));
+		emit sendcursig(r2);
+		gsl_histogram_free(h);
+	}
+	else {
+		std::vector<double> multievent;
+		double max, min;
+		for (int i = 0; i < siglist.size(); i++) {
+			multievent.push_back((siglist[i].currentbase - siglist[i].currentmax) / siglist[i].currentbase);
+			if (i == 0) {
+				max = multievent[0];
+				min = multievent[0];
+			}
+			else {
+				max = (max < multievent[i]) ? multievent[i] : max;
+				min = (min > multievent[i]) ? multievent[i] : min;
+			}
+		}
+		gsl_histogram* h = gsl_histogram_alloc(bin);
 		gsl_histogram_set_ranges_uniform(h, min, max);
-		for (int i = peak.start; i <= peak.end; i++)
-			gsl_histogram_increment(h, data[i]);
-
+		for (int i = 0; i < multievent.size(); i++)
+			gsl_histogram_increment(h, multievent[i]);
+		QVector<QPointF> r;
+		for (int i = 0; i < h->n; i++) {
+			r.push_back(QPointF(h->range[i], 0));
+			r.push_back(QPointF(h->range[i], h->bin[i]));
+			r.push_back(QPointF(h->range[i + 1], h->bin[i]));
+			r.push_back(QPointF(h->range[i + 1], 0));
+		}
+		emit sendhist(r);
+		gsl_histogram_free(h);
 	}
 }

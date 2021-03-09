@@ -1,5 +1,5 @@
-#ifndef NPSCHARTVIEW_H
-#define NPSCHARTVIEW_H
+#ifndef HISTCHARTVIEW_H
+#define HISTCHARTVIEW_H
 
 #include <QtCharts/QChartView>
 #include <QtWidgets/QRubberBand>
@@ -10,22 +10,20 @@
 
 QT_CHARTS_USE_NAMESPACE
 
-class NPSChartView : public QChartView
+class HistChartView : public QChartView
 {
     Q_OBJECT;
 public:
-    NPSChartView(QWidget* parent);
-    ~NPSChartView();
+    HistChartView(QWidget* parent);
+    ~HistChartView();
 
 public slots:
     //void setFilename(QString s);
-    void initaxis(float x1, float x2, float y1, float y2);
-    void update_d(QVector<QPointF>);
-    void update_f(QVector<QPointF>);
-    void update_p(QVector<QPointF>);
+    void initaxis(float, float, float, float);
+    void update(QVector<QPointF>);
 
 signals:
-    
+
 protected:
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
@@ -42,5 +40,4 @@ private:
     double start = 0;
     double end = 0;
 };
-#endif // !NPSCHARTVIEW_H
-
+#endif // !HISTCHARTVIEW_H

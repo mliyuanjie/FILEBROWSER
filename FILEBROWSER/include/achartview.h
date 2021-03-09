@@ -51,7 +51,7 @@ signals:
     void setprocess(int);
     void setmean(QString);
     void setSD(QString);
-    void savenps();
+    void nps();
     void setcurrent(double);
 
 protected:

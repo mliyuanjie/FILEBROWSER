@@ -2,6 +2,7 @@
 #define NPSWIDGET_H
 
 #include <QtWidgets/QWidget>
+#include <QtWidgets/qpushbutton.h>
 #include <QtCore/qthread.h>
 #include "nps.h"
 

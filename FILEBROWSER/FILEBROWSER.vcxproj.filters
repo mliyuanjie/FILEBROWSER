@@ -68,6 +68,9 @@
     <ClCompile Include="source\npschartview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\histchartview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\mainWindow.h">
@@ -106,6 +109,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="include\npschartview.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="include\histchartview.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

@@ -79,7 +79,7 @@ struct NanoporeSig {
 		current = d;
 		baseline = e;
 	}
-	unsigned index;
+	unsigned int index;
 	float start;
 	float end;
 	float current;

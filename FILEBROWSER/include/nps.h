@@ -11,9 +11,8 @@
 #include "abffiles.h"
 
 struct Peak {
-	bool eventtype;
-	unsigned int start;
-	unsigned int end;
+	float start;
+	float end;
 	float currentmax;
 	float currentbase;
 	float Imax;
@@ -22,7 +21,7 @@ struct Peak {
 	float shape;	
 };
 
-class NPS: QObject {
+class NPS: public QObject {
 	Q_OBJECT;	
 
 public slots:
@@ -33,11 +32,15 @@ public slots:
 	void singleFit(int);
 	void save();
 	void setPhysics(float, float, float, float, float);
-	void load(std::string&);
+	void load(std::string);
 
 signals:
 	void sendtrace(QVector<QPointF>);
+	void sendsig(QVector<QPointF>);
+	void sendhist(QVector<QPointF>);
+	void sendcursig(QVector<QPointF>);
 	void sendaxis(float, float, float, float);
+	void sendhistaxis(float, float, float, float);
 
 private:
 	std::vector<std::string> filelist;

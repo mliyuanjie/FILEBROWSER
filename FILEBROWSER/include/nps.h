@@ -34,8 +34,10 @@ public slots:
 	void load(std::string);
 	void pretrace();
 	void nexttrace();
-	void setIndex(const QString&);
-	void setBin(const QString&);
+	void prehist();
+	void nexthist();
+	void setIndex(int);
+	void setBin(int);
 
 
 signals:

@@ -69,8 +69,6 @@ void AChartView::mouseMoveEvent(QMouseEvent* event) {
 }
 
 void AChartView::mouseReleaseEvent(QMouseEvent* event) {
-    if (rubberBand == NULL)
-        return;
     QPoint p = event->pos();
     QPointF pf = mapToScene(p);
     pf = charts->mapFromScene(pf);

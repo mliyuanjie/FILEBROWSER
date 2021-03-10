@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1108</width>
-    <height>592</height>
+    <width>1200</width>
+    <height>543</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>102</width>
-    <height>311</height>
+    <width>1200</width>
+    <height>470</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -33,16 +33,16 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-10</y>
-      <width>1111</width>
-      <height>581</height>
+      <y>0</y>
+      <width>1201</width>
+      <height>701</height>
      </rect>
     </property>
     <widget class="QPushButton" name="pushButton_2">
      <property name="geometry">
       <rect>
        <x>90</x>
-       <y>10</y>
+       <y>0</y>
        <width>75</width>
        <height>23</height>
       </rect>
@@ -55,53 +55,30 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>40</y>
-       <width>1081</width>
-       <height>201</height>
+       <y>30</y>
+       <width>761</width>
+       <height>441</height>
       </rect>
-     </property>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_3">
-     <property name="geometry">
-      <rect>
-       <x>300</x>
-       <y>250</y>
-       <width>261</width>
-       <height>301</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Result</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_5">
-     <property name="geometry">
-      <rect>
-       <x>1040</x>
-       <y>10</y>
-       <width>51</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Save</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEdit_7">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>250</y>
+       <x>770</x>
+       <y>0</y>
        <width>51</width>
        <height>25</height>
       </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>10</y>
+       <y>0</y>
        <width>75</width>
        <height>23</height>
       </rect>
@@ -110,197 +87,23 @@
       <string>Back</string>
      </property>
     </widget>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="geometry">
-      <rect>
-       <x>890</x>
-       <y>250</y>
-       <width>201</width>
-       <height>301</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>fit:</string>
-     </property>
-     <widget class="QLineEdit" name="lineEdit">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>30</y>
-        <width>71</width>
-        <height>25</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEdit_2">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>70</y>
-        <width>71</width>
-        <height>25</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEdit_3">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>110</y>
-        <width>71</width>
-        <height>25</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEdit_4">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>150</y>
-        <width>71</width>
-        <height>25</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEdit_5">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>190</y>
-        <width>71</width>
-        <height>25</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>81</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Diameter:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>70</y>
-        <width>81</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Diameter:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>110</y>
-        <width>81</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Diameter:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_4">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>150</y>
-        <width>81</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Diameter:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_5">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>190</y>
-        <width>81</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Diameter:</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBox">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>230</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <item>
-       <property name="text">
-        <string>Oblate</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Prolate</string>
-       </property>
-      </item>
-     </widget>
-     <widget class="QPushButton" name="pushButton_7">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>230</y>
-        <width>71</width>
-        <height>34</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>fit</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QToolButton" name="toolButton">
-     <property name="geometry">
-      <rect>
-       <x>980</x>
-       <y>10</y>
-       <width>52</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>...</string>
-     </property>
-    </widget>
     <widget class="HistChartView" name="graphicsView_2">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>280</y>
-       <width>271</width>
-       <height>271</height>
+       <x>770</x>
+       <y>30</y>
+       <width>411</width>
+       <height>441</height>
       </rect>
      </property>
     </widget>
     <widget class="QLabel" name="label_7">
      <property name="geometry">
       <rect>
-       <x>90</x>
-       <y>240</y>
+       <x>860</x>
+       <y>0</y>
        <width>41</width>
-       <height>41</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">
@@ -310,8 +113,8 @@
     <widget class="QLabel" name="label_8">
      <property name="geometry">
       <rect>
-       <x>550</x>
-       <y>10</y>
+       <x>220</x>
+       <y>0</y>
        <width>41</width>
        <height>31</height>
       </rect>
@@ -323,8 +126,8 @@
     <widget class="QLabel" name="label_6">
      <property name="geometry">
       <rect>
-       <x>500</x>
-       <y>10</y>
+       <x>180</x>
+       <y>0</y>
        <width>31</width>
        <height>31</height>
       </rect>
@@ -336,8 +139,8 @@
     <widget class="QLineEdit" name="lineEdit_8">
      <property name="geometry">
       <rect>
-       <x>230</x>
-       <y>250</y>
+       <x>1130</x>
+       <y>0</y>
        <width>51</width>
        <height>25</height>
       </rect>
@@ -349,8 +152,8 @@
     <widget class="QPushButton" name="pushButton_4">
      <property name="geometry">
       <rect>
-       <x>140</x>
-       <y>550</y>
+       <x>990</x>
+       <y>470</y>
        <width>31</width>
        <height>23</height>
       </rect>
@@ -362,8 +165,8 @@
     <widget class="QPushButton" name="pushButton_3">
      <property name="geometry">
       <rect>
-       <x>110</x>
-       <y>550</y>
+       <x>960</x>
+       <y>470</y>
        <width>31</width>
        <height>23</height>
       </rect>
@@ -375,9 +178,9 @@
     <widget class="QLabel" name="label_9">
      <property name="geometry">
       <rect>
-       <x>190</x>
-       <y>250</y>
-       <width>81</width>
+       <x>1070</x>
+       <y>0</y>
+       <width>51</width>
        <height>21</height>
       </rect>
      </property>
@@ -388,8 +191,8 @@
     <widget class="QLabel" name="label_10">
      <property name="geometry">
       <rect>
-       <x>530</x>
-       <y>10</y>
+       <x>200</x>
+       <y>0</y>
        <width>21</width>
        <height>31</height>
       </rect>
@@ -401,10 +204,10 @@
     <widget class="QLabel" name="label_11">
      <property name="geometry">
       <rect>
-       <x>80</x>
-       <y>240</y>
+       <x>840</x>
+       <y>0</y>
        <width>21</width>
-       <height>41</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">
@@ -414,8 +217,8 @@
     <widget class="QPushButton" name="pushButton_6">
      <property name="geometry">
       <rect>
-       <x>640</x>
-       <y>10</y>
+       <x>370</x>
+       <y>470</y>
        <width>31</width>
        <height>23</height>
       </rect>
@@ -427,8 +230,8 @@
     <widget class="QPushButton" name="pushButton_8">
      <property name="geometry">
       <rect>
-       <x>610</x>
-       <y>10</y>
+       <x>340</x>
+       <y>470</y>
        <width>31</width>
        <height>23</height>
       </rect>
@@ -460,6 +263,10 @@
    <class>HistChartView</class>
    <extends>QGraphicsView</extends>
    <header>histchartview.h</header>
+   <slots>
+    <slot>setindex()</slot>
+    <slot>setbin()</slot>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -493,6 +300,38 @@
     <hint type="destinationlabel">
      <x>141</x>
      <y>85</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit_7</sender>
+   <signal>returnPressed()</signal>
+   <receiver>graphicsView_2</receiver>
+   <slot>setindex()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>801</x>
+     <y>41</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>809</x>
+     <y>110</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit_8</sender>
+   <signal>returnPressed()</signal>
+   <receiver>graphicsView_2</receiver>
+   <slot>setbin()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1155</x>
+     <y>46</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1156</x>
+     <y>78</y>
     </hint>
    </hints>
   </connection>

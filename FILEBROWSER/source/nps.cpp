@@ -45,17 +45,17 @@ void NPS::trace(float xmin, float xmax) {
 	unsigned int skip = n / 1500;
 	skip = (skip == 0) ? 1 : skip;
 	QVector<QPointF> point;
-	for (int i = 0; i < data.size(); i += skip) {
-		if (i + skip > data.size())
+	for (int i = s; i < e; i += skip) {
+		if (i + skip > e)
 			skip = data.size() - i;
-		std::pair<std::vector<float>::iterator, std::vector<float>::iterator> it = std::minmax_element(data.begin(), data.begin() + skip);
+		std::pair<std::vector<float>::iterator, std::vector<float>::iterator> it = std::minmax_element(data.begin() + i, data.begin() + i + skip);
 		if (it.first <= it.second) {
-			point.push_back(QPointF((it.first - data.begin()) * interval / 1000, *it.first));
-			point.push_back(QPointF((it.second - data.begin()) * interval / 1000, *it.second));
+			point.append(QPointF((it.first - data.begin()) * interval / 1000, *(it.first)));
+			point.append(QPointF((it.second - data.begin()) * interval / 1000, *(it.second)));
 		}
 		else {
-			point.push_back(QPointF((it.second - data.begin()) * interval / 1000, *it.second));
-			point.push_back(QPointF((it.first - data.begin()) * interval / 1000, *it.first));
+			point.append(QPointF((it.second - data.begin()) * interval / 1000, *(it.second)));
+			point.append(QPointF((it.first - data.begin()) * interval / 1000, *(it.first)));
 		}
 	}
 	emit sendtrace(point);
@@ -226,9 +226,10 @@ void NPS::hist(int n, int bin) {
 		QVector<QPointF> r2;
 		r2.push_back(QPointF(peak.start, peak.currentbase));
 		r2.push_back(QPointF(peak.start, peak.currentmax));
-		r2.push_back(QPointF(peak.end, peak.currentbase));
 		r2.push_back(QPointF(peak.end, peak.currentmax));
+		r2.push_back(QPointF(peak.end, peak.currentbase));
 		emit sendcursig(r2);
+		emit sendindex(QString::number(n));
 		gsl_histogram_free(h);
 	}
 	else {
@@ -264,20 +265,20 @@ void NPS::hist(int n, int bin) {
 	}
 }
 
-void NPS::setBin(const QString& a) {
-	bin = (a.toInt() == 0) ? bin : a.toInt();
+void NPS::setBin(int i) {
+	bin = (i > 0) ? i : 50;
 	hist(index, bin);
 }
 
-void NPS::setIndex(const QString& a) {
-	index = (a.toInt() == 0) ? index : a.toInt();
+void NPS::setIndex(int i) {
+	index = (i >= -1) ? i : 0;
 	hist(index, bin);
 }
 
 void NPS::pretrace() {
-	counter--;
-	if (counter < 0)
+	if (counter <= 0)
 		return;
+	counter--;
 	loaddata();
 	index = mymap[counter].first;
 	hist(index, bin);
@@ -285,11 +286,27 @@ void NPS::pretrace() {
 }
 
 void NPS::nexttrace() {
-	counter++;
-	if (counter >= filelist.size())
+	if (counter >= filelist.size() - 1)
 		return;
+	counter++;
 	loaddata();
 	index = mymap[counter].first;
+	hist(index, bin);
+	emit sendindex(QString::number(index));
+}
+
+void NPS::prehist() {
+	if (index <= 0)
+		return;
+	index--;
+	hist(index, bin);
+	emit sendindex(QString::number(index));
+}
+
+void NPS::nexthist() {
+	if (index >= siglist.size() - 1)
+		return;
+	index++;
 	hist(index, bin);
 	emit sendindex(QString::number(index));
 }

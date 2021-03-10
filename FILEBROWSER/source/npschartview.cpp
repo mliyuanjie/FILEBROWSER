@@ -10,9 +10,9 @@ NPSChartView::NPSChartView(NPSWidget* parent) :
     series_d = new QLineSeries();
     series_f = new QLineSeries();
     series_p = new QLineSeries();
-    series_d->setPen(QPen(Qt::darkBlue, 1));
+    series_d->setPen(QPen(Qt::darkBlue, 2));
     series_f->setPen(QPen(Qt::green, 2, Qt::DashDotDotLine));
-    series_p->setPen(QPen(Qt::red, 2, Qt::DashDotDotLine));
+    series_p->setPen(QPen(Qt::red, 2));
     //series->setUseOpenGL(true);
     charts = new QChart();
     charts->addSeries(series_d);
@@ -45,12 +45,12 @@ void NPSChartView::mouseMoveEvent(QMouseEvent* event) {
 }
 
 void NPSChartView::mouseReleaseEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton)
+        return;
     QPoint p = event->pos();
     QPointF pf = mapToScene(p);
     pf = charts->mapFromScene(pf);
     pf = charts->mapToValue(pf);
-    if (event->button() == Qt::LeftButton)
-        return;
     QPair<float, float> x;
     QPair<float, float> y;
     x.second = pf.x();
@@ -76,7 +76,7 @@ void NPSChartView::back() {
     sty.pop_back();
     axisx->setRange(stx.back().first, stx.back().second);
     axisy->setRange(sty.back().first, sty.back().second);
-    gettrace(stx.back().first, stx.back().second);
+    emit gettrace(stx.back().first, stx.back().second);
 }
 
 void NPSChartView::home() {
@@ -86,7 +86,7 @@ void NPSChartView::home() {
     }
     axisx->setRange(stx.back().first, stx.back().second);
     axisy->setRange(sty.back().first, sty.back().second);
-    gettrace(stx.back().first, stx.back().second);
+    emit gettrace(stx.back().first, stx.back().second);
 }
 
 void NPSChartView::initaxis(float x1, float x2, float y1, float y2) {
@@ -98,7 +98,6 @@ void NPSChartView::initaxis(float x1, float x2, float y1, float y2) {
     sty.push_back(QPair<float, float>(y1, y2));
     axisx->setRange(x1, x2);
     axisy->setRange(y1, y2);
-    emit gettrace(x1, x2);
 }
 
 void NPSChartView::update_d(QVector<QPointF> data) {

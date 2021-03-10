@@ -20,6 +20,12 @@ public slots:
     //void setFilename(QString s);
     void initaxis(float, float, float, float);
     void update(QVector<QPointF>);
+    void setindex();
+    void setbin();
+
+signals:
+    void indexedited(int);
+    void binedited(int);
 
 private:
     QLineSeries* series;

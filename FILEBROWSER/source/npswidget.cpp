@@ -20,9 +20,11 @@ void NPSWidget::open(QString filename) {
 	connect(thread, SIGNAL(finished()), nps, SLOT(deleteLater()));
 	connect(this->findChild<QPushButton*>("pushButton_6"), SIGNAL(clicked()), nps, SLOT(pretrace()));
 	connect(this->findChild<QPushButton*>("pushButton_8"), SIGNAL(clicked()), nps, SLOT(nexttrace()));
+	connect(this->findChild<QPushButton*>("pushButton_3"), SIGNAL(clicked()), nps, SLOT(prehist()));
+	connect(this->findChild<QPushButton*>("pushButton_4"), SIGNAL(clicked()), nps, SLOT(nexthist()));
 	connect(nps, SIGNAL(sendindex(const QString&)), this->findChild<QLineEdit*>("lineEdit_7"), SLOT(setText(const QString&)));
-	connect(this->findChild<QLineEdit*>("lineEdit_7"), SIGNAL(textChanged(const QString&)), nps, SLOT(setIndex(const QString&)));
-	connect(this->findChild<QLineEdit*>("lineEdit_8"), SIGNAL(textChanged(const QString&)), nps, SLOT(setBin(const QString&)));
+	connect(this->findChild<HistChartView*>("graphicsView_2"), SIGNAL(indexedited(int)), nps, SLOT(setIndex(int)));
+	connect(this->findChild<HistChartView*>("graphicsView_2"), SIGNAL(binedited(int)), nps, SLOT(setBin(int)));
 	connect(nps, SIGNAL(sendtrace(QVector<QPointF>)), this->findChild<NPSChartView*>("graphicsView"), SLOT(update_d(QVector<QPointF>)));
 	connect(nps, SIGNAL(sendsig(QVector<QPointF>)), this->findChild<NPSChartView*>("graphicsView"), SLOT(update_f(QVector<QPointF>)));
 	connect(nps, SIGNAL(sendcursig(QVector<QPointF>)), this->findChild<NPSChartView*>("graphicsView"), SLOT(update_p(QVector<QPointF>)));

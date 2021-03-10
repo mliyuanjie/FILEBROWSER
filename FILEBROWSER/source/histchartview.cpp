@@ -7,6 +7,9 @@ HistChartView::HistChartView(NPSWidget* parent) :
     axisx->setGridLineVisible(false);
     axisy = new QValueAxis();
     axisy->setGridLineVisible(false);
+    axisx->setLabelFormat("%.f");
+    axisx->setTitleText(QString("Current(pA)"));
+    axisy->setTitleText(QString("Count"));
     series = new QLineSeries();
     series->setPen(QPen(Qt::black, 3));
     charts = new QChart();
@@ -24,4 +27,14 @@ void HistChartView::initaxis(float x1, float x2, float y1, float y2) {
 
 void HistChartView::update(QVector<QPointF> data) {
     series->replace(data);
+}
+
+void HistChartView::setindex() {
+    QString s = this->parent()->findChild<QLineEdit*>("lineEdit_7")->text();
+    emit indexedited(s.toInt());
+}
+
+void HistChartView::setbin() {
+    QString s = this->parent()->findChild<QLineEdit*>("lineEdit_8")->text();
+    emit binedited(s.toInt());
 }

@@ -15,12 +15,16 @@ void NPS::load(std::string fn) {
 		char* filename = new char[length];
 		file.read(filename, length);
 		filelist.push_back(std::string(filename, length));
+		if (mymap.find(filelist.back()) != mymap.end()) {
+			filelist.pop_back();
+			continue;
+		}
 		file.read(reinterpret_cast<char*>(&size), sizeof(size_t));
 		Peak* buffer = new Peak[size];
 		file.read(reinterpret_cast<char*>(buffer), size * sizeof(Peak));
 		for (int i = 0; i < size; i++) 
 			siglist.push_back(buffer[i]);
-		mymap[j] = std::pair<int, int>(siglist.size() - size, siglist.size());
+		mymap[filelist.back()] = std::pair<int, int>(siglist.size() - size, siglist.size());
 		j++;
 		delete[] filename;
 		delete[] buffer;
@@ -31,9 +35,8 @@ void NPS::load(std::string fn) {
 		counter = 0;
 		loaddata();
 		hist(0, 50);
-		emit sendtracenum(filelist.size());
-		emit sendsignum(siglist.size());
-		emit sendtracecur(counter);
+		emit sendtracenum(filelist.size() - 1);
+		emit sendsignum(siglist.size() - 1);
 	}	
 	return;
 }
@@ -119,13 +122,14 @@ void NPS::loaddata() {
 	emit sendaxis(xmin, xmax, *y.first - (*y.second - *y.first), *y.second + (*y.second - *y.first));
 	trace(xmin, xmax);
 	QVector<QPointF> r;
-	for (int i = mymap[counter].first; i < mymap[counter].second; i++) {
+	for (int i = mymap[filelist[counter]].first; i < mymap[filelist[counter]].second; i++) {
 		r.push_back(QPointF(siglist[i].start, siglist[i].currentbase));
 		r.push_back(QPointF(siglist[i].start, siglist[i].currentmax));
 		r.push_back(QPointF(siglist[i].end, siglist[i].currentmax));
 		r.push_back(QPointF(siglist[i].end, siglist[i].currentbase));
 	}
 	emit sendsig(r);
+	emit sendtracecur(counter);
 	return;
 }
 /*
@@ -184,12 +188,10 @@ void NPS::multiFit() {
 }
 */
 void NPS::hist(int n, int bin) {
-	if (counter < 0)
-		return;
 	if (n >= 0) {
 		int c = counter;
-		while (n < mymap[c].first || n >= mymap[c].second) {
-			if (n < mymap[c].first)
+		while (n < mymap[filelist[c]].first || n >= mymap[filelist[c]].second) {
+			if (n < mymap[filelist[c]].first)
 				c--;
 			else
 				c++;
@@ -263,15 +265,20 @@ void NPS::hist(int n, int bin) {
 		emit sendhist(r);
 		gsl_histogram_free(h);
 	}
+	emit sendindex(QString::number(n));
 }
 
 void NPS::setBin(int i) {
-	bin = (i > 0) ? i : 50;
+	if (i <= 0)
+		return;
+	bin = i;
 	hist(index, bin);
 }
 
 void NPS::setIndex(int i) {
-	index = (i >= -1) ? i : 0;
+	if (i < -1 || i >= siglist.size())
+		return;
+	index = i;
 	hist(index, bin);
 }
 
@@ -280,9 +287,8 @@ void NPS::pretrace() {
 		return;
 	counter--;
 	loaddata();
-	index = mymap[counter].first;
+	index = mymap[filelist[counter]].first;
 	hist(index, bin);
-	emit sendindex(QString::number(index));
 }
 
 void NPS::nexttrace() {
@@ -290,23 +296,21 @@ void NPS::nexttrace() {
 		return;
 	counter++;
 	loaddata();
-	index = mymap[counter].first;
+	index = mymap[filelist[counter]].first;
 	hist(index, bin);
-	emit sendindex(QString::number(index));
+	
 }
 
 void NPS::prehist() {
-	if (index <= 0)
+	if (index <= -1)
 		return;
 	index--;
 	hist(index, bin);
-	emit sendindex(QString::number(index));
 }
 
 void NPS::nexthist() {
-	if (index >= siglist.size() - 1)
+	if (index >= (int)(siglist.size() - 1))
 		return;
 	index++;
 	hist(index, bin);
-	emit sendindex(QString::number(index));
 }

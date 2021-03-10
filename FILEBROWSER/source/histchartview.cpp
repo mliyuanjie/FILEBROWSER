@@ -7,8 +7,8 @@ HistChartView::HistChartView(NPSWidget* parent) :
     axisx->setGridLineVisible(false);
     axisy = new QValueAxis();
     axisy->setGridLineVisible(false);
-    axisx->setLabelFormat("%.f");
-    axisx->setTitleText(QString("Current(pA)"));
+    axisx->setLabelFormat("%.2f");
+    axisx->setTitleText(QString("dI/I0"));
     axisy->setTitleText(QString("Count"));
     series = new QLineSeries();
     series->setPen(QPen(Qt::black, 3));

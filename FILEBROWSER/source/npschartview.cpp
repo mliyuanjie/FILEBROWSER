@@ -7,6 +7,8 @@ NPSChartView::NPSChartView(NPSWidget* parent) :
     axisx->setGridLineVisible(false);
     axisy = new QValueAxis();
     axisy->setGridLineVisible(false);
+    axisx->setTitleText(QString("Time(ms)"));
+    axisy->setTitleText(QString("Current(pA)"));
     series_d = new QLineSeries();
     series_f = new QLineSeries();
     series_p = new QLineSeries();
@@ -90,8 +92,6 @@ void NPSChartView::home() {
 }
 
 void NPSChartView::initaxis(float x1, float x2, float y1, float y2) {
-    axisx->setTitleText(QString("Time(ms)"));
-    axisy->setTitleText(QString("Current(pA)"));
     stx.clear();
     sty.clear();
     stx.push_back(QPair<float, float>(x1, x2));

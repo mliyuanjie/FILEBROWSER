@@ -18,8 +18,8 @@ void NPSWidget::open(QString filename) {
 	nps->moveToThread(thread);
 	connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 	connect(thread, SIGNAL(finished()), nps, SLOT(deleteLater()));
-	connect(this->findChild<QPushButton*>("pushButton_6"), SIGNAL(clicked()), nps, SLOT(pretrace()));
-	connect(this->findChild<QPushButton*>("pushButton_8"), SIGNAL(clicked()), nps, SLOT(nexttrace()));
+	connect(this->findChild<QPushButton*>("pushButton_6"), SIGNAL(clicked()), nps, SLOT(nexttrace()));
+	connect(this->findChild<QPushButton*>("pushButton_8"), SIGNAL(clicked()), nps, SLOT(pretrace()));
 	connect(this->findChild<QPushButton*>("pushButton_3"), SIGNAL(clicked()), nps, SLOT(prehist()));
 	connect(this->findChild<QPushButton*>("pushButton_4"), SIGNAL(clicked()), nps, SLOT(nexthist()));
 	connect(nps, SIGNAL(sendindex(const QString&)), this->findChild<QLineEdit*>("lineEdit_7"), SLOT(setText(const QString&)));

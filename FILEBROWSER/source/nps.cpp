@@ -10,9 +10,11 @@ void NPS::load(std::string fn) {
 	int j = 0;
 	while (1) {
 		file.read(reinterpret_cast<char*>(&length), sizeof(size_t));
+		if (file.eof())
+			break;
 		char* filename = new char[length];
 		file.read(filename, length);
-		filelist.push_back(std::string(filename));
+		filelist.push_back(std::string(filename, length));
 		file.read(reinterpret_cast<char*>(&size), sizeof(size_t));
 		Peak* buffer = new Peak[size];
 		file.read(reinterpret_cast<char*>(buffer), size * sizeof(Peak));
@@ -22,18 +24,16 @@ void NPS::load(std::string fn) {
 		j++;
 		delete[] filename;
 		delete[] buffer;
-		if (file.eof())
-			return;
+		
 	}
 	file.close();
 	if (filelist.size() > 0) {
 		counter = 0;
 		loaddata();
-		trace(0, data.size() * interval / 1000);
 		hist(0, 50);
 		emit sendtracenum(filelist.size());
 		emit sendsignum(siglist.size());
-		emit sndtracecur(counter);
+		emit sendtracecur(counter);
 	}	
 	return;
 }
@@ -63,6 +63,7 @@ void NPS::trace(float xmin, float xmax) {
 
 void NPS::loaddata() {
 	std::string suffix = filelist[counter].substr(filelist[counter].size() - 3, 3);
+	std::string a = filelist[counter];
 	int size;
 	if (suffix == std::string("dat")) {
 		interval = 2;
@@ -115,13 +116,14 @@ void NPS::loaddata() {
 	float xmax = size * interval / 1000;
 	std::pair<std::vector<float>::iterator, std::vector<float>::iterator> y;
 	y = std::minmax_element(data.begin(), data.end());
-	emit sendaxis(xmin, xmax, *y.first - 3 * (*y.second - *y.first), *y.second + 3 * (*y.second - *y.first));
+	emit sendaxis(xmin, xmax, *y.first - (*y.second - *y.first), *y.second + (*y.second - *y.first));
+	trace(xmin, xmax);
 	QVector<QPointF> r;
 	for (int i = mymap[counter].first; i < mymap[counter].second; i++) {
 		r.push_back(QPointF(siglist[i].start, siglist[i].currentbase));
 		r.push_back(QPointF(siglist[i].start, siglist[i].currentmax));
-		r.push_back(QPointF(siglist[i].end, siglist[i].currentbase));
 		r.push_back(QPointF(siglist[i].end, siglist[i].currentmax));
+		r.push_back(QPointF(siglist[i].end, siglist[i].currentbase));
 	}
 	emit sendsig(r);
 	return;
@@ -262,7 +264,7 @@ void NPS::hist(int n, int bin) {
 	}
 }
 
-void NPS::setBins(const QString& a) {
+void NPS::setBin(const QString& a) {
 	bin = (a.toInt() == 0) ? bin : a.toInt();
 	hist(index, bin);
 }

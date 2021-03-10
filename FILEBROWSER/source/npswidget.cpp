@@ -15,13 +15,12 @@ NPSWidget::~NPSWidget() {
 
 void NPSWidget::open(QString filename) {
 	NPS* nps = new NPS();
-	nps->load(filename.toStdString());
 	nps->moveToThread(thread);
 	connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 	connect(thread, SIGNAL(finished()), nps, SLOT(deleteLater()));
 	connect(this->findChild<QPushButton*>("pushButton_6"), SIGNAL(clicked()), nps, SLOT(pretrace()));
 	connect(this->findChild<QPushButton*>("pushButton_8"), SIGNAL(clicked()), nps, SLOT(nexttrace()));
-	connect(nps, SIGNAL(sendindex(const QString&)), this->findChild<QLineEdit*>("lineEdit_7"), SIGNAL(setText(const QString&)));
+	connect(nps, SIGNAL(sendindex(const QString&)), this->findChild<QLineEdit*>("lineEdit_7"), SLOT(setText(const QString&)));
 	connect(this->findChild<QLineEdit*>("lineEdit_7"), SIGNAL(textChanged(const QString&)), nps, SLOT(setIndex(const QString&)));
 	connect(this->findChild<QLineEdit*>("lineEdit_8"), SIGNAL(textChanged(const QString&)), nps, SLOT(setBin(const QString&)));
 	connect(nps, SIGNAL(sendtrace(QVector<QPointF>)), this->findChild<NPSChartView*>("graphicsView"), SLOT(update_d(QVector<QPointF>)));
@@ -35,4 +34,5 @@ void NPSWidget::open(QString filename) {
 	connect(nps, SIGNAL(sendtracecur(int)), this->findChild<QLabel*>("label_6"), SLOT(setNum(int)));
 	connect(this->findChild<NPSChartView*>("graphicsView"), SIGNAL(gettrace(float, float)), nps, SLOT(trace(float, float)));
 	thread->start();
+	nps->load(filename.toStdString());
 }

@@ -11,6 +11,7 @@
 #include "abffiles.h"
 
 struct Peak {
+	size_t index;
 	float start;
 	float end;
 	float currentmax;
@@ -34,7 +35,7 @@ public slots:
 	void pretrace();
 	void nexttrace();
 	void setIndex(const QString&);
-	void setBins(const QString&);
+	void setBin(const QString&);
 
 
 signals:
@@ -45,7 +46,7 @@ signals:
 	void sendaxis(float, float, float, float);
 	void sendhistaxis(float, float, float, float);
 	void sendtracenum(int);
-	void sndtracecur(int);
+	void sendtracecur(int);
 	void sendsignum(int);
 	void sendindex(QString);
 

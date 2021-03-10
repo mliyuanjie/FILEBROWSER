@@ -66,6 +66,7 @@ void NPSChartView::mouseReleaseEvent(QMouseEvent* event) {
     rubberBand->hide();
     axisx->setRange(stx.back().first, stx.back().second);
     axisy->setRange(sty.back().first, sty.back().second);
+    rubberBand->hide();
 }
 
 void NPSChartView::back() {

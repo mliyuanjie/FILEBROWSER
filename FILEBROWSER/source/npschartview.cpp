@@ -1,6 +1,8 @@
 #include "npschartview.h"
 
-NPSChartView::NPSChartView(QWidget* parent) :QChartView(parent) {
+NPSChartView::NPSChartView(NPSWidget* parent) :
+    QtCharts::QChartView(parent) 
+{
     axisx = new QValueAxis();
     axisx->setGridLineVisible(false);
     axisy = new QValueAxis();
@@ -12,7 +14,7 @@ NPSChartView::NPSChartView(QWidget* parent) :QChartView(parent) {
     series_f->setPen(QPen(Qt::green, 2, Qt::DashDotDotLine));
     series_p->setPen(QPen(Qt::red, 2, Qt::DashDotDotLine));
     //series->setUseOpenGL(true);
-    charts = new QtCharts::QChart();
+    charts = new QChart();
     charts->addSeries(series_d);
     charts->addSeries(series_f);
     charts->addSeries(series_p);

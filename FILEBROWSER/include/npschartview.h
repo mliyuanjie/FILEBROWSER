@@ -3,10 +3,9 @@
 
 #include <QtCharts/QChartView>
 #include <QtWidgets/QRubberBand>
-#include <QtCharts/qsplineseries.h>
-#include <QtCharts/qscatterseries.h>
 #include <QtCharts/qvalueaxis.h>
-
+#include <QtCharts/qsplineseries.h>
+#include "npswidget.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -14,12 +13,11 @@ class NPSChartView : public QChartView
 {
     Q_OBJECT;
 public:
-    NPSChartView(QWidget* parent);
-    ~NPSChartView();
+    NPSChartView(NPSWidget* parent);
 
 public slots:
     //void setFilename(QString s);
-    void initaxis(float x1, float x2, float y1, float y2);
+    void initaxis(float, float, float, float);
     void update_d(QVector<QPointF>);
     void update_f(QVector<QPointF>);
     void update_p(QVector<QPointF>);

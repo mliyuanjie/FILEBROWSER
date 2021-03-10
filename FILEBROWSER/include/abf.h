@@ -9,6 +9,25 @@
 #include <QtCore/qvector.h>
 #include <gsl/gsl_vector.h>
 
+struct NanoporeSig {
+	NanoporeSig(unsigned int a, float b, float c, float d, float e) {
+		index = a;
+		start = b;
+		end = c;
+		current = d;
+		baseline = e;
+	}
+	unsigned int index;
+	float start;
+	float end;
+	float current;
+	float baseline;
+	float Imax;
+	float Imin;
+	float volume;
+	float shape;
+};
+
 class ABF:public QObject {
 	Q_OBJECT 
 public:
@@ -71,24 +90,6 @@ private:
 	pABF_ReadDACFileEpi ABF_ReadDACFileEpi;
 };
 
-struct NanoporeSig {
-	NanoporeSig(unsigned a, float b, float c, float d, float e) {
-		index = a;
-		start = b;
-		end = c;
-		current = d;
-		baseline = e;
-	}
-	unsigned int index;
-	float start;
-	float end;
-	float current;
-	float baseline;
-	float Imax;
-	float Imin;
-	float volume;
-	float shape;
-};
 
 
 #endif //ABF_H

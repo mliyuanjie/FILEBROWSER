@@ -8,9 +8,8 @@
 #include <QtWidgets/qlabel.h>
 #include "nps.h"
 
-QT_BEGIN_NAMESPACE
-
 class NPSWidget : public QWidget {
+	Q_OBJECT;
 public:
 	NPSWidget(QWidget* parent);
 	~NPSWidget();

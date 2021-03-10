@@ -8,7 +8,8 @@ void NPS::load(std::string fn) {
 	file.open(fn, std::ios::binary);
 	size_t length, size;
 	int j = 0;
-	while (file.read(reinterpret_cast<char*>(&length), sizeof(size_t))) {
+	while (1) {
+		file.read(reinterpret_cast<char*>(&length), sizeof(size_t));
 		char* filename = new char[length];
 		file.read(filename, length);
 		filelist.push_back(std::string(filename));
@@ -21,6 +22,8 @@ void NPS::load(std::string fn) {
 		j++;
 		delete[] filename;
 		delete[] buffer;
+		if (file.eof())
+			return;
 	}
 	file.close();
 	if (filelist.size() > 0) {
@@ -42,7 +45,7 @@ void NPS::trace(float xmin, float xmax) {
 	unsigned int skip = n / 1500;
 	skip = (skip == 0) ? 1 : skip;
 	QVector<QPointF> point;
-	for (int i = 0; i < data.size(); i + skip) {
+	for (int i = 0; i < data.size(); i += skip) {
 		if (i + skip > data.size())
 			skip = data.size() - i;
 		std::pair<std::vector<float>::iterator, std::vector<float>::iterator> it = std::minmax_element(data.begin(), data.begin() + skip);
@@ -200,11 +203,11 @@ void NPS::hist(int n, int bin) {
 		size_t start, end;
 		start = peak.start * 1000 / interval;
 		end = peak.end * 1000 / interval;
-		double max = (peak.currentbase - *std::max_element(data.begin() + start, data.begin() + end + 1)) / peak.currentbase;
-		double min = (peak.currentbase - *std::min_element(data.begin() + start, data.begin() + end + 1)) / peak.currentbase;
-		if (max < min)
-			std::swap(min, max);
-		gsl_histogram_set_ranges_uniform(h, min, max);
+		double xmax = (peak.currentbase - *std::max_element(data.begin() + start, data.begin() + end + 1)) / peak.currentbase;
+		double xmin = (peak.currentbase - *std::min_element(data.begin() + start, data.begin() + end + 1)) / peak.currentbase;
+		if (xmax < xmin)
+			std::swap(xmin, xmax);
+		gsl_histogram_set_ranges_uniform(h, xmin, xmax);
 		for (int i = start; i <= end; i++)
 			gsl_histogram_increment(h, (peak.currentbase - data[i]) / peak.currentbase);
 		QVector<QPointF> r;
@@ -216,7 +219,7 @@ void NPS::hist(int n, int bin) {
 			r.push_back(QPointF(h->range[i+1], h->bin[i]));
 			r.push_back(QPointF(h->range[i+1], 0));
 		}
-		emit sendhistaxis(min, max, 0, maxcount);
+		emit sendhistaxis(xmin, xmax, 0, maxcount);
 		emit sendhist(r);
 		QVector<QPointF> r2;
 		r2.push_back(QPointF(peak.start, peak.currentbase));
@@ -228,20 +231,20 @@ void NPS::hist(int n, int bin) {
 	}
 	else {
 		std::vector<double> multievent;
-		double max, min;
+		double xmax, xmin;
 		for (int i = 0; i < siglist.size(); i++) {
 			multievent.push_back((siglist[i].currentbase - siglist[i].currentmax) / siglist[i].currentbase);
 			if (i == 0) {
-				max = multievent[0];
-				min = multievent[0];
+				xmax = multievent[0];
+				xmin = multievent[0];
 			}
 			else {
-				max = (max < multievent[i]) ? multievent[i] : max;
-				min = (min > multievent[i]) ? multievent[i] : min;
+				xmax = (xmax < multievent[i]) ? multievent[i] : xmax;
+				xmin = (xmin > multievent[i]) ? multievent[i] : xmin;
 			}
 		}
 		gsl_histogram* h = gsl_histogram_alloc(bin);
-		gsl_histogram_set_ranges_uniform(h, min, max);
+		gsl_histogram_set_ranges_uniform(h, xmin, xmax);
 		for (int i = 0; i < multievent.size(); i++)
 			gsl_histogram_increment(h, multievent[i]);
 		QVector<QPointF> r;
@@ -253,7 +256,7 @@ void NPS::hist(int n, int bin) {
 			r.push_back(QPointF(h->range[i + 1], h->bin[i]));
 			r.push_back(QPointF(h->range[i + 1], 0));
 		}
-		emit sendhistaxis(min, max, 0, maxcount);
+		emit sendhistaxis(xmin, xmax, 0, maxcount);
 		emit sendhist(r);
 		gsl_histogram_free(h);
 	}
@@ -267,4 +270,24 @@ void NPS::setBins(const QString& a) {
 void NPS::setIndex(const QString& a) {
 	index = (a.toInt() == 0) ? index : a.toInt();
 	hist(index, bin);
+}
+
+void NPS::pretrace() {
+	counter--;
+	if (counter < 0)
+		return;
+	loaddata();
+	index = mymap[counter].first;
+	hist(index, bin);
+	emit sendindex(QString::number(index));
+}
+
+void NPS::nexttrace() {
+	counter++;
+	if (counter >= filelist.size())
+		return;
+	loaddata();
+	index = mymap[counter].first;
+	hist(index, bin);
+	emit sendindex(QString::number(index));
 }

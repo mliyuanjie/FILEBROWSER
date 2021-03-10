@@ -35,10 +35,6 @@ class Ui_ABFDockWidget
 public:
     QWidget *dockWidgetContents;
     QGridLayout *gridLayout;
-    AChartView *graphicsView;
-    QVBoxLayout *verticalLayout;
-    QPushButton *pushButton_8;
-    QPushButton *pushButton_7;
     QHBoxLayout *horizontalLayout;
     QPushButton *pushButton;
     QPushButton *pushButton_2;
@@ -53,6 +49,10 @@ public:
     QLabel *label_4;
     QLabel *label_2;
     QLabel *label_5;
+    QVBoxLayout *verticalLayout;
+    QPushButton *pushButton_8;
+    QPushButton *pushButton_7;
+    AChartView *graphicsView;
     QTabWidget *tabWidget;
     QWidget *tab;
     QVBoxLayout *verticalLayout_2;
@@ -61,7 +61,6 @@ public:
     QPushButton *pushButton_5;
     QTableWidget *tableWidget;
     QHBoxLayout *horizontalLayout_4;
-    QPushButton *pushButton_4;
     QPushButton *pushButton_6;
     QWidget *tab_2;
     QLabel *label_7;
@@ -82,51 +81,20 @@ public:
     QLabel *label_15;
     QLabel *label_16;
     QLabel *label_17;
+    QPushButton *pushButton_12;
 
     void setupUi(QDockWidget *ABFDockWidget)
     {
         if (ABFDockWidget->objectName().isEmpty())
             ABFDockWidget->setObjectName(QStringLiteral("ABFDockWidget"));
-        ABFDockWidget->resize(1200, 535);
-        ABFDockWidget->setMinimumSize(QSize(1200, 311));
+        ABFDockWidget->resize(1200, 604);
+        ABFDockWidget->setMinimumSize(QSize(1200, 470));
         ABFDockWidget->setMaximumSize(QSize(1200, 524287));
         ABFDockWidget->setCursor(QCursor(Qt::ArrowCursor));
         dockWidgetContents = new QWidget();
         dockWidgetContents->setObjectName(QStringLiteral("dockWidgetContents"));
         gridLayout = new QGridLayout(dockWidgetContents);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        graphicsView = new AChartView(dockWidgetContents);
-        graphicsView->setObjectName(QStringLiteral("graphicsView"));
-        graphicsView->viewport()->setProperty("cursor", QVariant(QCursor(Qt::CrossCursor)));
-
-        gridLayout->addWidget(graphicsView, 1, 5, 1, 1);
-
-        verticalLayout = new QVBoxLayout();
-        verticalLayout->setSpacing(0);
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        verticalLayout->setContentsMargins(0, 0, 0, 0);
-        pushButton_8 = new QPushButton(dockWidgetContents);
-        pushButton_8->setObjectName(QStringLiteral("pushButton_8"));
-        pushButton_8->setMinimumSize(QSize(20, 20));
-        pushButton_8->setMaximumSize(QSize(20, 20));
-
-        verticalLayout->addWidget(pushButton_8);
-
-        pushButton_7 = new QPushButton(dockWidgetContents);
-        pushButton_7->setObjectName(QStringLiteral("pushButton_7"));
-        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(pushButton_7->sizePolicy().hasHeightForWidth());
-        pushButton_7->setSizePolicy(sizePolicy);
-        pushButton_7->setMinimumSize(QSize(20, 20));
-        pushButton_7->setMaximumSize(QSize(20, 20));
-
-        verticalLayout->addWidget(pushButton_7);
-
-
-        gridLayout->addLayout(verticalLayout, 1, 0, 1, 2);
-
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         pushButton = new QPushButton(dockWidgetContents);
@@ -212,6 +180,38 @@ public:
 
         gridLayout->addLayout(horizontalLayout_2, 2, 5, 1, 1);
 
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setSpacing(0);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        pushButton_8 = new QPushButton(dockWidgetContents);
+        pushButton_8->setObjectName(QStringLiteral("pushButton_8"));
+        pushButton_8->setMinimumSize(QSize(20, 20));
+        pushButton_8->setMaximumSize(QSize(20, 20));
+
+        verticalLayout->addWidget(pushButton_8);
+
+        pushButton_7 = new QPushButton(dockWidgetContents);
+        pushButton_7->setObjectName(QStringLiteral("pushButton_7"));
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(pushButton_7->sizePolicy().hasHeightForWidth());
+        pushButton_7->setSizePolicy(sizePolicy);
+        pushButton_7->setMinimumSize(QSize(20, 20));
+        pushButton_7->setMaximumSize(QSize(20, 20));
+
+        verticalLayout->addWidget(pushButton_7);
+
+
+        gridLayout->addLayout(verticalLayout, 1, 0, 1, 2);
+
+        graphicsView = new AChartView(dockWidgetContents);
+        graphicsView->setObjectName(QStringLiteral("graphicsView"));
+        graphicsView->viewport()->setProperty("cursor", QVariant(QCursor(Qt::CrossCursor)));
+
+        gridLayout->addWidget(graphicsView, 1, 5, 1, 1);
+
         tabWidget = new QTabWidget(dockWidgetContents);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
         tabWidget->setMinimumSize(QSize(200, 0));
@@ -261,13 +261,6 @@ public:
 
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
-        pushButton_4 = new QPushButton(tab);
-        pushButton_4->setObjectName(QStringLiteral("pushButton_4"));
-        pushButton_4->setMinimumSize(QSize(60, 0));
-        pushButton_4->setMaximumSize(QSize(60, 16777215));
-
-        horizontalLayout_4->addWidget(pushButton_4);
-
         pushButton_6 = new QPushButton(tab);
         pushButton_6->setObjectName(QStringLiteral("pushButton_6"));
         pushButton_6->setMinimumSize(QSize(60, 0));
@@ -336,6 +329,9 @@ public:
         label_17 = new QLabel(tab_2);
         label_17->setObjectName(QStringLiteral("label_17"));
         label_17->setGeometry(QRect(80, 380, 101, 16));
+        pushButton_12 = new QPushButton(tab_2);
+        pushButton_12->setObjectName(QStringLiteral("pushButton_12"));
+        pushButton_12->setGeometry(QRect(20, 450, 111, 34));
         tabWidget->addTab(tab_2, QString());
 
         gridLayout->addWidget(tabWidget, 0, 6, 3, 1);
@@ -362,6 +358,7 @@ public:
         QObject::connect(graphicsView, SIGNAL(setmean(QString)), label_16, SLOT(setText(QString)));
         QObject::connect(graphicsView, SIGNAL(setSD(QString)), label_17, SLOT(setText(QString)));
         QObject::connect(graphicsView, SIGNAL(setcurrent(double)), label_19, SLOT(setNum(double)));
+        QObject::connect(pushButton_12, SIGNAL(clicked()), graphicsView, SLOT(savesig()));
 
         tabWidget->setCurrentIndex(1);
 
@@ -372,8 +369,6 @@ public:
     void retranslateUi(QDockWidget *ABFDockWidget)
     {
         ABFDockWidget->setWindowTitle(QApplication::translate("ABFDockWidget", "ABF", Q_NULLPTR));
-        pushButton_8->setText(QApplication::translate("ABFDockWidget", "+", Q_NULLPTR));
-        pushButton_7->setText(QApplication::translate("ABFDockWidget", "-", Q_NULLPTR));
         pushButton->setText(QApplication::translate("ABFDockWidget", "Back", Q_NULLPTR));
         pushButton_2->setText(QApplication::translate("ABFDockWidget", "Home", Q_NULLPTR));
         comboBox->clear();
@@ -392,9 +387,10 @@ public:
         label_4->setText(QString());
         label_2->setText(QApplication::translate("ABFDockWidget", "end time:", Q_NULLPTR));
         label_5->setText(QString());
+        pushButton_8->setText(QApplication::translate("ABFDockWidget", "+", Q_NULLPTR));
+        pushButton_7->setText(QApplication::translate("ABFDockWidget", "-", Q_NULLPTR));
         pushButton_3->setText(QApplication::translate("ABFDockWidget", "add", Q_NULLPTR));
         pushButton_5->setText(QApplication::translate("ABFDockWidget", "del", Q_NULLPTR));
-        pushButton_4->setText(QApplication::translate("ABFDockWidget", "show", Q_NULLPTR));
         pushButton_6->setText(QApplication::translate("ABFDockWidget", "save", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("ABFDockWidget", "Tab 1", Q_NULLPTR));
         label_7->setText(QApplication::translate("ABFDockWidget", "Sigma:", Q_NULLPTR));
@@ -414,6 +410,7 @@ public:
         label_15->setText(QApplication::translate("ABFDockWidget", "SD:", Q_NULLPTR));
         label_16->setText(QApplication::translate("ABFDockWidget", "0", Q_NULLPTR));
         label_17->setText(QApplication::translate("ABFDockWidget", "0", Q_NULLPTR));
+        pushButton_12->setText(QApplication::translate("ABFDockWidget", "Save", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("ABFDockWidget", "Tab 2", Q_NULLPTR));
     } // retranslateUi
 

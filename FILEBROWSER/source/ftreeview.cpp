@@ -31,6 +31,12 @@ void FTreeView::mouseDoubleClickEvent(QMouseEvent* event) {
 		ui.setupUi(dockWidget);
 		dockWidget->findChild<QWidget*>("dockWidgetContents")->findChild<AChartView*>("graphicsView")->open(fileinfo.filePath());
 	}
+	else if (fileinfo.suffix() == QString("nps")) {
+		Ui::NPSDockWidget ui;
+		ui.setupUi(dockWidget);
+		dockWidget->findChild<QWidget*>("dockWidgetContents")->findChild<NPSWidget*>("widget")->open(fileinfo.filePath());
+
+	}
 	else {
 		QFile file(fileinfo.filePath());
 		if (!file.open(QIODevice::ReadOnly | QIODevice::Text))

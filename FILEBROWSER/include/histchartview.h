@@ -6,7 +6,7 @@
 #include <QtCharts/qsplineseries.h>
 #include <QtCharts/qscatterseries.h>
 #include <QtCharts/qvalueaxis.h>
-
+#include "npswidget.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -14,8 +14,7 @@ class HistChartView : public QChartView
 {
     Q_OBJECT;
 public:
-    HistChartView(QWidget* parent);
-    ~HistChartView();
+    HistChartView(NPSWidget* parent);
 
 public slots:
     //void setFilename(QString s);

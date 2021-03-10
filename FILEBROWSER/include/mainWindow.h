@@ -33,10 +33,13 @@ public:
     QAction *actionNew;
     QAction *actioncheck_signals;
     QAction *actionfit_signals;
+    QAction *actionTerminal;
+    QAction *actionSetting;
     QWidget *centralwidget;
     QMenuBar *menubar;
     QMenu *menuFile;
     QMenu *menuTools;
+    QMenu *menuPython;
     QStatusBar *statusbar;
     QDockWidget *dockWidget;
     QWidget *dockWidgetContents;
@@ -60,6 +63,10 @@ public:
         actioncheck_signals->setObjectName(QStringLiteral("actioncheck_signals"));
         actionfit_signals = new QAction(MainWindow);
         actionfit_signals->setObjectName(QStringLiteral("actionfit_signals"));
+        actionTerminal = new QAction(MainWindow);
+        actionTerminal->setObjectName(QStringLiteral("actionTerminal"));
+        actionSetting = new QAction(MainWindow);
+        actionSetting->setObjectName(QStringLiteral("actionSetting"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         MainWindow->setCentralWidget(centralwidget);
@@ -70,6 +77,8 @@ public:
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuTools = new QMenu(menubar);
         menuTools->setObjectName(QStringLiteral("menuTools"));
+        menuPython = new QMenu(menubar);
+        menuPython->setObjectName(QStringLiteral("menuPython"));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QStringLiteral("statusbar"));
@@ -109,10 +118,13 @@ public:
 
         menubar->addAction(menuFile->menuAction());
         menubar->addAction(menuTools->menuAction());
+        menubar->addAction(menuPython->menuAction());
         menuFile->addAction(actionOpen);
         menuFile->addAction(actionNew);
         menuTools->addAction(actioncheck_signals);
         menuTools->addAction(actionfit_signals);
+        menuPython->addAction(actionTerminal);
+        menuPython->addAction(actionSetting);
 
         retranslateUi(MainWindow);
         QObject::connect(treeView, SIGNAL(rootpath(QString)), lineEdit, SLOT(setText(QString)));
@@ -129,8 +141,11 @@ public:
         actionNew->setText(QApplication::translate("MainWindow", "New", Q_NULLPTR));
         actioncheck_signals->setText(QApplication::translate("MainWindow", "check signals", Q_NULLPTR));
         actionfit_signals->setText(QApplication::translate("MainWindow", "fit signals", Q_NULLPTR));
+        actionTerminal->setText(QApplication::translate("MainWindow", "Terminal", Q_NULLPTR));
+        actionSetting->setText(QApplication::translate("MainWindow", "Setting", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", Q_NULLPTR));
         menuTools->setTitle(QApplication::translate("MainWindow", "Tools", Q_NULLPTR));
+        menuPython->setTitle(QApplication::translate("MainWindow", "Python", Q_NULLPTR));
     } // retranslateUi
 
 };

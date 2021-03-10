@@ -301,7 +301,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -382,14 +382,14 @@
           <attribute name="horizontalHeaderVisible">
            <bool>false</bool>
           </attribute>
-          <attribute name="horizontalHeaderMinimumSectionSize">
-           <number>10</number>
-          </attribute>
           <attribute name="horizontalHeaderDefaultSectionSize">
            <number>75</number>
           </attribute>
           <attribute name="horizontalHeaderHighlightSections">
            <bool>true</bool>
+          </attribute>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>10</number>
           </attribute>
           <attribute name="verticalHeaderVisible">
            <bool>false</bool>

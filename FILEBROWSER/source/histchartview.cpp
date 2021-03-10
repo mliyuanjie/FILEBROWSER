@@ -1,13 +1,15 @@
 #include "histchartview.h" 
 
-HistChartView::HistChartView(QWidget* parent) :QChartView(parent) {
+
+HistChartView::HistChartView(NPSWidget* parent) :
+    QChartView(parent) {
     axisx = new QValueAxis();
     axisx->setGridLineVisible(false);
     axisy = new QValueAxis();
     axisy->setGridLineVisible(false);
     series = new QLineSeries();
     series->setPen(QPen(Qt::black, 3));
-    charts = new QtCharts::QChart();
+    charts = new QChart();
     charts->addSeries(series);
     charts->setAxisX(axisx, series);
     charts->setAxisY(axisy, series);

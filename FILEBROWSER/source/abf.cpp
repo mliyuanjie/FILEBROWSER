@@ -338,6 +338,7 @@ void ABF::savenps() {
 	file.write(reinterpret_cast<char*>(&size), sizeof(size_t));
 	file.write(fn.c_str(), size);
 	size = sigs.size();
+	file.write(reinterpret_cast<char*>(&size), sizeof(size_t));
 	file.write(reinterpret_cast<char*>(sigs.data()), size * sizeof(NanoporeSig));
 	file.close();
 }

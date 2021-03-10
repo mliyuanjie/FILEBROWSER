@@ -7,6 +7,7 @@
 #include<QtGui/qstandarditemmodel.h>
 #include "abfwidget.h" 
 #include "txtwidget.h"
+#include "fitwidget.h"
 
 class FTreeView : public QTreeView {
 	Q_OBJECT;

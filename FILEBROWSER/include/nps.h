@@ -26,13 +26,13 @@ class NPS: public QObject {
 
 public slots:
 	void trace(float, float);
-	void multiFit();
-	void singleFit(int);
-	void save();
-	void setPhysics(float, float, float, float, float);
+	//void multiFit();
+	//void singleFit(int);
+	//void save();
+	//void setPhysics(float, float, float, float, float);
 	void load(std::string);
-	void prehist();
-	void nexthist();
+	void pretrace();
+	void nexttrace();
 	void setIndex(const QString&);
 	void setBins(const QString&);
 
@@ -47,6 +47,7 @@ signals:
 	void sendtracenum(int);
 	void sndtracecur(int);
 	void sendsignum(int);
+	void sendindex(QString);
 
 private:
 	std::vector<std::string> filelist;

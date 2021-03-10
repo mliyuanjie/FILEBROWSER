@@ -213,7 +213,7 @@
     <QtMoc Include="include\npschartview.h" />
     <ClInclude Include="include\fitwidget.h" />
     <QtMoc Include="include\histchartview.h" />
-    <ClInclude Include="include\npswidget.h" />
+    <QtMoc Include="include\npswidget.h" />
     <ClInclude Include="include\tools.h" />
     <ClInclude Include="include\txtwidget.h" />
     <QtMoc Include="Include\ftreeview.h" />

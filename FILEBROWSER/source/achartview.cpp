@@ -1,15 +1,15 @@
-#include "achartview.h"
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/qmessagebox.h>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QPushButton>
 #include <QtCore/QtMath>
 #include <QtCore/qdebug.h>
 #include <QtCore/qthread.h>
 #include <QtCore/qmetatype.h>
-
+#include "achartview.h"
 
 AChartView::AChartView(QWidget* parent) :
     QChartView(parent)
@@ -162,6 +162,7 @@ void AChartView::update_f(QVector<QPointF> data, float mean, float sd) {
     emit setmean(QString().setNum(mean));
     emit setSD(QString().setNum(sd));
     series_f->replace(data);
+    this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QWidget*>("tab_2")->findChild<QPushButton*>("pushButton_12")->setVisible(true);
     return;
 }
 
@@ -175,6 +176,7 @@ void AChartView::initui(float x1, float x2, float y1, float y2) {
     axisx->setRange(x1, x2);
     axisy->setRange(y1, y2);
     emit getdata(x1, x2);
+    
 
 }
 
@@ -195,7 +197,8 @@ void AChartView::open(QString fn) {
     connect(abf, SIGNAL(sendData_f(QVector<QPointF>, float, float)), this, SLOT(update_f(QVector<QPointF>, float, float)));
     connect(this, SIGNAL(sendsave(QVector<QPointF>)), abf, SLOT(save(QVector<QPointF>)));
     connect(abf, SIGNAL(sendProcess(int)), this, SLOT(currentprocess(int)));
-    connect(this, SIGNAL(nps()), abf, SLOT(savenps()));
+    connect(this, SIGNAL(nps(float, float, float)), abf, SLOT(savenps(float, float, float)));
+    connect(this, SIGNAL(removenps()), abf, SLOT(removenps()));
     thread->start();
     emit loaddata(0, 1, true);
 }
@@ -227,5 +230,17 @@ void AChartView::currentprocess(int a) {
 }
 
 void AChartView::savesig() {
-    emit nps();
+    if (iostatus) {
+        iostatus = false;
+        this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QWidget*>("tab_2")->findChild<QPushButton*>("pushButton_12")->setText("save");
+        emit removenps();
+    }
+    else {
+        QLineEdit* pt_sigma = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QWidget*>("tab_2")->findChild<QLineEdit*>("lineEdit");
+        QLineEdit* pt_freq = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QWidget*>("tab_2")->findChild<QLineEdit*>("lineEdit_2");
+        QLineEdit* pt_thres = this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QWidget*>("tab_2")->findChild<QLineEdit*>("lineEdit_3");
+        emit nps(pt_sigma->text().toFloat(), pt_freq->text().toFloat(), pt_thres->text().toFloat());
+        this->parent()->findChild<QTabWidget*>("tabWidget")->findChild<QWidget*>("tab_2")->findChild<QPushButton*>("pushButton_12")->setText("remove");
+        iostatus = true;
+    }
 }

@@ -26,11 +26,15 @@ public slots:
 
 signals:
     void gettrace(float, float);
+    void gethist(float);
+    void sendyaxis(double);
+    void sendxaxis(double);
 
 protected:
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
+    void mouseDoubleClickEvent(QMouseEvent* event);
 
 private:
     QLineSeries* series_d;

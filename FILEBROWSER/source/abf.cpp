@@ -289,6 +289,7 @@ void ABF::draw(float xmin, float xmax) {
 }
 
 void ABF::readSignal(float sigma, float freq, float thres) {
+	sigs.clear();
 	gsl_vector* tmp;
 	if (sigma == 0)
 		tmp = meanSmooth(data, freq);
@@ -301,6 +302,7 @@ void ABF::readSignal(float sigma, float freq, float thres) {
 	QVector<QPointF> point;
 	float val;
 	unsigned s, e;
+	NanoporeSig k;
 	for (int i = 0; i < sig.size(); i++) {
 		s = sig[i].first;
 		e = sig[i].second;
@@ -312,7 +314,12 @@ void ABF::readSignal(float sigma, float freq, float thres) {
 		point.append(QPointF(s * Interval / 1000, val));
 		point.append(QPointF(e * Interval / 1000, val));
 		point.append(QPointF(e * Interval / 1000, data_f->data[e]));
-		sigs.push_back(NanoporeSig(i + 1, s * Interval / 1000, e * Interval / 1000, val, (data_f->data[s] + data_f->data[e]) / 2));
+		k.index = i + 1;
+		k.start = s * Interval / 1000;
+		k.end = e * Interval / 1000;
+		k.current = val;
+		k.baseline = (data_f->data[s] + data_f->data[e]) / 2;
+		sigs.push_back(k);
 	}
 	emit sendProcess(90);
 	emit sendData_f(point, mean, sd);
@@ -330,15 +337,69 @@ void ABF::readSignal(float sigma, float freq, float thres) {
 	emit sendProcess(100);
 }
 
-void ABF::savenps() {
+void ABF::savenps(float a, float b, float c) {
 	std::string filename(fn.substr(0, fn.find_last_of("/")) + std::string("/result.nps"));
 	std::ofstream file;
 	file.open(filename, std::fstream::app | std::ios::binary);
 	size_t size = fn.size();
 	file.write(reinterpret_cast<char*>(&size), sizeof(size_t));
+	file.write(reinterpret_cast<char*>(&a), sizeof(float));
+	file.write(reinterpret_cast<char*>(&b), sizeof(float));
+	file.write(reinterpret_cast<char*>(&c), sizeof(float));
 	file.write(fn.c_str(), size);
 	size = sigs.size();
 	file.write(reinterpret_cast<char*>(&size), sizeof(size_t));
 	file.write(reinterpret_cast<char*>(sigs.data()), size * sizeof(NanoporeSig));
 	file.close();
+	emit sendProcess(0);
+}
+
+void ABF::removenps() {
+	std::string filename(fn.substr(0, fn.find_last_of("/")) + std::string("/result.nps"));
+	std::vector<std::string> filelist;
+	std::vector<NanoporeSig> siglist;
+	std::vector<Paras> paralist;
+	std::vector<int> sizelist;
+	std::ifstream file;
+	file.open(filename, std::ios::binary);
+	size_t length, size;
+	while (1) {
+		file.read(reinterpret_cast<char*>(&length), sizeof(size_t));
+		if (file.eof())
+			break;
+		Paras para;
+		file.read(reinterpret_cast<char*>(&para), sizeof(Paras));
+		char* filename = new char[length];
+		file.read(filename, length);
+		filelist.push_back(std::string(filename, length));
+		paralist.push_back(para);
+		file.read(reinterpret_cast<char*>(&size), sizeof(size_t));
+		if (size == (size_t)0) {
+			filelist.pop_back();
+			continue;
+		}
+		NanoporeSig* buffer = new NanoporeSig[size];
+		file.read(reinterpret_cast<char*>(buffer), size * sizeof(NanoporeSig));
+		for (int i = 0; i < size; i++)
+			siglist.push_back(buffer[i]);
+		sizelist.push_back(size);
+		delete[] filename;
+		delete[] buffer;
+	}
+	file.close();
+	std::ofstream ofile;
+	ofile.open(filename, std::ios::binary);
+	int pos = 0;
+	for (int i = 0; i < filelist.size() - 1;i++) {
+		size_t size = filelist[i].size();
+		ofile.write(reinterpret_cast<char*>(&size), sizeof(size_t));
+		ofile.write(reinterpret_cast<char*>(&paralist[i]), sizeof(Paras));
+		ofile.write(filelist[i].c_str(), size);
+		size = sizelist[i];
+		ofile.write(reinterpret_cast<char*>(&size), sizeof(size_t));
+		ofile.write(reinterpret_cast<char*>(&siglist[0] + pos), size * sizeof(NanoporeSig));
+		pos += size;
+	}
+	ofile.close();
+	emit sendProcess(100);
 }

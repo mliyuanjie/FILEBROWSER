@@ -12,6 +12,8 @@ void NPS::load(std::string fn) {
 		file.read(reinterpret_cast<char*>(&length), sizeof(size_t));
 		if (file.eof())
 			break;
+		Para para;
+		file.read(reinterpret_cast<char*>(&para), sizeof(Para));
 		char* filename = new char[length];
 		file.read(filename, length);
 		filelist.push_back(std::string(filename, length));
@@ -19,7 +21,12 @@ void NPS::load(std::string fn) {
 			filelist.pop_back();
 			continue;
 		}
+		paralist.push_back(para);
 		file.read(reinterpret_cast<char*>(&size), sizeof(size_t));
+		if (size == (size_t)0) {
+			filelist.pop_back();
+			continue;
+		}
 		Peak* buffer = new Peak[size];
 		file.read(reinterpret_cast<char*>(buffer), size * sizeof(Peak));
 		for (int i = 0; i < size; i++) 
@@ -28,7 +35,6 @@ void NPS::load(std::string fn) {
 		j++;
 		delete[] filename;
 		delete[] buffer;
-		
 	}
 	file.close();
 	if (filelist.size() > 0) {
@@ -313,4 +319,32 @@ void NPS::nexthist() {
 		return;
 	index++;
 	hist(index, bin);
+}
+
+void NPS::sethist(float t) {
+	if (counter < 0)
+		return;
+	size_t start = mymap[filelist[counter]].first;
+	size_t end = mymap[filelist[counter]].second;
+	size_t mid;
+	while (true) {
+		mid = (start + end) / 2;
+		if (t >= siglist[mid].start && t <= siglist[mid].end)
+			break;
+		else if (t < siglist[mid].start)
+			end = mid;
+		else
+			start = mid + 1;
+		if (start >= end)
+			return;
+	}
+	index = mid;
+	hist(index, bin);
+	QVector<QPointF> r;
+	Peak peak = siglist[mid];
+	r.push_back(QPointF(peak.start, peak.currentbase));
+	r.push_back(QPointF(peak.start, peak.currentmax));
+	r.push_back(QPointF(peak.end, peak.currentmax));
+	r.push_back(QPointF(peak.end, peak.currentbase));
+	emit sendcursig(r);
 }

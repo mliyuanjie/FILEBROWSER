@@ -51,7 +51,8 @@ signals:
     void setprocess(int);
     void setmean(QString);
     void setSD(QString);
-    void nps();
+    void nps(float, float, float);
+    void removenps();
     void setcurrent(double);
 
 protected:
@@ -73,6 +74,7 @@ private:
     std::vector<QPair<float, float>> sty;
     double start = 0;
     double end = 0;
+    bool iostatus = false;
     
 };
 #endif //ACHARTVIEW_H 

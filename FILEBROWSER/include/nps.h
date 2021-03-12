@@ -22,6 +22,12 @@ struct Peak {
 	float shape;	
 };
 
+struct Para {
+	float sigma;
+	float window;
+	float threshold;
+};
+
 class NPS: public QObject {
 	Q_OBJECT;	
 
@@ -38,6 +44,7 @@ public slots:
 	void nexthist();
 	void setIndex(int);
 	void setBin(int);
+	void sethist(float);
 
 
 signals:
@@ -55,6 +62,7 @@ signals:
 private:
 	std::vector<std::string> filelist;
 	std::vector<Peak> siglist;
+	std::vector<Para> paralist;
 	std::unordered_map<std::string, std::pair<int,int>> mymap;
 	std::vector<float> data;
 	float interval;

@@ -32,23 +32,24 @@ NPSChartView::NPSChartView(NPSWidget* parent) :
 }
 
 void NPSChartView::mousePressEvent(QMouseEvent* event) {
-    if (event->button() == Qt::LeftButton)
-        return;
     QPoint p = event->pos();
     QPointF pf = mapToScene(p);
     pf = charts->mapFromScene(pf);
     pf = charts->mapToValue(pf);
     rubberBand->setGeometry(QRect(p, QSize()));
-    rubberBand->show();
+    rubberBand->show();        
 }
 
 void NPSChartView::mouseMoveEvent(QMouseEvent* event) {
+    QPoint p = event->pos();
+    QPointF pf = mapToScene(p);
+    pf = charts->mapFromScene(pf);
+    pf = charts->mapToValue(pf);
     rubberBand->setGeometry(QRect(rubberBand->pos(), event->pos()));
+    emit sendyaxis(pf.y());
 }
 
 void NPSChartView::mouseReleaseEvent(QMouseEvent* event) {
-    if (event->button() == Qt::LeftButton)
-        return;
     QPoint p = event->pos();
     QPointF pf = mapToScene(p);
     pf = charts->mapFromScene(pf);
@@ -62,13 +63,27 @@ void NPSChartView::mouseReleaseEvent(QMouseEvent* event) {
     pf = charts->mapToValue(pf);
     x.first = pf.x();
     y.second = pf.y();
-    stx.push_back(x);
-    sty.push_back(y);
-    emit gettrace(stx.back().first, stx.back().second);
+    if (event->button() == Qt::LeftButton) 
+        emit sendxaxis(x.second - x.first);
+    else if (event->button() == Qt::RightButton) {
+        stx.push_back(x);
+        sty.push_back(y);
+        emit gettrace(stx.back().first, stx.back().second);
+        rubberBand->hide();
+        axisx->setRange(stx.back().first, stx.back().second);
+        axisy->setRange(sty.back().first, sty.back().second);
+    }
     rubberBand->hide();
-    axisx->setRange(stx.back().first, stx.back().second);
-    axisy->setRange(sty.back().first, sty.back().second);
-    rubberBand->hide();
+}
+
+void NPSChartView::mouseDoubleClickEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
+        QPoint p = event->pos();
+        QPointF pf = mapToScene(p);
+        pf = charts->mapFromScene(pf);
+        pf = charts->mapToValue(pf);
+        emit gethist(pf.x());
+    }
 }
 
 void NPSChartView::back() {

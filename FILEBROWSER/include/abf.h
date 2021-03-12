@@ -10,13 +10,6 @@
 #include <gsl/gsl_vector.h>
 
 struct NanoporeSig {
-	NanoporeSig(unsigned int a, float b, float c, float d, float e) {
-		index = a;
-		start = b;
-		end = c;
-		current = d;
-		baseline = e;
-	}
 	unsigned int index;
 	float start;
 	float end;
@@ -26,6 +19,12 @@ struct NanoporeSig {
 	float Imin;
 	float volume;
 	float shape;
+};
+
+struct Paras {
+	float sigma;
+	float window;
+	float threshold;
 };
 
 class ABF:public QObject {
@@ -40,7 +39,8 @@ public slots:
 	void readSignal(float sigma, float freq, float thres);
 	void save(QVector<QPointF>);
 	void draw(float xmin, float xmax);
-	void savenps();
+	void savenps(float, float, float);
+	void removenps();
 
 signals:
 	void sendData(QVector<QPointF>);

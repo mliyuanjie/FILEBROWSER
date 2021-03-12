@@ -4,6 +4,8 @@
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_filter.h>
 #include <gsl/gsl_statistics.h>
+#include <gsl/gsl_math.h>
+#include <gsl/gsl_matrix.h>
 
 gsl_vector* gaussSmooth(gsl_vector* x, float s, int w);
 gsl_vector* meanSmooth(gsl_vector* x, int w);

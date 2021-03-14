@@ -62,7 +62,7 @@ public:
     {
         if (NPSDockWidget->objectName().isEmpty())
             NPSDockWidget->setObjectName(QStringLiteral("NPSDockWidget"));
-        NPSDockWidget->resize(1200, 696);
+        NPSDockWidget->resize(1200, 708);
         NPSDockWidget->setMinimumSize(QSize(1200, 470));
         NPSDockWidget->setMaximumSize(QSize(1200, 524287));
         NPSDockWidget->setCursor(QCursor(Qt::ArrowCursor));

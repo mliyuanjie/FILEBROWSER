@@ -9,6 +9,7 @@
 #include <fstream>
 #include <algorithm>
 #include "abffiles.h"
+#include "tools.h"
 
 struct Peak {
 	size_t index;
@@ -34,7 +35,7 @@ class NPS: public QObject {
 public slots:
 	void trace(float, float);
 	//void multiFit();
-	//void singleFit(int);
+	void fit();
 	//void save();
 	//void setPhysics(float, float, float, float, float);
 	void load(std::string);
@@ -51,6 +52,7 @@ signals:
 	void sendtrace(QVector<QPointF>);
 	void sendsig(QVector<QPointF>);
 	void sendhist(QVector<QPointF>);
+	void sendfit(QVector<QPointF>);
 	void sendcursig(QVector<QPointF>);
 	void sendaxis(float, float, float, float);
 	void sendhistaxis(float, float, float, float);

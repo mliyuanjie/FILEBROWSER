@@ -20,6 +20,7 @@ public slots:
     //void setFilename(QString s);
     void initaxis(float, float, float, float);
     void update(QVector<QPointF>);
+    void update_d(QVector<QPointF>);
     void setindex();
     void setbin();
 
@@ -29,6 +30,7 @@ signals:
 
 private:
     QLineSeries* series;
+    QLineSeries* series_f;
     QChart* charts;
     QValueAxis* axisx;
     QValueAxis* axisy;

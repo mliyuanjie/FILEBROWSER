@@ -1,5 +1,5 @@
 #include "abf.h"
-#include "algorithm.h"
+#include "tools.h"
 
 ABF::ABF(std::string f, QObject* parent, unsigned int n) : QObject(parent) {
 	fn = f;

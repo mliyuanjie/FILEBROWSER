@@ -12,10 +12,14 @@ HistChartView::HistChartView(NPSWidget* parent) :
     axisy->setTitleText(QString("Count"));
     series = new QLineSeries();
     series->setPen(QPen(Qt::black, 3));
+    series_f = new QLineSeries();
+    series_f->setPen(QPen(Qt::red, 2));
     charts = new QChart();
     charts->addSeries(series);
     charts->setAxisX(axisx, series);
     charts->setAxisY(axisy, series);
+    charts->setAxisX(axisx, series_f);
+    charts->setAxisY(axisy, series_f);
     charts->legend()->hide();
     setChart(charts);
 }
@@ -27,6 +31,10 @@ void HistChartView::initaxis(float x1, float x2, float y1, float y2) {
 
 void HistChartView::update(QVector<QPointF> data) {
     series->replace(data);
+}
+
+void HistChartView::update_d(QVector<QPointF> data) {
+    series_f->replace(data);
 }
 
 void HistChartView::setindex() {

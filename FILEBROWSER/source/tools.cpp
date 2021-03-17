@@ -57,19 +57,26 @@ std::vector<std::pair<int, int>> findPeak(double* x, double* b, size_t size, int
 }
 
 void fftconv(double* x, double* y, size_t n) {
-    double* x_f = new double[n * 2];
-    double* y_f = new double[n * 2];
+    size_t N = pow(2, 14);
+    double* x_f = new double[2*N];
+    double* y_f = new double[2*N];
     for (int i = 0; i < n; i++) {
         REAL(x_f, i) = x_f[i];
         REAL(y_f, i) = y_f[i];
         IMAG(x_f, i) = 0;
         IMAG(y_f, i) = 0;
     }
-    gsl_fft_complex_radix2_forward(x_f, 1, n);
-    gsl_fft_complex_radix2_forward(y_f, 1, n);
-    for (int i = 0; i < 2 * n; i++) 
+    for (int i = n; i < N; i++) {
+        REAL(x_f, i) = 0;
+        REAL(y_f, i) = 0;
+        IMAG(x_f, i) = 0;
+        IMAG(y_f, i) = 0;
+    }
+    gsl_fft_complex_radix2_forward(x_f, 1, N);
+    gsl_fft_complex_radix2_forward(y_f, 1, N);
+    for (int i = 0; i < 2 * N; i++) 
         y_f[i] = x_f[i] * y_f[i];
-    gsl_fft_complex_radix2_inverse(y_f, 1, n);
+    gsl_fft_complex_radix2_inverse(y_f, 1, N);
     for (int i = 0; i < n; i++) 
         y[i] = REAL(y_f, i);
     delete[] y_f;

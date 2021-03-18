@@ -7,7 +7,7 @@ a new abf browser with file list.
 4. based on gsl.
 
 new version:
-64bit
-remove support for abf
-.dat io by mmap io
-support .mat file
+64bit,
+remove support for abf,
+.dat io by mmap io,
+support .mat file.

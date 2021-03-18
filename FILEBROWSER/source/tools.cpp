@@ -55,7 +55,7 @@ std::vector<std::pair<int, int>> findPeak(double* x, double* b, size_t size, int
     }
     return out;
 }
-
+/*
 void fftconv(double* x, double* y, size_t n) {
     size_t N = pow(2, 14);
     double* x_f = new double[2*N];
@@ -120,7 +120,7 @@ int npf_f(const gsl_vector* x, void* data, gsl_vector* f) {
     gsl_spline_free(spline);
     gsl_interp_accel_free(acc);
 }
-
+*/
 int npf_f(const gsl_vector* x, void* data, gsl_vector* f) {
     size_t n = ((struct npfdata*)data)->n;
     double* t = ((struct npfdata*)data)->t;
@@ -172,7 +172,7 @@ int npf_df(const gsl_vector* x, void* data, gsl_matrix* J) {
 
     return GSL_SUCCESS;
 }
-
+/*
 int npfit(npfdata* data, gsl_vector* para, double &chisq) {
     const gsl_multifit_nlinear_type* T = gsl_multifit_nlinear_trust;
     gsl_multifit_nlinear_workspace* w;
@@ -186,21 +186,19 @@ int npfit(npfdata* data, gsl_vector* para, double &chisq) {
     const double xtol = 1e-8;
     const double gtol = 1e-8;
     const double ftol = 1e-8;
-
-    /* define the function to be minimized */
     fdf.f = npf_f;
-    fdf.df = npf_df;   /* set to NULL for finite-difference Jacobian */
-    fdf.fvv = NULL;     /* not using geodesic acceleration */
+    fdf.df = npf_df;   
+    fdf.fvv = NULL;     
     fdf.n = n;
     fdf.p = p;
     fdf.params = data;
-    /* allocate workspace with default parameters */
+    
     w = gsl_multifit_nlinear_alloc(T, &fdf_params, n, p);
-    /* initialize solver with starting point and weights */
+   
     gsl_multifit_nlinear_init(para, &fdf, w);
-    /* solve the system with a maximum of 100 iterations */
+    
     status = gsl_multifit_nlinear_driver(2000, xtol, gtol, ftol, NULL, NULL, &info, w);
-    /* compute final cost */
+    
     f = gsl_multifit_nlinear_residual(w);
     gsl_blas_ddot(f, f, &chisq);
     gsl_vector* x = gsl_multifit_nlinear_position(w);
@@ -209,3 +207,4 @@ int npfit(npfdata* data, gsl_vector* para, double &chisq) {
     gsl_multifit_nlinear_free(w);
     return status;
 }
+*/

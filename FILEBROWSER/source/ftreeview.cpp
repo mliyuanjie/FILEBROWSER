@@ -37,6 +37,12 @@ void FTreeView::mouseDoubleClickEvent(QMouseEvent* event) {
 		dockWidget->findChild<QWidget*>("dockWidgetContents")->findChild<NPSWidget*>("widget")->open(fileinfo.filePath());
 
 	}
+	else if (fileinfo.suffix() == QString("mat")) {
+		Ui::NPSDockWidget ui;
+		ui.setupUi(dockWidget);
+		dockWidget->findChild<QWidget*>("dockWidgetContents")->findChild<NPSWidget*>("widget")->open(fileinfo.filePath());
+
+	}
 	else {
 		QFile file(fileinfo.filePath());
 		if (!file.open(QIODevice::ReadOnly | QIODevice::Text))

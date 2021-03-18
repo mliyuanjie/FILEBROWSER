@@ -3,47 +3,90 @@
 //#include <ndarrayobject.h>
 #include <gsl/gsl_histogram.h>
 
-void NPS::load(std::string fn) {
-	std::ifstream file;
-	file.open(fn, std::ios::binary);
-	size_t length, size;
-	int j = 0;
-	while (1) {
-		file.read(reinterpret_cast<char*>(&length), sizeof(size_t));
-		if (file.eof())
-			break;
-		Para para;
-		file.read(reinterpret_cast<char*>(&para), sizeof(Para));
-		char* filename = new char[length];
-		file.read(filename, length);
-		filelist.push_back(std::string(filename, length));
-		if (mymap.find(filelist.back()) != mymap.end()) {
-			filelist.pop_back();
-			continue;
+void NPS::load(std::string f) {
+	fn = f;
+	if (fn.substr(fn.length() - 3, 3) == "mat") {
+		MATFile* pmatFile = NULL;
+		mxArray* pMxArray = NULL;
+		pmatFile = matOpen(fn.c_str(), "r");
+		int M, N;
+		size_t strlen;
+		int start, len;
+		pMxArray = matGetVariable(pmatFile, "PeaksAll");
+		M = (int)mxGetM(pMxArray);
+		N = (int)mxGetN(pMxArray);
+		for (int i = 0; i < M; i++) {			
+			mxArray* matcell = mxGetCell(mxGetCell(pMxArray, i),0);
+			char* matfn = mxArrayToString(matcell);
+			std::string cppfn(matfn);
+			std::string filename = fn.substr(0, fn.find_last_of("/") + 1) + cppfn.substr(0, cppfn.find_last_of(","));
+			std::string strstart = cppfn.substr(cppfn.find_last_of(",") + 1, cppfn.size() - cppfn.find_last_of(",") - 1);
+			start = std::stoi(strstart);
+			len = mxGetM(mxGetCell(mxGetCell(pMxArray, i + M),0));
+			Peakmat peakmat = { start, start + len };
+			siglist_mat.push_back(peakmat);
+			if (mymap.find(filename) == mymap.end()) {
+				filelist.push_back(filename);
+				mymap[filename] = std::pair<int, int>(siglist_mat.size()-1, siglist_mat.size());
+			}
+			else {
+				mymap[filename].second++;
+			}	
+			mxFree(matfn);
 		}
-		paralist.push_back(para);
-		file.read(reinterpret_cast<char*>(&size), sizeof(size_t));
-		if (size == (size_t)0) {
-			filelist.pop_back();
-			continue;
+		matClose(pmatFile);
+		
+		if (filelist.size() > 0) {
+			counter = 0;
+			loaddata();
+			hist(0, 50);
+			emit sendtracenum(filelist.size() - 1);
+			emit sendsignum(siglist_mat.size() - 1);
 		}
-		Peak* buffer = new Peak[size];
-		file.read(reinterpret_cast<char*>(buffer), size * sizeof(Peak));
-		for (int i = 0; i < size; i++) 
-			siglist.push_back(buffer[i]);
-		mymap[filelist.back()] = std::pair<int, int>(siglist.size() - size, siglist.size());
-		j++;
-		delete[] filename;
-		delete[] buffer;
 	}
-	file.close();
-	if (filelist.size() > 0) {
-		counter = 0;
-		loaddata();
-		hist(0, 50);
-		emit sendtracenum(filelist.size() - 1);
-		emit sendsignum(siglist.size() - 1);
-	}	
+	else if (fn.substr(fn.length() - 3, 3) == "nps") {
+		std::ifstream file;
+		file.open(fn, std::ios::binary);
+		size_t length, size;
+		int j = 0;
+		while (1) {
+			file.read(reinterpret_cast<char*>(&length), sizeof(size_t));
+			if (file.eof())
+				break;
+			Para para;
+			file.read(reinterpret_cast<char*>(&para), sizeof(Para));
+			char* filename = new char[length];
+			file.read(filename, length);
+			filelist.push_back(std::string(filename, length));
+			if (mymap.find(filelist.back()) != mymap.end()) {
+				filelist.pop_back();
+				continue;
+			}
+			paralist.push_back(para);
+			file.read(reinterpret_cast<char*>(&size), sizeof(size_t));
+			if (size == (size_t)0) {
+				filelist.pop_back();
+				continue;
+			}
+			Peak* buffer = new Peak[size];
+			file.read(reinterpret_cast<char*>(buffer), size * sizeof(Peak));
+			for (int i = 0; i < size; i++)
+				siglist.push_back(buffer[i]);
+			mymap[filelist.back()] = std::pair<int, int>(siglist.size() - size, siglist.size());
+			j++;
+			delete[] filename;
+			delete[] buffer;
+		}
+		file.close();
+		if (filelist.size() > 0) {
+			counter = 0;
+			loaddata();
+			hist(0, 50);
+			emit sendtracenum(filelist.size() - 1);
+			emit sendsignum(siglist.size() - 1);
+		}
+	}
+		
 	return;
 }
 
@@ -125,20 +168,38 @@ void NPS::loaddata() {
 	float xmax = size * interval / 1000;
 	std::pair<std::vector<float>::iterator, std::vector<float>::iterator> y;
 	y = std::minmax_element(data.begin(), data.end());
-	emit sendaxis(xmin, xmax, *y.first - (*y.second - *y.first), *y.second + (*y.second - *y.first));
+	float ymin = *y.first - (*y.second - *y.first);
+	float ymax = *y.second + (*y.second - *y.first);
+	emit sendaxis(xmin, xmax, ymin, ymax);
 	trace(xmin, xmax);
 	QVector<QPointF> r;
-	for (int i = mymap[filelist[counter]].first; i < mymap[filelist[counter]].second; i++) {
-		r.push_back(QPointF(siglist[i].start, siglist[i].currentbase));
-		r.push_back(QPointF(siglist[i].start, siglist[i].currentmax));
-		r.push_back(QPointF(siglist[i].end, siglist[i].currentmax));
-		r.push_back(QPointF(siglist[i].end, siglist[i].currentbase));
+	if (fn.substr(fn.length() - 3, 3) == "mat") {
+		int start, end;
+		float current;
+		for (int i = mymap[filelist[counter]].first; i < mymap[filelist[counter]].second; i++) {
+			start = siglist_mat[i].start;
+			end = siglist_mat[i].end;
+			std::vector<float>::iterator current = std::max_element(data.begin() + start, data.begin() + end + 1);
+			r.push_back(QPointF(start * interval / 1000, data[start]));
+			r.push_back(QPointF(start * interval / 1000, *current));
+			r.push_back(QPointF(end * interval / 1000, *current));
+			r.push_back(QPointF(end * interval / 1000, data[end]));
+		}
+
 	}
+	else if (fn.substr(fn.length() - 3, 3) == "nps") {
+		for (int i = mymap[filelist[counter]].first; i < mymap[filelist[counter]].second; i++) {
+			r.push_back(QPointF(siglist[i].start, siglist[i].currentbase));
+			r.push_back(QPointF(siglist[i].start, siglist[i].currentmax));
+			r.push_back(QPointF(siglist[i].end, siglist[i].currentmax));
+			r.push_back(QPointF(siglist[i].end, siglist[i].currentbase));
+		}
+	}	
 	emit sendsig(r);
 	emit sendtracecur(counter);
 	return;
 }
-
+/*
 void NPS::fit() {
 	if (index >= 0) {
 		Peak peak = siglist[index];
@@ -212,26 +273,6 @@ void NPS::fit() {
 	}
 	emit sendindex(QString::number(index));
 }
-/*
-void NPS::multiFit() {
-	std::vector<double> buffer;
-	for (int i = 0; i < siglist.size(); i++) 
-		buffer.push_back(siglist[i].currentmax);
-	PyObject* pModule, * pFunc, * pArgs, * pValue;
-	Py_Initialize();
-	pModule = PyImport_ImportModule("pyalgorithm");
-	pFunc = PyObject_GetAttrString(pModule, "hist");
-	npy_intp dims[1] = { buffer.size() };
-	PyObject* args = PyArray_SimpleNewFromData(1, dims, NPY_FLOAT64, (void*)buffer.data());
-	pArgs = PyTuple_New(1);
-	PyTuple_SetItem(pArgs, 0, args);
-	PyObject_CallObject(pFunc, args);
-	Py_DECREF(pModule);
-	Py_DECREF(pFunc);
-	Py_DECREF(pArgs);
-	Py_Finalize();
-	return;
-}
 */
 void NPS::hist(int n, int bin) {
 	if (n >= 0) {
@@ -248,18 +289,38 @@ void NPS::hist(int n, int bin) {
 			counter = c;
 			loaddata();
 		}	
-		Peak peak = siglist[n];
-		gsl_histogram* h = gsl_histogram_alloc(bin);
 		size_t start, end;
-		start = peak.start * 1000 / interval;
-		end = peak.end * 1000 / interval;
-		double xmax = peak.currentbase - *std::max_element(data.begin() + start, data.begin() + end + 1);
-		double xmin = peak.currentbase - *std::min_element(data.begin() + start, data.begin() + end + 1);
-		if (xmax < xmin)
-			std::swap(xmin, xmax);
-		gsl_histogram_set_ranges_uniform(h, xmin, xmax);
-		for (int i = start; i <= end; i++)
-			gsl_histogram_increment(h, peak.currentbase - data[i]);
+		double xmax, xmin;
+		gsl_histogram* h = gsl_histogram_alloc(bin);
+		QVector<QPointF> r2;
+		if (fn.substr(fn.length() - 3, 3) == "mat") {
+			Peakmat peak = siglist_mat[n];
+			start = peak.start;
+			end = peak.end;
+			std::pair<std::vector<float>::iterator, std::vector<float>::iterator> x;
+			x = std::minmax_element(data.begin() + start, data.begin() + end + 1);
+			xmin = *x.first;
+			xmax = *x.second;
+			gsl_histogram_set_ranges_uniform(h, xmin, xmax);
+			for (int i = start; i <= end; i++)
+				gsl_histogram_increment(h, data[i]);
+			r2.push_back(QPointF(start * interval / 1000, data[start]));
+			r2.push_back(QPointF(start * interval / 1000, xmax));
+			r2.push_back(QPointF(end * interval / 1000, xmax));
+			r2.push_back(QPointF(end * interval / 1000, data[end]));
+		}
+		else if (fn.substr(fn.length() - 3, 3) == "nps") {
+			Peak peak = siglist[n];
+			start = peak.start * 1000 / interval;
+			end = peak.end * 1000 / interval;
+			xmax = peak.currentbase - *std::max_element(data.begin() + start, data.begin() + end + 1);
+			xmin = peak.currentbase - *std::min_element(data.begin() + start, data.begin() + end + 1);
+			if (xmax < xmin)
+				std::swap(xmin, xmax);
+			gsl_histogram_set_ranges_uniform(h, xmin, xmax);
+			for (int i = start; i <= end; i++)
+				gsl_histogram_increment(h, peak.currentbase - data[i]);
+		}
 		QVector<QPointF> r;
 		int maxcount = 0;
 		for (int i = 0; i < h->n; i++) {
@@ -271,11 +332,6 @@ void NPS::hist(int n, int bin) {
 		}
 		emit sendhistaxis(xmin, xmax, 0, maxcount);
 		emit sendhist(r);
-		QVector<QPointF> r2;
-		r2.push_back(QPointF(peak.start, peak.currentbase));
-		r2.push_back(QPointF(peak.start, peak.currentmax));
-		r2.push_back(QPointF(peak.end, peak.currentmax));
-		r2.push_back(QPointF(peak.end, peak.currentbase));
 		emit sendcursig(r2);
 		emit sendindex(QString::number(n));
 		gsl_histogram_free(h);
@@ -283,15 +339,19 @@ void NPS::hist(int n, int bin) {
 	else {
 		std::vector<double> multievent;
 		double xmax, xmin;
-		for (int i = 0; i < siglist.size(); i++) {
-			multievent.push_back((siglist[i].currentbase - siglist[i].currentmax) / siglist[i].currentbase);
-			if (i == 0) {
-				xmax = multievent[0];
-				xmin = multievent[0];
-			}
-			else {
-				xmax = (xmax < multievent[i]) ? multievent[i] : xmax;
-				xmin = (xmin > multievent[i]) ? multievent[i] : xmin;
+		if (fn.substr(fn.length() - 3, 3) == "mat") 
+			return;
+		else if (fn.substr(fn.length() - 3, 3) == "nps") {
+			for (int i = 0; i < siglist.size(); i++) {
+				multievent.push_back((siglist[i].currentbase - siglist[i].currentmax) / siglist[i].currentbase);
+				if (i == 0) {
+					xmax = multievent[0];
+					xmin = multievent[0];
+				}
+				else {
+					xmax = (xmax < multievent[i]) ? multievent[i] : xmax;
+					xmin = (xmin > multievent[i]) ? multievent[i] : xmin;
+				}
 			}
 		}
 		gsl_histogram* h = gsl_histogram_alloc(bin);
@@ -322,7 +382,7 @@ void NPS::setBin(int i) {
 }
 
 void NPS::setIndex(int i) {
-	if (i < -1 || i >= siglist.size())
+	if ((i < -1 || i >= siglist.size())&& (i < -1 || i >= siglist_mat.size()))
 		return;
 	index = i;
 	hist(index, bin);
@@ -355,7 +415,7 @@ void NPS::prehist() {
 }
 
 void NPS::nexthist() {
-	if (index >= (int)(siglist.size() - 1))
+	if ((index < -1 || index >= siglist.size()) && (index < -1 || index >= siglist_mat.size()))
 		return;
 	index++;
 	hist(index, bin);
@@ -367,24 +427,33 @@ void NPS::sethist(float t) {
 	size_t start = mymap[filelist[counter]].first;
 	size_t end = mymap[filelist[counter]].second;
 	size_t mid;
-	while (true) {
-		mid = (start + end) / 2;
-		if (t >= siglist[mid].start && t <= siglist[mid].end)
-			break;
-		else if (t < siglist[mid].start)
-			end = mid;
-		else
-			start = mid + 1;
-		if (start >= end)
-			return;
+	if (fn.substr(fn.length() - 3, 3) == "nps") {
+		while (true) {
+			mid = (start + end) / 2;
+			if (t >= siglist[mid].start && t <= siglist[mid].end)
+				break;
+			else if (t < siglist[mid].start)
+				end = mid;
+			else
+				start = mid + 1;
+			if (start >= end)
+				return;
+		}
+	}
+	else {
+		t = 1000 * t / interval;
+		while (true) {
+			mid = (start + end) / 2;
+			if (t >= siglist_mat[mid].start && t <= siglist_mat[mid].end)
+				break;
+			else if (t < siglist_mat[mid].start)
+				end = mid;
+			else
+				start = mid + 1;
+			if (start >= end)
+				return;
+		}
 	}
 	index = mid;
 	hist(index, bin);
-	QVector<QPointF> r;
-	Peak peak = siglist[mid];
-	r.push_back(QPointF(peak.start, peak.currentbase));
-	r.push_back(QPointF(peak.start, peak.currentmax));
-	r.push_back(QPointF(peak.end, peak.currentmax));
-	r.push_back(QPointF(peak.end, peak.currentbase));
-	emit sendcursig(r);
 }

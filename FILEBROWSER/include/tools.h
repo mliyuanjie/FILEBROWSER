@@ -26,4 +26,4 @@ struct npfdata {
 gsl_vector* gaussSmooth(gsl_vector* x, float s, int w);
 gsl_vector* meanSmooth(gsl_vector* x, int w);
 std::vector<std::pair<int, int>> findPeak(double* x, double* b, size_t size, int t, float&, float&);
-int npfit(npfdata* data, gsl_vector* para, double& chisq);
+//int npfit(npfdata* data, gsl_vector* para, double& chisq);

@@ -8,6 +8,8 @@
 #include <QtCore/qvector.h>
 #include <fstream>
 #include <algorithm>
+#include <numeric>
+#include "matlab/mat.h"
 #include "abffiles.h"
 #include "tools.h"
 
@@ -23,6 +25,11 @@ struct Peak {
 	float shape;	
 };
 
+struct Peakmat {
+	int start;
+	int end;
+};
+
 struct Para {
 	float sigma;
 	float window;
@@ -35,7 +42,7 @@ class NPS: public QObject {
 public slots:
 	void trace(float, float);
 	//void multiFit();
-	void fit();
+	//void fit();
 	//void save();
 	//void setPhysics(float, float, float, float, float);
 	void load(std::string);
@@ -64,9 +71,11 @@ signals:
 private:
 	std::vector<std::string> filelist;
 	std::vector<Peak> siglist;
+	std::vector<Peakmat> siglist_mat;
 	std::vector<Para> paralist;
 	std::unordered_map<std::string, std::pair<int,int>> mymap;
 	std::vector<float> data;
+	std::string fn;
 	float interval;
 	int index = 0;
 	int bin = 50;

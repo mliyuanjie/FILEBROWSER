@@ -36,7 +36,7 @@ void NPSWidget::open(QString filename) {
 	connect(nps, SIGNAL(sendtracecur(int)), this->findChild<QLabel*>("label_6"), SLOT(setNum(int)));
 	connect(this->findChild<NPSChartView*>("graphicsView"), SIGNAL(gettrace(float, float)), nps, SLOT(trace(float, float)));
 	connect(this->findChild<NPSChartView*>("graphicsView"), SIGNAL(gethist(float)), nps, SLOT(sethist(float)));
-	connect(this->findChild<QPushButton*>("pushButton_5"), SIGNAL(clicked()), nps, SLOT(fit()));
+	//connect(this->findChild<QPushButton*>("pushButton_5"), SIGNAL(clicked()), nps, SLOT(fit()));
 	thread->start();
 	nps->load(filename.toStdString());
 }

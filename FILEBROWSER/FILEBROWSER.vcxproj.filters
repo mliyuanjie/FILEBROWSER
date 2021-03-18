@@ -50,9 +50,6 @@
     <ClCompile Include="Source\achartview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\abf.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -69,6 +66,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\tools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\datio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\datmodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -88,15 +91,15 @@
     <ClInclude Include="include\tools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\datio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Include\ftreeview.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Include\achartview.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="Include\abf.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="include\nps.h">
@@ -109,6 +112,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="include\npswidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="include\datmodel.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

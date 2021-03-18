@@ -70,7 +70,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories);$(ProjectDir)/include;C:/python39/include;C:/python39/Lib/site-packages/numpy/core/include/numpy</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories);$(ProjectDir)/include;</AdditionalIncludeDirectories>
     </ClCompile>
     <QtUic>
       <QtUicDir>$(ProjectDir)/include</QtUicDir>
@@ -88,7 +88,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories);$(ProjectDir)/Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories);$(ProjectDir)/Include;B:\boost\boost_1_75_0</AdditionalIncludeDirectories>
     </ClCompile>
     <QtUic>
       <QtUicDir>$(ProjectDir)/Include</QtUicDir>
@@ -96,6 +96,10 @@
     <QtUic>
       <QtUicFileName>%(Filename).h</QtUicFileName>
     </QtUic>
+    <Link>
+      <AdditionalDependencies>$(Qt_LIBS_);%(AdditionalDependencies);$(ProjectDir)/lib/gsl.lib;$(ProjectDir)/lib/gslcblas.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(Qt_LIBPATH_);$(ProjectDir)/lib;B:\boost\boost_1_75_0\stage\lib</AdditionalLibraryDirectories>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -198,8 +202,9 @@
     <QtUic Include="ui\txtwidget.ui" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\abf.cpp" />
+    <ClCompile Include="Source\datmodel.cpp" />
     <ClCompile Include="Source\achartview.cpp" />
+    <ClCompile Include="source\datio.cpp" />
     <ClCompile Include="source\tools.cpp" />
     <ClCompile Include="Source\ftreeview.cpp" />
     <ClCompile Include="source\histchartview.cpp" />
@@ -211,12 +216,13 @@
   <ItemGroup>
     <QtMoc Include="include\nps.h" />
     <QtMoc Include="include\npschartview.h" />
+    <ClInclude Include="include\datio.h" />
     <ClInclude Include="include\fitwidget.h" />
     <QtMoc Include="include\histchartview.h" />
     <QtMoc Include="include\npswidget.h" />
     <ClInclude Include="include\txtwidget.h" />
     <QtMoc Include="Include\ftreeview.h" />
-    <QtMoc Include="Include\abf.h" />
+    <QtMoc Include="include\datmodel.h" />
     <ClInclude Include="Include\abfwidget.h" />
     <QtMoc Include="Include\achartview.h" />
     <ClInclude Include="include\tools.h" />

@@ -1,6 +1,4 @@
 #include "nps.h" 
-//#include <Python.h>
-//#include <ndarrayobject.h>
 #include <gsl/gsl_histogram.h>
 
 void NPS::load(std::string f) {
